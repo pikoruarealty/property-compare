@@ -27,7 +27,7 @@ const ROWS: Row[] = [
   },
   { label: "Price / sq ft", get: (p) => p.pricePerSqft },
   { label: "Possession", get: (p) => p.possession },
-  { label: "Amenities", get: (p) => p.amenities },
+  { label: "Amenities", get: () => "All Luxurious Amenities are available" },
   { label: "Key Advantages", get: (p) => p.advantages },
   { label: "Expert Verdict", get: (p) => p.expertNote },
 ];
