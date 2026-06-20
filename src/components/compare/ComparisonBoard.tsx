@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Check, Plus, X, ChevronDown, Sparkles } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { Property } from "@/types/property";
 import { toast } from "sonner";
@@ -40,7 +41,9 @@ function computeHighlight(row: Row, items: Property[]): number | undefined {
 }
 
 export function ComparisonBoard() {
-  const { selected, toggle, remove, clear } = useCompareStore();
+  const hydrated = useHydrated();
+  const { selected: rawSelected, toggle, remove, clear } = useCompareStore();
+  const selected = hydrated ? rawSelected : [];
   const items = useMemo(
     () => selected.map((id) => getPropertyById(id)).filter(Boolean) as Property[],
     [selected],
