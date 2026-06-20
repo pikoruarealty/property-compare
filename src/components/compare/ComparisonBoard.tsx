@@ -15,6 +15,7 @@ interface Row {
 }
 
 const ROWS: Row[] = [
+  { label: "Developer", get: (p) => p.developer },
   { label: "Configuration", get: (p) => p.configuration },
   { label: "Location", get: (p) => p.location },
   { label: "Status", get: (p) => p.status },
