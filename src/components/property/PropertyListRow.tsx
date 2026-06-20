@@ -46,6 +46,7 @@ export function PropertyListRow({ property, index = 0 }: Props) {
           {property.configuration}
         </p>
         <h3 className="mt-1.5 font-display text-2xl text-ivory">{property.name}</h3>
+        <p className="mt-0.5 text-[11px] tracking-luxury text-champagne">{property.developer}</p>
         <p className="mt-1 text-sm text-muted-foreground line-clamp-1">{property.tagline}</p>
 
         <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ivory/80">
