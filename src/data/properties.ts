@@ -26,6 +26,7 @@ interface Raw {
   size: string;
   location: string;
   status: PropertyStatus;
+  developer: string;
 }
 
 const slug = (s: string) =>
