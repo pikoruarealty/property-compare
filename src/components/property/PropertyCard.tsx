@@ -3,6 +3,7 @@ import { Check, MapPin, Plus, Ruler } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import type { Property } from "@/types/property";
 import { useCompareStore, MAX_COMPARE } from "@/stores/compare-store";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { toast } from "sonner";
 
 interface PropertyCardProps {
@@ -11,9 +12,10 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
+  const hydrated = useHydrated();
   const { isSelected, toggle, selected } = useCompareStore();
-  const selectedFlag = isSelected(property.id);
-  const atMax = selected.length >= MAX_COMPARE && !selectedFlag;
+  const selectedFlag = hydrated && isSelected(property.id);
+  const atMax = hydrated && selected.length >= MAX_COMPARE && !selectedFlag;
 
   const handleToggle = () => {
     const result = toggle(property.id);
@@ -23,12 +25,12 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.5, delay: Math.min(index, 5) * 0.05, ease: [0.22, 1, 0.36, 1] }}
       className="group relative overflow-hidden rounded-[32px] bg-card hover-lift"
-      style={{ border: "1px solid var(--glass-border)" }}
+      style={{ border: "1px solid var(--glass-border)", contentVisibility: "auto", containIntrinsicSize: "520px" }}
     >
       <Link to="/" className="block">
         <div className="relative aspect-[4/3] overflow-hidden">

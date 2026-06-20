@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Check, MapPin, Plus, Ruler, Calendar } from "lucide-react";
 import type { Property } from "@/types/property";
 import { MAX_COMPARE, useCompareStore } from "@/stores/compare-store";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { toast } from "sonner";
 
 interface Props {
@@ -10,9 +11,10 @@ interface Props {
 }
 
 export function PropertyListRow({ property, index = 0 }: Props) {
+  const hydrated = useHydrated();
   const { isSelected, toggle, selected } = useCompareStore();
-  const selectedFlag = isSelected(property.id);
-  const atMax = selected.length >= MAX_COMPARE && !selectedFlag;
+  const selectedFlag = hydrated && isSelected(property.id);
+  const atMax = hydrated && selected.length >= MAX_COMPARE && !selectedFlag;
 
   const handleToggle = () => {
     const result = toggle(property.id);
@@ -22,12 +24,12 @@ export function PropertyListRow({ property, index = 0 }: Props) {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.45, delay: Math.min(index, 6) * 0.04, ease: [0.22, 1, 0.36, 1] }}
       className="group grid grid-cols-1 gap-5 overflow-hidden rounded-[28px] bg-card p-4 sm:grid-cols-[260px_1fr_auto] sm:items-center sm:gap-7 sm:p-5"
-      style={{ border: "1px solid var(--glass-border)" }}
+      style={{ border: "1px solid var(--glass-border)", contentVisibility: "auto", containIntrinsicSize: "240px" }}
     >
       <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] sm:aspect-[5/3]">
         <img

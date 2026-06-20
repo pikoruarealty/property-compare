@@ -4,8 +4,12 @@ import { Link } from "@tanstack/react-router";
 import { MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { getPropertyById } from "@/data/properties";
 
+import { useHydrated } from "@/hooks/use-hydrated";
+
 export function CompareBar() {
-  const { selected, remove, clear } = useCompareStore();
+  const hydrated = useHydrated();
+  const { selected: rawSelected, remove, clear } = useCompareStore();
+  const selected = hydrated ? rawSelected : [];
   const canCompare = selected.length >= MIN_COMPARE;
   const visible = selected.length > 0;
 
