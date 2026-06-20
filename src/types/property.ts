@@ -10,6 +10,7 @@ export interface PropertyGallery {
 export interface Property {
   id: string;
   name: string;
+  developer: string;
   tagline: string;
   image: string;
   size: string;
