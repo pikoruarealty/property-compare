@@ -39,17 +39,16 @@ export const Route = createFileRoute("/compare")({
 
 function ComparePage() {
   const { ids } = Route.useSearch();
-  const properties = useMemo(
-    () =>
-      ids
-        .split(",")
-        .map((id) => id.trim())
-        .filter(Boolean)
-        .map((id) => getPropertyById(id))
-        .filter((p): p is NonNullable<typeof p> => Boolean(p))
-        .slice(0, 3),
-    [ids],
-  );
+  const properties = useMemo(() => {
+    const idList: string[] = (ids ?? "")
+      .split(",")
+      .map((id: string) => id.trim())
+      .filter((id: string) => id.length > 0);
+    return idList
+      .map((id) => getPropertyById(id))
+      .filter((p): p is NonNullable<ReturnType<typeof getPropertyById>> => Boolean(p))
+      .slice(0, 3);
+  }, [ids]);
 
   if (properties.length < 2) {
     return (
