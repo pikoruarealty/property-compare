@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { properties } from "@/data/properties";
-import { PropertyCard } from "@/components/property/PropertyCard";
-import { CompareBar } from "@/components/property/CompareBar";
+import { PropertyListRow } from "@/components/property/PropertyListRow";
 import { SiteHeader } from "@/components/SiteHeader";
+import { ComparisonBoard } from "@/components/compare/ComparisonBoard";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -12,12 +12,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Browse and compare a curated collection of ultra-luxury residences across the world.",
+          "Compose a side-by-side comparison of ultra-luxury residences with Pikorua's curated comparison suite.",
       },
       { property: "og:title", content: "Pikorua — Luxury Residences" },
       {
         property: "og:description",
-        content: "Browse and compare ultra-luxury residences worldwide.",
+        content: "Compare ultra-luxury residences side by side.",
       },
     ],
   }),
@@ -26,10 +26,10 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen pb-40">
+    <div className="min-h-screen pb-32">
       <SiteHeader />
 
-      <section className="relative overflow-hidden pt-40 pb-16">
+      <section className="relative overflow-hidden pt-36 pb-12">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -52,27 +52,28 @@ function Index() {
           >
             Compare residences with the eye of a <span className="gold-text">collector</span>.
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg"
-          >
-            Select two to three properties from the collection below. Pikorua's comparison suite
-            will reveal what numbers alone cannot.
-          </motion.p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6">
-        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+      <ComparisonBoard />
+
+      <section className="mx-auto mt-20 max-w-7xl px-6">
+        <div className="flex items-end justify-between border-b border-champagne/15 pb-5">
+          <div>
+            <p className="text-[11px] tracking-luxury text-champagne">The Collection</p>
+            <h2 className="mt-2 font-display text-3xl text-ivory sm:text-4xl">Properties</h2>
+          </div>
+          <p className="hidden text-xs tracking-luxury text-muted-foreground sm:block">
+            {properties.length} residences
+          </p>
+        </div>
+
+        <div className="mt-7 flex flex-col gap-5">
           {properties.map((p, i) => (
-            <PropertyCard key={p.id} property={p} index={i} />
+            <PropertyListRow key={p.id} property={p} index={i} />
           ))}
         </div>
       </section>
-
-      <CompareBar />
     </div>
   );
 }

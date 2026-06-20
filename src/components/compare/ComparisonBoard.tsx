@@ -1,0 +1,303 @@
+import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, Plus, X, ChevronDown, Sparkles } from "lucide-react";
+import { properties as allProperties, getPropertyById } from "@/data/properties";
+import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import type { Property } from "@/types/property";
+import { toast } from "sonner";
+
+interface Row {
+  label: string;
+  get: (p: Property) => string | string[];
+  highlight?: "max" | "min";
+  numeric?: (p: Property) => number;
+}
+
+const ROWS: Row[] = [
+  { label: "Configuration", get: (p) => p.configuration },
+  { label: "Location", get: (p) => p.location },
+  { label: "Status", get: (p) => p.status },
+  {
+    label: "Built-up Area",
+    get: (p) => p.size,
+    highlight: "max",
+    numeric: (p) => p.sizeNumeric,
+  },
+  { label: "Price / sq ft", get: (p) => p.pricePerSqft },
+  { label: "Possession", get: (p) => p.possession },
+  { label: "Amenities", get: (p) => p.amenities },
+  { label: "Key Advantages", get: (p) => p.advantages },
+  { label: "Expert Verdict", get: (p) => p.expertNote },
+];
+
+function computeHighlight(row: Row, items: Property[]): number | undefined {
+  if (!row.highlight || !row.numeric) return undefined;
+  const vals = items.map(row.numeric);
+  const target = row.highlight === "max" ? Math.max(...vals) : Math.min(...vals);
+  return vals.indexOf(target);
+}
+
+export function ComparisonBoard() {
+  const { selected, toggle, remove, clear } = useCompareStore();
+  const items = useMemo(
+    () => selected.map((id) => getPropertyById(id)).filter(Boolean) as Property[],
+    [selected],
+  );
+  const slots: (Property | null)[] = Array.from({ length: MAX_COMPARE }, (_, i) => items[i] ?? null);
+  const ready = items.length >= MIN_COMPARE;
+
+  return (
+    <section className="mx-auto max-w-7xl px-6">
+      <div
+        className="glass rounded-[32px] p-6 sm:p-8"
+        style={{ border: "1px solid var(--glass-border)" }}
+      >
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-[11px] tracking-luxury text-champagne">
+              Comparison Suite · {items.length} / {MAX_COMPARE}
+            </p>
+            <h2 className="mt-2 font-display text-3xl text-ivory sm:text-4xl">
+              Compose your <span className="gold-text">comparison</span>
+            </h2>
+            <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+              Select {MIN_COMPARE} to {MAX_COMPARE} residences. Each becomes a column. Pikorua
+              highlights what distinguishes them.
+            </p>
+          </div>
+          {items.length > 0 && (
+            <button
+              onClick={clear}
+              className="text-[11px] tracking-luxury text-muted-foreground hover:text-champagne transition-colors"
+            >
+              Clear all
+            </button>
+          )}
+        </div>
+
+        {/* Slot pickers */}
+        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {slots.map((slot, idx) => (
+            <SlotCard
+              key={idx}
+              slot={slot}
+              index={idx}
+              onRemove={(id) => remove(id)}
+              onPick={(id) => {
+                const r = toggle(id);
+                if (!r.ok && r.reason) toast.error(r.reason);
+              }}
+              currentSelected={selected}
+            />
+          ))}
+        </div>
+
+        {/* Column-wise comparison */}
+        <AnimatePresence initial={false}>
+          {ready ? (
+            <motion.div
+              key="grid"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-8"
+            >
+              <ComparisonGrid items={items} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="mt-8 flex flex-col items-center justify-center rounded-[24px] border border-dashed border-champagne/25 px-6 py-12 text-center"
+            >
+              <Sparkles className="h-5 w-5 text-champagne" />
+              <p className="mt-3 text-sm text-muted-foreground">
+                Add at least {MIN_COMPARE} properties to reveal the comparison.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </section>
+  );
+}
+
+function SlotCard({
+  slot,
+  index,
+  onRemove,
+  onPick,
+  currentSelected,
+}: {
+  slot: Property | null;
+  index: number;
+  onRemove: (id: string) => void;
+  onPick: (id: string) => void;
+  currentSelected: string[];
+}) {
+  const [open, setOpen] = useState(false);
+
+  if (slot) {
+    return (
+      <motion.div
+        layout
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative overflow-hidden rounded-[24px] bg-soft-black"
+        style={{ border: "1px solid var(--glass-border)" }}
+      >
+        <div className="relative aspect-[16/10] overflow-hidden">
+          <img
+            src={slot.image}
+            alt={slot.name}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-lux-black via-lux-black/40 to-transparent" />
+          <button
+            onClick={() => onRemove(slot.id)}
+            aria-label="Remove from comparison"
+            className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full glass text-ivory hover:text-champagne transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+          <div className="absolute bottom-3 left-4 right-4">
+            <p className="text-[10px] tracking-luxury text-champagne">Slot 0{index + 1}</p>
+            <h3 className="mt-0.5 font-display text-lg text-ivory line-clamp-1">{slot.name}</h3>
+            <p className="text-xs text-muted-foreground line-clamp-1">{slot.location}</p>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  const available = allProperties.filter((p) => !currentSelected.includes(p.id));
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          className="group flex h-full min-h-[180px] w-full flex-col items-center justify-center gap-3 rounded-[24px] border border-dashed border-champagne/30 bg-soft-black/40 px-6 py-10 text-center transition-all duration-300 hover:border-champagne hover:bg-soft-black"
+        >
+          <div className="grid h-12 w-12 place-items-center rounded-full gold-border text-champagne transition-transform duration-300 group-hover:scale-110">
+            <Plus className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-[10px] tracking-luxury text-champagne">Slot 0{index + 1}</p>
+            <p className="mt-1 text-sm text-ivory/90">Add a property</p>
+          </div>
+          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="center"
+        className="w-[320px] rounded-2xl border-champagne/20 bg-soft-black p-2"
+      >
+        {available.length === 0 ? (
+          <p className="px-3 py-6 text-center text-xs text-muted-foreground">
+            All properties already added.
+          </p>
+        ) : (
+          <div className="max-h-[320px] overflow-y-auto">
+            {available.map((p) => (
+              <button
+                key={p.id}
+                onClick={() => {
+                  onPick(p.id);
+                  setOpen(false);
+                }}
+                className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-graphite"
+              >
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className="h-12 w-16 rounded-lg object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm text-ivory">{p.name}</p>
+                  <p className="truncate text-[11px] text-muted-foreground">{p.location}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function ComparisonGrid({ items }: { items: Property[] }) {
+  const cols = items.length;
+  const gridCols = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
+
+  return (
+    <div className="overflow-hidden rounded-[24px] border border-champagne/15 bg-lux-black/40">
+      {/* Header strip */}
+      <div className={`hidden md:grid ${gridCols} border-b border-champagne/10`}>
+        <div className="px-5 py-4 text-[10px] tracking-luxury text-muted-foreground">
+          Attribute
+        </div>
+        {items.map((p) => (
+          <div key={p.id} className="px-5 py-4">
+            <p className="text-[10px] tracking-luxury text-champagne">{p.status}</p>
+            <p className="mt-1 font-display text-lg text-ivory line-clamp-1">{p.name}</p>
+            <p className="text-[11px] text-muted-foreground line-clamp-1">{p.location}</p>
+          </div>
+        ))}
+      </div>
+
+      {ROWS.map((row, ri) => {
+        const winner = computeHighlight(row, items);
+        return (
+          <div
+            key={row.label}
+            className={`grid grid-cols-1 ${gridCols} ${
+              ri % 2 === 0 ? "bg-soft-black/40" : ""
+            } border-b border-champagne/5 last:border-b-0`}
+          >
+            <div className="px-5 py-4 text-[11px] tracking-luxury text-champagne md:border-r md:border-champagne/10">
+              {row.label}
+            </div>
+            {items.map((p, i) => {
+              const value = row.get(p);
+              const isWinner = winner === i;
+              return (
+                <div
+                  key={p.id}
+                  className={`px-5 py-4 text-sm text-ivory/90 ${
+                    isWinner ? "bg-champagne/[0.06]" : ""
+                  }`}
+                >
+                  <div className="md:hidden mb-1 text-[10px] tracking-luxury text-muted-foreground">
+                    {p.name}
+                  </div>
+                  {Array.isArray(value) ? (
+                    <ul className="flex flex-wrap gap-1.5">
+                      {value.map((v) => (
+                        <li
+                          key={v}
+                          className="rounded-full border border-champagne/15 bg-graphite/60 px-2.5 py-1 text-[11px] text-ivory/85"
+                        >
+                          {v}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span className="inline-flex items-center gap-2">
+                      {value}
+                      {isWinner && <Check className="h-3.5 w-3.5 text-champagne" />}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
