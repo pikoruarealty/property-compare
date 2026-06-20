@@ -1,4 +1,4 @@
-export type PropertyStatus = "Ready to Move" | "Under Construction" | "New Launch" | "Limited Edition";
+export type PropertyStatus = string;
 
 export interface PropertyGallery {
   livingRoom: string;
