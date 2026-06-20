@@ -119,32 +119,32 @@ const advantagesFor = (r: Raw): string[] => {
 };
 
 const expertNoteFor = (r: Raw): string =>
-  `${r.name} on ${r.location} offers ${r.type.toLowerCase()} living in a tightly held micro-market — a considered pick for discerning buyers in Ahmedabad's luxury corridor.`;
+  `${r.name} by ${r.developer || "a reputed developer"} on ${r.location} offers ${r.type.toLowerCase()} living in a tightly held micro-market — a considered pick for discerning buyers in Ahmedabad's luxury corridor.`;
 
 const raw: Raw[] = [
-  { name: "Ikebana", type: "Apartment", units: ["4", "5", "P", "D"], size: "7,300 - 15,500 sq ft", location: "Sindhu Bhavan Road", status: "Near Possession" },
-  { name: "Maruti 360", type: "Apartment", units: ["4", "5", "D"], size: "5,700 - 7,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction" },
-  { name: "Pashmina", type: "Apartment", units: ["4", "5", "P"], size: "5,200 - 7,500 sq ft", location: "Sindhu Bhavan Road", status: "Ready to Move in" },
-  { name: "Triveni 84", type: "Apartment", units: ["4", "P", "D"], size: "3,700 - 6,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction" },
-  { name: "Anamika", type: "Apartment", units: ["4", "5", "D"], size: "3,200 - 10,000 sq ft", location: "Sindhu Bhavan Road", status: "Under Construction" },
-  { name: "Swati Senor", type: "Apartment", units: ["5"], size: "8,000 - 10,000 sq ft", location: "Iskon Ambli Road", status: "Ready to Move in" },
-  { name: "Rashmi", type: "Apartment", units: ["4", "P", "D"], size: "3,200 - 6,500 sq ft", location: "Thaltej", status: "Pre-Launch" },
-  { name: "Avant", type: "Apartment", units: ["4", "D"], size: "4,500 - 8,000 sq ft", location: "Sindhu Bhavan Road", status: "Ready to Move in" },
-  { name: "Capstone", type: "Apartment", units: ["4", "P", "D"], size: "5,200 - 9,000 sq ft", location: "Thaltej", status: "Under Construction" },
-  { name: "Eminence 96", type: "Apartment", units: ["4", "D"], size: "3,800 - 7,000 sq ft", location: "Thaltej", status: "Ready to Move in" },
-  { name: "Belrosa", type: "Apartment", units: ["4", "5", "D", "P"], size: "5,500 - 11,000 sq ft", location: "Vaishnodevi", status: "Pre-Launch" },
-  { name: "Anurita", type: "Bungalow", units: ["4"], size: "950 sqy Plot / 700 sqy Built-up", location: "Sindhu Bhavan Road", status: "Ready to Move in" },
-  { name: "Vaikunth", type: "Bungalow", units: ["4"], size: "390 sqy Plot / 440 sqy Built-up", location: "Shilaj", status: "Near Possession" },
-  { name: "Kalrav Alpines", type: "Plots", units: null, size: "1,100 - 2,000 sqy Plot", location: "Shilaj", status: "Under Construction" },
-  { name: "Northpark", type: "Bungalow", units: ["4"], size: "500 sqy Plot / 550 sqy Built-up", location: "Vaishnodevi", status: "Under Construction" },
-  { name: "Westpark", type: "Plots", units: null, size: "700 - 2,500 sqy Plot", location: "Vaishnodevi", status: "Under Construction" },
-  { name: "Atman", type: "Apartment", units: ["4"], size: "5,000 sq ft", location: "Iskon Ambli Road", status: "Ready to Move in" },
-  { name: "Shaligram Luxuria", type: "Apartment", units: ["4", "P"], size: "3,800 - 7,500 sq ft", location: "Iskon Ambli Road", status: "Near Possession" },
-  { name: "Kimana", type: "Apartment", units: ["4.5"], size: "6,000 - 8,000 sq ft", location: "Iskon Ambli Road", status: "Near Possession" },
-  { name: "Belagio", type: "Apartment", units: ["4.5"], size: "6,100 - 8,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction" },
-  { name: "HN 8800", type: "Apartment", units: ["4.5"], size: "8,800 - 17,000 sq ft", location: "Iskon Ambli Road", status: "Under Construction" },
-  { name: "Satyamev 4200", type: "Apartment", units: ["4.5"], size: "4,200 - 8,000 sq ft", location: "Iskon Ambli Road", status: "Under Construction" },
-  { name: "Goyal", type: "Apartment", units: ["4.5"], size: "6,900 - 9,600 sq ft", location: "Iskon Ambli Road", status: "Under Construction" },
+  { name: "Ikebana", type: "Apartment", units: ["4", "5", "P", "D"], size: "7,300 - 15,500 sq ft", location: "Sindhu Bhavan Road", status: "Near Possession", developer: "Gala" },
+  { name: "Maruti 360", type: "Apartment", units: ["4", "5", "D"], size: "5,700 - 7,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Maruti" },
+  { name: "Pashmina", type: "Apartment", units: ["4", "5", "P"], size: "5,200 - 7,500 sq ft", location: "Sindhu Bhavan Road", status: "Ready to Move in", developer: "Venus" },
+  { name: "Triveni 84", type: "Apartment", units: ["4", "P", "D"], size: "3,700 - 6,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Triveni" },
+  { name: "Anamika", type: "Apartment", units: ["4", "5", "D"], size: "3,200 - 10,000 sq ft", location: "Sindhu Bhavan Road", status: "Under Construction", developer: "Constera" },
+  { name: "Swati Senor", type: "Apartment", units: ["5"], size: "8,000 - 10,000 sq ft", location: "Iskon Ambli Road", status: "Ready to Move in", developer: "Swati" },
+  { name: "Rashmi", type: "Apartment", units: ["4", "P", "D"], size: "3,200 - 6,500 sq ft", location: "Thaltej", status: "Pre-Launch", developer: "Skyscape" },
+  { name: "Avant", type: "Apartment", units: ["4", "D"], size: "4,500 - 8,000 sq ft", location: "Sindhu Bhavan Road", status: "Ready to Move in", developer: "Ravi Desai" },
+  { name: "Capstone", type: "Apartment", units: ["4", "P", "D"], size: "5,200 - 9,000 sq ft", location: "Thaltej", status: "Under Construction", developer: "Beaumonde" },
+  { name: "Eminence 96", type: "Apartment", units: ["4", "D"], size: "3,800 - 7,000 sq ft", location: "Thaltej", status: "Ready to Move in", developer: "Eminence" },
+  { name: "Belrosa", type: "Apartment", units: ["4", "5", "D", "P"], size: "5,500 - 11,000 sq ft", location: "Vaishnodevi", status: "Pre-Launch", developer: "Adani" },
+  { name: "Anurita", type: "Bungalow", units: ["4"], size: "950 sqy Plot / 700 sqy Built-up", location: "Sindhu Bhavan Road", status: "Ready to Move in", developer: "Constera" },
+  { name: "Vaikunth", type: "Bungalow", units: ["4"], size: "390 sqy Plot / 440 sqy Built-up", location: "Shilaj", status: "Near Possession", developer: "A. Shridhar" },
+  { name: "Kalrav Alpines", type: "Plots", units: null, size: "1,100 - 2,000 sqy Plot", location: "Shilaj", status: "Under Construction", developer: "A. Shridhar" },
+  { name: "Northpark", type: "Bungalow", units: ["4"], size: "500 sqy Plot / 550 sqy Built-up", location: "Vaishnodevi", status: "Under Construction", developer: "Adani" },
+  { name: "Westpark", type: "Plots", units: null, size: "700 - 2,500 sqy Plot", location: "Vaishnodevi", status: "Under Construction", developer: "Adani" },
+  { name: "Atman", type: "Apartment", units: ["4"], size: "5,000 sq ft", location: "Iskon Ambli Road", status: "Ready to Move in", developer: "Maruti" },
+  { name: "Shaligram Luxuria", type: "Apartment", units: ["4", "P"], size: "3,800 - 7,500 sq ft", location: "Iskon Ambli Road", status: "Near Possession", developer: "Shaligram" },
+  { name: "Kimana", type: "Apartment", units: ["4.5"], size: "6,000 - 8,000 sq ft", location: "Iskon Ambli Road", status: "Near Possession", developer: "Sun" },
+  { name: "Belagio", type: "Apartment", units: ["4.5"], size: "6,100 - 8,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Palak" },
+  { name: "HN 8800", type: "Apartment", units: ["4.5"], size: "8,800 - 17,000 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "The Park by HN Safal" },
+  { name: "Satyamev 4200", type: "Apartment", units: ["4.5"], size: "4,200 - 8,000 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Luxor" },
+  { name: "Goyal", type: "Apartment", units: ["4.5"], size: "6,900 - 9,600 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Riviera" },
 ];
 
 const taglineFor = (r: Raw): string => {
@@ -156,6 +156,7 @@ const taglineFor = (r: Raw): string => {
 export const properties: Property[] = raw.map((r, i) => ({
   id: slug(r.name),
   name: r.name,
+  developer: r.developer,
   tagline: taglineFor(r),
   image: images[i % images.length],
   size: r.size,
