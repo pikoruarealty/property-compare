@@ -71,27 +71,20 @@ export function PropertyQuiz({
   return (
     <div className="flex h-full flex-col">
       {/* Top bar */}
-      <div className="mb-6 flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-[11px] tracking-[0.22em] text-[#C8A45D] uppercase">
-            Question {q} of 3
-          </p>
-          <div className="mt-2 h-px w-full overflow-hidden bg-white/10">
-            <motion.div
-              className="h-full bg-[#C8A45D]"
-              initial={false}
-              animate={{ width: `${(q / 3) * 100}%` }}
-              transition={transition}
-            />
-          </div>
+      <div className="mb-6">
+        <p className="text-[11px] tracking-[0.22em] text-[#C8A45D] uppercase">
+          Question {q} of 3
+        </p>
+        <div className="mt-2 h-px w-full overflow-hidden bg-white/10">
+          <motion.div
+            className="h-full bg-[#C8A45D]"
+            initial={false}
+            animate={{ width: `${(q / 3) * 100}%` }}
+            transition={transition}
+          />
         </div>
-        <button
-          onClick={handleSkip}
-          className="ml-4 text-xs text-[#F7F3EA]/30 hover:text-[#F7F3EA]/60"
-        >
-          Skip for now →
-        </button>
       </div>
+
 
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <AnimatePresence mode="wait">
