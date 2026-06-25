@@ -1,24 +1,24 @@
 import { useEffect, useState, type RefObject } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
-import { useNavigate } from "@tanstack/react-router";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { getPropertyById } from "@/data/properties";
 import { useHydrated } from "@/hooks/use-hydrated";
 import type { Property } from "@/types/property";
 
 interface Props {
-  /** Ref to the existing Comparison Suite section. The tray shows once this scrolls out of view. */
+  /** Ref to a section above the tray's active zone. Tray shows once this scrolls out of view. */
   watchRef: RefObject<HTMLElement | null>;
+  /** Called when the user clicks Compare with >= MIN_COMPARE slots filled. */
+  onCompare?: () => void;
 }
 
 /**
  * Floating, sticky comparison tray. Second visual representation of the
  * existing compare store — does not own any state of its own.
  */
-export function StickyCompareTray({ watchRef }: Props) {
+export function StickyCompareTray({ watchRef, onCompare }: Props) {
   const hydrated = useHydrated();
-  const navigate = useNavigate();
   const { selected: rawSelected, remove } = useCompareStore();
   const selected = hydrated ? rawSelected : [];
 
@@ -58,12 +58,10 @@ export function StickyCompareTray({ watchRef }: Props) {
           style={{ top: 68 }}
         >
           <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-6">
-            {/* Left label */}
             <p className="hidden whitespace-nowrap text-[10px] uppercase tracking-luxury text-champagne md:block">
               Comparison Suite · {items.length} / {MAX_COMPARE}
             </p>
 
-            {/* Slots */}
             <div className="flex flex-1 items-center justify-center gap-2 sm:gap-3">
               {slots.map((slot, i) => (
                 <SlotPill
@@ -74,12 +72,11 @@ export function StickyCompareTray({ watchRef }: Props) {
               ))}
             </div>
 
-            {/* Compare button */}
             <button
               type="button"
               aria-disabled={!ready}
               disabled={!ready}
-              onClick={() => ready && navigate({ to: "/compare" })}
+              onClick={() => ready && onCompare?.()}
               className={[
                 "whitespace-nowrap rounded-full border px-4 py-2 text-[10px] uppercase tracking-luxury transition",
                 ready
