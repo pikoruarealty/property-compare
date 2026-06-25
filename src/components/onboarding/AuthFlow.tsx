@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useOnboarding, type UserProfile } from "@/context/OnboardingContext";
 import { sendOtp, verifyOtp } from "@/lib/otp.functions";
+import { upsertProfileAfterOtp } from "@/lib/profile.functions";
 
 type Step = "details" | "phone" | "otp" | "profession";
 
@@ -66,6 +67,8 @@ export function AuthFlow() {
 
   const sendOtpFn = useServerFn(sendOtp);
   const verifyOtpFn = useServerFn(verifyOtp);
+  const upsertProfileFn = useServerFn(upsertProfileAfterOtp);
+  const [saving, setSaving] = useState(false);
 
   // OTP resend countdown
   useEffect(() => {
@@ -110,7 +113,9 @@ export function AuthFlow() {
     setVerifying(true);
     setOtpError("");
     try {
-      await verifyOtpFn({ data: { sessionId, otp: code } });
+      await verifyOtpFn({
+        data: { sessionId, otp: code, phone: fullPhoneDigits() },
+      });
       setStep("profession");
     } catch {
       setOtpError("That code didn't match. Try again.");
@@ -157,23 +162,37 @@ export function AuthFlow() {
     }
   };
 
-  const handleComplete = () => {
+  const [completeError, setCompleteError] = useState("");
+  const handleComplete = async () => {
     if (!profession) return;
-    const uid =
-      typeof crypto !== "undefined" && "randomUUID" in crypto
-        ? crypto.randomUUID()
-        : Math.random().toString(36).slice(2);
-    const fullPhone = `${country.code} ${phone.replace(/\D/g, "")}`;
-    const profile: UserProfile = {
-      name: name.trim(),
-      email: email.trim(),
-      phone: fullPhone,
-      profession,
-      businessName: businessName.trim() || undefined,
-      uid,
-    };
-    setUserProfile(profile);
-    setPhase("welcome");
+    setSaving(true);
+    setCompleteError("");
+    try {
+      const saved = await upsertProfileFn({
+        data: {
+          name: name.trim(),
+          email: email.trim(),
+          profession,
+          businessName: businessName.trim() || undefined,
+        },
+      });
+      const profile: UserProfile = {
+        name: saved.name ?? name.trim(),
+        email: saved.email ?? email.trim(),
+        phone: `${country.code} ${phone.replace(/\D/g, "")}`,
+        profession: (saved.profession as UserProfile["profession"]) ?? profession,
+        businessName: saved.businessName ?? undefined,
+        uid: saved.id,
+      };
+      setUserProfile(profile);
+      setPhase("welcome");
+    } catch (err) {
+      setCompleteError(
+        err instanceof Error ? err.message : "Couldn't save profile. Try again.",
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   const activeIdx = STEPS.indexOf(step);
@@ -418,7 +437,14 @@ export function AuthFlow() {
             </motion.div>
 
             <div className="mt-auto pt-10">
-              <GoldButton onClick={handleComplete} disabled={!profession}>
+              {completeError && (
+                <p className="mb-3 text-center text-xs text-red-400">{completeError}</p>
+              )}
+              <GoldButton
+                onClick={handleComplete}
+                disabled={!profession}
+                loading={saving}
+              >
                 Complete profile →
               </GoldButton>
             </div>
