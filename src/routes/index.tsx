@@ -6,6 +6,7 @@ import { PropertyListRow } from "@/components/property/PropertyListRow";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ComparisonBoard } from "@/components/compare/ComparisonBoard";
 import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
+import { PreferenceBanner } from "@/components/PreferenceBanner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -83,6 +84,11 @@ function Index() {
             {properties.length} residences
           </p>
         </div>
+
+        <div className="mt-5">
+          <PreferenceBanner />
+        </div>
+
 
         <div className="mt-7 flex flex-col gap-5">
           {properties.map((p, i) => (

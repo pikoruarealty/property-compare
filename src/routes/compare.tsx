@@ -13,6 +13,7 @@ import { AdvantagesSection } from "@/components/compare/AdvantagesSection";
 import { DifferenceHighlights } from "@/components/compare/DifferenceHighlights";
 import { GalleryComparison } from "@/components/compare/GalleryComparison";
 import { ExpertVerdict } from "@/components/compare/ExpertVerdict";
+import { PreferenceBanner } from "@/components/PreferenceBanner";
 
 const searchSchema = z.object({
   ids: z.string().optional().default(""),
@@ -76,6 +77,8 @@ function ComparePage() {
   return (
     <div className="min-h-screen pb-32">
       <SiteHeader />
+
+      <PreferenceBanner />
 
       <div className="mx-auto max-w-7xl px-6">
         <ComparisonHero properties={properties} />
