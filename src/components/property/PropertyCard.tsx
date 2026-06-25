@@ -49,6 +49,9 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
               {property.status}
             </span>
           </div>
+          <div className="absolute top-5 right-5">
+            <FavoriteButton propertyId={property.id} propertyName={property.name} />
+          </div>
         </div>
       </Link>
 
