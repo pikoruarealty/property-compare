@@ -59,6 +59,7 @@ export function AuthFlow() {
   const [shake, setShake] = useState(0);
   const [verifying, setVerifying] = useState(false);
   const [resendIn, setResendIn] = useState(30);
+  const [verificationToken, setVerificationToken] = useState("");
   const otpRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   // Profession
@@ -113,9 +114,10 @@ export function AuthFlow() {
     setVerifying(true);
     setOtpError("");
     try {
-      await verifyOtpFn({
+      const result = await verifyOtpFn({
         data: { sessionId, otp: code, phone: fullPhoneDigits() },
       });
+      setVerificationToken(result.verificationToken);
       setStep("profession");
     } catch {
       setOtpError("That code didn't match. Try again.");
@@ -174,6 +176,7 @@ export function AuthFlow() {
           email: email.trim(),
           profession,
           businessName: businessName.trim() || undefined,
+          verificationToken,
         },
       });
       const profile: UserProfile = {
