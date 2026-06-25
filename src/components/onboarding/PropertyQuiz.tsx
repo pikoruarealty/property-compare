@@ -34,19 +34,25 @@ const SUB_RANGES: Record<string, string[]> = {
 
 const transition = { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const };
 
-export function PropertyQuiz() {
+export function PropertyQuiz({
+  initialAnswers,
+  editMode = false,
+}: {
+  initialAnswers?: QuizAnswers;
+  editMode?: boolean;
+} = {}) {
   const { completeOnboarding } = useOnboarding();
   const [q, setQ] = useState<1 | 2 | 3>(1);
-  const [bhk, setBhk] = useState<string[]>([]);
-  const [types, setTypes] = useState<string[]>([]);
-  const [budgetRange, setBudgetRange] = useState("");
-  const [budgetSub, setBudgetSub] = useState("");
+  const [bhk, setBhk] = useState<string[]>(
+    initialAnswers?.bhk?.map((b) => b.replace(/\s*BHK$/i, "").trim()) ?? [],
+  );
+  const [types, setTypes] = useState<string[]>(initialAnswers?.propertyType ?? []);
+  const [budgetRange, setBudgetRange] = useState(initialAnswers?.budgetRange ?? "");
+  const [budgetSub, setBudgetSub] = useState(initialAnswers?.budgetSub ?? "");
 
   const toggle = (arr: string[], set: (a: string[]) => void, v: string) => {
     set(arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
   };
-
-  const handleSkip = () => completeOnboarding(null);
 
   const finish = () => {
     const answers: QuizAnswers = {
@@ -57,6 +63,7 @@ export function PropertyQuiz() {
     };
     completeOnboarding(answers);
   };
+
 
   const showBudgetComplete =
     budgetRange === "₹ 20 Cr +" || (budgetRange && budgetSub);
