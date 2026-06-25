@@ -5,6 +5,7 @@ import type { Property } from "@/types/property";
 import { useCompareStore, MAX_COMPARE } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { toast } from "sonner";
+import { FavoriteButton } from "@/components/property/FavoriteButton";
 
 interface PropertyCardProps {
   property: Property;
@@ -47,6 +48,9 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
             <span className="glass rounded-full px-4 py-1.5 text-[11px] tracking-luxury text-champagne">
               {property.status}
             </span>
+          </div>
+          <div className="absolute top-5 right-5">
+            <FavoriteButton propertyId={property.id} propertyName={property.name} />
           </div>
         </div>
       </Link>
