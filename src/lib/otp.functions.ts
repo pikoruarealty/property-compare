@@ -1,4 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
+import { useSession } from "@tanstack/react-start/server";
+
+const PENDING_COOKIE = "pikorua-pending";
+const sessionConfig = () => ({
+  password: process.env.SESSION_SECRET!,
+  name: PENDING_COOKIE,
+  maxAge: 60 * 10, // 10 minutes
+});
 
 export const sendOtp = createServerFn({ method: "POST" })
   .inputValidator((data: { phone: string }) => {
@@ -20,11 +28,20 @@ export const sendOtp = createServerFn({ method: "POST" })
   });
 
 export const verifyOtp = createServerFn({ method: "POST" })
-  .inputValidator((data: { sessionId: string; otp: string }) => {
-    if (!data || typeof data.sessionId !== "string" || typeof data.otp !== "string") {
+  .inputValidator((data: { sessionId: string; otp: string; phone: string }) => {
+    if (
+      !data ||
+      typeof data.sessionId !== "string" ||
+      typeof data.otp !== "string" ||
+      typeof data.phone !== "string"
+    ) {
       throw new Error("Invalid input");
     }
-    return { sessionId: data.sessionId, otp: data.otp.replace(/[^0-9]/g, "") };
+    return {
+      sessionId: data.sessionId,
+      otp: data.otp.replace(/[^0-9]/g, ""),
+      phone: data.phone.replace(/[^0-9]/g, ""),
+    };
   })
   .handler(async ({ data }) => {
     const apiKey = process.env.TWO_FACTOR_API_KEY;
@@ -35,5 +52,8 @@ export const verifyOtp = createServerFn({ method: "POST" })
     if (json.Status !== "Success") {
       throw new Error("OTP mismatch");
     }
+    // Mark phone as verified for ~10 min so the next step can write the profile.
+    const session = await useSession<{ phone: string; verifiedAt: number }>(sessionConfig());
+    await session.update({ phone: data.phone, verifiedAt: Date.now() });
     return { verified: true };
   });
