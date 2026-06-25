@@ -122,7 +122,8 @@ export const upsertProfileAfterOtp = createServerFn({ method: "POST" })
         email: data.email.trim(),
         profession: data.profession.trim(),
         businessName: data.businessName?.trim() || null,
-        verificationToken: data.verificationToken,
+        verificationToken:
+          typeof data.verificationToken === "string" ? data.verificationToken : undefined,
       };
     },
   )
