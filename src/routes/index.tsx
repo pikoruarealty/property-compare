@@ -27,13 +27,22 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const heroRef = useRef<HTMLElement | null>(null);
   const comparisonRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToComparison = () => {
+    const el = comparisonRef.current;
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen pb-32">
       <SiteHeader />
-      <StickyCompareTray watchRef={comparisonRef} />
+      <StickyCompareTray watchRef={heroRef} onCompare={scrollToComparison} />
 
-      <section className="relative overflow-hidden pt-36 pb-12">
+      <section ref={heroRef} className="relative overflow-hidden pt-36 pb-12">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -62,6 +71,7 @@ function Index() {
       <div ref={comparisonRef}>
         <ComparisonBoard />
       </div>
+
 
       <section className="mx-auto mt-20 max-w-7xl px-6">
         <div className="flex items-end justify-between border-b border-champagne/15 pb-5">
