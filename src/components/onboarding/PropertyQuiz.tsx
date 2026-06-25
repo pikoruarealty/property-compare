@@ -260,7 +260,7 @@ export function PropertyQuiz({
 
               <div className="mt-auto pt-8">
                 {showBudgetComplete && (
-                  <NextBtn onClick={finish}>Complete →</NextBtn>
+                  <NextBtn onClick={finish}>{editMode ? "Save preferences →" : "Complete →"}</NextBtn>
                 )}
               </div>
             </motion.div>
