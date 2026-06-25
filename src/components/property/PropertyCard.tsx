@@ -5,6 +5,7 @@ import type { Property } from "@/types/property";
 import { useCompareStore, MAX_COMPARE } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { toast } from "sonner";
+import { FavoriteButton } from "@/components/property/FavoriteButton";
 
 interface PropertyCardProps {
   property: Property;
