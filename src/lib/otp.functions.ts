@@ -69,16 +69,25 @@ export const verifyOtp = createServerFn({ method: "POST" })
     ) {
       throw new Error("Invalid input");
     }
+    // Strict allowlist: 2Factor session IDs are UUIDs. Reject anything that
+    // could alter the upstream URL path (slashes, dots, query chars, etc.).
+    if (!/^[A-Za-z0-9-]{8,64}$/.test(data.sessionId)) {
+      throw new Error("Invalid session id");
+    }
+    const otp = data.otp.replace(/[^0-9]/g, "");
+    const phone = data.phone.replace(/[^0-9]/g, "");
+    if (otp.length < 4 || otp.length > 8) throw new Error("Invalid OTP");
+    if (phone.length < 6 || phone.length > 15) throw new Error("Invalid phone");
     return {
       sessionId: data.sessionId,
-      otp: data.otp.replace(/[^0-9]/g, ""),
-      phone: data.phone.replace(/[^0-9]/g, ""),
+      otp,
+      phone,
     };
   })
   .handler(async ({ data }) => {
     const apiKey = process.env.TWO_FACTOR_API_KEY;
     if (!apiKey) throw new Error("TWO_FACTOR_API_KEY missing");
-    const url = `https://2factor.in/API/V1/${apiKey}/SMS/VERIFY/${data.sessionId}/${data.otp}`;
+    const url = `https://2factor.in/API/V1/${encodeURIComponent(apiKey)}/SMS/VERIFY/${encodeURIComponent(data.sessionId)}/${encodeURIComponent(data.otp)}`;
     const res = await fetch(url);
     const json: { Status?: string; Details?: string } = await res.json();
     if (json.Status !== "Success") {
