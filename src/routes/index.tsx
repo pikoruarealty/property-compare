@@ -6,6 +6,7 @@ import { PropertyListRow } from "@/components/property/PropertyListRow";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ComparisonBoard } from "@/components/compare/ComparisonBoard";
 import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
+import { PreferenceBanner } from "@/components/PreferenceBanner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
