@@ -1,5 +1,8 @@
 import { Link } from "@tanstack/react-router";
+import { Heart } from "lucide-react";
 import { useOnboarding } from "@/context/OnboardingContext";
+import { useFavoritesStore } from "@/stores/favorites-store";
+import { useHydrated } from "@/hooks/use-hydrated";
 
 export function SiteHeader() {
   const { userProfile } = useOnboarding();
