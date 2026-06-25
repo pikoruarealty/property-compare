@@ -85,6 +85,11 @@ function Index() {
           </p>
         </div>
 
+        <div className="mt-5">
+          <PreferenceBanner />
+        </div>
+
+
         <div className="mt-7 flex flex-col gap-5">
           {properties.map((p, i) => (
             <PropertyListRow key={p.id} property={p} index={i} />
