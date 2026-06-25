@@ -437,7 +437,14 @@ export function AuthFlow() {
             </motion.div>
 
             <div className="mt-auto pt-10">
-              <GoldButton onClick={handleComplete} disabled={!profession}>
+              {completeError && (
+                <p className="mb-3 text-center text-xs text-red-400">{completeError}</p>
+              )}
+              <GoldButton
+                onClick={handleComplete}
+                disabled={!profession}
+                loading={saving}
+              >
                 Complete profile →
               </GoldButton>
             </div>
