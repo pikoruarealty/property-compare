@@ -8,7 +8,13 @@ import {
   type ReactNode,
 } from "react";
 
-export type OnboardingPhase = "idle" | "auth" | "welcome" | "quiz" | "complete";
+export type OnboardingPhase =
+  | "idle"
+  | "auth"
+  | "welcome"
+  | "site-preview"
+  | "quiz"
+  | "complete";
 
 export interface UserProfile {
   name: string;
@@ -34,6 +40,8 @@ interface OnboardingContextValue {
   quizAnswers: QuizAnswers | null;
   setQuizAnswers: (a: QuizAnswers | null) => void;
   completeOnboarding: (answers: QuizAnswers | null) => void;
+  quizEditMode: boolean;
+  openQuizForEdit: () => void;
 }
 
 const Ctx = createContext<OnboardingContextValue | null>(null);
@@ -46,23 +54,17 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [phase, setPhase] = useState<OnboardingPhase>("idle");
   const [userProfile, setUserProfileState] = useState<UserProfile | null>(null);
   const [quizAnswers, setQuizAnswersState] = useState<QuizAnswers | null>(null);
+  const [quizEditMode, setQuizEditMode] = useState(false);
 
-  // Hydrate from localStorage on client after mount
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
       const done = window.localStorage.getItem(STORAGE_DONE);
       const profileRaw = window.localStorage.getItem(STORAGE_PROFILE);
       const quizRaw = window.localStorage.getItem(STORAGE_QUIZ);
-      if (profileRaw) {
-        setUserProfileState(JSON.parse(profileRaw));
-      }
-      if (quizRaw) {
-        setQuizAnswersState(JSON.parse(quizRaw));
-      }
-      if (done === "true") {
-        setPhase("complete");
-      }
+      if (profileRaw) setUserProfileState(JSON.parse(profileRaw));
+      if (quizRaw) setQuizAnswersState(JSON.parse(quizRaw));
+      if (done === "true") setPhase("complete");
     } catch {
       // ignore
     }
@@ -94,7 +96,13 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     } catch {
       // ignore
     }
+    setQuizEditMode(false);
     setPhase("complete");
+  }, []);
+
+  const openQuizForEdit = useCallback(() => {
+    setQuizEditMode(true);
+    setPhase("quiz");
   }, []);
 
   const value = useMemo<OnboardingContextValue>(
@@ -106,8 +114,19 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       quizAnswers,
       setQuizAnswers,
       completeOnboarding,
+      quizEditMode,
+      openQuizForEdit,
     }),
-    [phase, userProfile, quizAnswers, setUserProfile, setQuizAnswers, completeOnboarding],
+    [
+      phase,
+      userProfile,
+      quizAnswers,
+      setUserProfile,
+      setQuizAnswers,
+      completeOnboarding,
+      quizEditMode,
+      openQuizForEdit,
+    ],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
