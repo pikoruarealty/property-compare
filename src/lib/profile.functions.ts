@@ -115,8 +115,10 @@ export const getSessionProfile = createServerFn({ method: "GET" }).handler(async
 });
 
 export const saveQuizAnswers = createServerFn({ method: "POST" })
-  .inputValidator((data: { answers: unknown }) => {
-    if (!data || typeof data !== "object") throw new Error("Invalid input");
+  .inputValidator((data: { answers: QuizAnswersDTO }) => {
+    if (!data || !data.answers || typeof data.answers !== "object") {
+      throw new Error("Invalid input");
+    }
     return { answers: data.answers };
   })
   .handler(async ({ data }) => {
