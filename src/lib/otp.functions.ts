@@ -87,7 +87,7 @@ export const verifyOtp = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const apiKey = process.env.TWO_FACTOR_API_KEY;
     if (!apiKey) throw new Error("TWO_FACTOR_API_KEY missing");
-    const url = `https://2factor.in/API/V1/${apiKey}/SMS/VERIFY/${data.sessionId}/${data.otp}`;
+    const url = `https://2factor.in/API/V1/${encodeURIComponent(apiKey)}/SMS/VERIFY/${encodeURIComponent(data.sessionId)}/${encodeURIComponent(data.otp)}`;
     const res = await fetch(url);
     const json: { Status?: string; Details?: string } = await res.json();
     if (json.Status !== "Success") {
