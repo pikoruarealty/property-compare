@@ -1,6 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 import { useSession } from "@tanstack/react-start/server";
 
+export interface QuizAnswersDTO {
+  bhk: string[];
+  propertyType: string[];
+  budgetRange: string;
+  budgetSub: string;
+}
+
 export interface ProfileDTO {
   id: string;
   phone: string;
@@ -8,7 +15,7 @@ export interface ProfileDTO {
   email: string | null;
   profession: string | null;
   businessName: string | null;
-  quizAnswers: unknown;
+  quizAnswers: QuizAnswersDTO | null;
 }
 
 const PENDING = "pikorua-pending";
@@ -41,7 +48,7 @@ function toDTO(row: {
     email: row.email,
     profession: row.profession,
     businessName: row.business_name,
-    quizAnswers: row.quiz_answers,
+    quizAnswers: (row.quiz_answers as QuizAnswersDTO | null) ?? null,
   };
 }
 
