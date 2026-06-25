@@ -47,7 +47,7 @@ export function WelcomeCard() {
 
       <div className="mt-10 w-full max-w-[320px]">
         <button
-          onClick={() => setPhase("quiz")}
+          onClick={() => setPhase("site-preview")}
           className="flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-[#C8A45D] to-[#A8884C] text-sm font-medium tracking-wide text-[#121416] transition-opacity hover:opacity-95"
         >
           Explore the collection →
