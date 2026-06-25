@@ -6,6 +6,12 @@ const sessionConfig = () => ({
   password: process.env.SESSION_SECRET!,
   name: PENDING_COOKIE,
   maxAge: 60 * 10, // 10 minutes
+  cookie: {
+    path: "/",
+    httpOnly: true,
+    sameSite: "none" as const,
+    secure: true,
+  },
 });
 
 export const sendOtp = createServerFn({ method: "POST" })

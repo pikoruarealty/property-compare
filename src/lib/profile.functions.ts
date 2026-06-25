@@ -21,15 +21,23 @@ export interface ProfileDTO {
 const PENDING = "pikorua-pending";
 const SESSION = "pikorua-session";
 
+const cookieOpts = {
+  path: "/",
+  httpOnly: true,
+  sameSite: "none" as const,
+  secure: true,
+};
 const pendingConfig = () => ({
   password: process.env.SESSION_SECRET!,
   name: PENDING,
   maxAge: 60 * 10,
+  cookie: cookieOpts,
 });
 const sessionConfig = () => ({
   password: process.env.SESSION_SECRET!,
   name: SESSION,
   maxAge: 60 * 60 * 24 * 60, // 60 days
+  cookie: cookieOpts,
 });
 
 function toDTO(row: {
