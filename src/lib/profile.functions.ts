@@ -18,6 +18,11 @@ export interface ProfileDTO {
   quizAnswers: QuizAnswersDTO | null;
 }
 
+interface VerifiedPhoneToken {
+  phone: string;
+  verifiedAt: number;
+}
+
 const PENDING = "pikorua-pending";
 const SESSION = "pikorua-session";
 
@@ -39,6 +44,46 @@ const sessionConfig = () => ({
   maxAge: 60 * 60 * 24 * 60, // 60 days
   cookie: cookieOpts,
 });
+
+const encoder = new TextEncoder();
+
+function base64UrlToBytes(value: string) {
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), "=");
+  const binary = atob(padded);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+function timingSafeEqual(a: Uint8Array, b: Uint8Array) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i += 1) diff |= a[i] ^ b[i];
+  return diff === 0;
+}
+
+async function verifyPhoneToken(token?: string | null) {
+  if (!token) return null;
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) throw new Error("SESSION_SECRET missing");
+  const [payloadPart, signaturePart] = token.split(".");
+  if (!payloadPart || !signaturePart) return null;
+  const payloadBytes = base64UrlToBytes(payloadPart);
+  const providedSignature = base64UrlToBytes(signaturePart);
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const expected = new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(new TextDecoder().decode(payloadBytes))));
+  if (!timingSafeEqual(providedSignature, expected)) return null;
+  const parsed = JSON.parse(new TextDecoder().decode(payloadBytes)) as VerifiedPhoneToken;
+  if (!parsed.phone || Date.now() - parsed.verifiedAt > 60 * 10 * 1000) return null;
+  return parsed.phone.replace(/[^0-9]/g, "");
+}
 
 function toDTO(row: {
   id: string;
@@ -67,6 +112,7 @@ export const upsertProfileAfterOtp = createServerFn({ method: "POST" })
       email: string;
       profession: string;
       businessName?: string;
+        verificationToken?: string;
     }) => {
       if (!data?.name?.trim() || !data?.email?.trim() || !data?.profession?.trim()) {
         throw new Error("Missing fields");
@@ -76,12 +122,13 @@ export const upsertProfileAfterOtp = createServerFn({ method: "POST" })
         email: data.email.trim(),
         profession: data.profession.trim(),
         businessName: data.businessName?.trim() || null,
+        verificationToken: data.verificationToken,
       };
     },
   )
   .handler(async ({ data }) => {
     const pending = await useSession<{ phone: string; verifiedAt: number }>(pendingConfig());
-    const phone = pending.data?.phone;
+    const phone = pending.data?.phone ?? (await verifyPhoneToken(data.verificationToken));
     if (!phone) throw new Error("Phone not verified. Please verify OTP first.");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
