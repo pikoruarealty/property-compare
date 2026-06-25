@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useOnboarding, type UserProfile } from "@/context/OnboardingContext";
 import { sendOtp, verifyOtp } from "@/lib/otp.functions";
+import { upsertProfileAfterOtp } from "@/lib/profile.functions";
 
 type Step = "details" | "phone" | "otp" | "profession";
 
@@ -66,6 +67,8 @@ export function AuthFlow() {
 
   const sendOtpFn = useServerFn(sendOtp);
   const verifyOtpFn = useServerFn(verifyOtp);
+  const upsertProfileFn = useServerFn(upsertProfileAfterOtp);
+  const [saving, setSaving] = useState(false);
 
   // OTP resend countdown
   useEffect(() => {
@@ -110,7 +113,9 @@ export function AuthFlow() {
     setVerifying(true);
     setOtpError("");
     try {
-      await verifyOtpFn({ data: { sessionId, otp: code } });
+      await verifyOtpFn({
+        data: { sessionId, otp: code, phone: fullPhoneDigits() },
+      });
       setStep("profession");
     } catch {
       setOtpError("That code didn't match. Try again.");
