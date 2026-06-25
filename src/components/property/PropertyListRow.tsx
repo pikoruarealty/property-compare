@@ -42,6 +42,9 @@ export function PropertyListRow({ property, index = 0 }: Props) {
         <span className="glass absolute left-3 top-3 rounded-full px-3 py-1 text-[10px] tracking-luxury text-champagne">
           {property.status}
         </span>
+        <div className="absolute right-3 top-3">
+          <FavoriteButton propertyId={property.id} propertyName={property.name} />
+        </div>
       </div>
 
       <div className="min-w-0">
