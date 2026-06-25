@@ -6,6 +6,8 @@ import { useHydrated } from "@/hooks/use-hydrated";
 
 export function SiteHeader() {
   const { userProfile } = useOnboarding();
+  const hydrated = useHydrated();
+  const favCount = useFavoritesStore((s) => s.favorites.length);
   const initials = userProfile?.name
     ? userProfile.name
         .split(" ")
@@ -37,6 +39,19 @@ export function SiteHeader() {
           <a href="#" className="text-[11px] tracking-luxury text-ivory/70 hover:text-champagne">
             Contact
           </a>
+          <Link
+            to="/favorites"
+            aria-label="Saved residences"
+            className="relative flex items-center gap-2 text-[11px] tracking-luxury text-ivory/70 transition hover:text-champagne"
+          >
+            <Heart className="h-3.5 w-3.5" />
+            Saved
+            {hydrated && favCount > 0 && (
+              <span className="grid h-4 min-w-4 place-items-center rounded-full bg-champagne px-1 text-[9px] font-medium text-lux-black">
+                {favCount}
+              </span>
+            )}
+          </Link>
           {userProfile && (
             <Link
               to="/account"
