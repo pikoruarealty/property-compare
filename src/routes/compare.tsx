@@ -13,6 +13,7 @@ import { AdvantagesSection } from "@/components/compare/AdvantagesSection";
 import { DifferenceHighlights } from "@/components/compare/DifferenceHighlights";
 import { GalleryComparison } from "@/components/compare/GalleryComparison";
 import { ExpertVerdict } from "@/components/compare/ExpertVerdict";
+import { PreferenceBanner } from "@/components/PreferenceBanner";
 
 const searchSchema = z.object({
   ids: z.string().optional().default(""),
