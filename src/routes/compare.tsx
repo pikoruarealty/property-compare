@@ -78,6 +78,8 @@ function ComparePage() {
     <div className="min-h-screen pb-32">
       <SiteHeader />
 
+      <PreferenceBanner />
+
       <div className="mx-auto max-w-7xl px-6">
         <ComparisonHero properties={properties} />
         <PropertyHeaderCards properties={properties} />
