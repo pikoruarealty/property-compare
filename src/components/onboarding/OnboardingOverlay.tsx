@@ -55,8 +55,8 @@ export function OnboardingOverlay() {
           transition={{ duration: 0.5 }}
           className="fixed inset-0 z-[100] flex items-stretch justify-center overflow-y-auto sm:items-center"
           style={{
-            backgroundColor: "rgba(10, 10, 12, 0.72)",
-            backdropFilter: "blur(18px)",
+            backgroundColor: "rgba(10, 10, 12, 0.18)",
+            backdropFilter: "blur(2px)",
           }}
           aria-modal="true"
           role="dialog"
