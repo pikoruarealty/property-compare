@@ -162,23 +162,37 @@ export function AuthFlow() {
     }
   };
 
-  const handleComplete = () => {
+  const [completeError, setCompleteError] = useState("");
+  const handleComplete = async () => {
     if (!profession) return;
-    const uid =
-      typeof crypto !== "undefined" && "randomUUID" in crypto
-        ? crypto.randomUUID()
-        : Math.random().toString(36).slice(2);
-    const fullPhone = `${country.code} ${phone.replace(/\D/g, "")}`;
-    const profile: UserProfile = {
-      name: name.trim(),
-      email: email.trim(),
-      phone: fullPhone,
-      profession,
-      businessName: businessName.trim() || undefined,
-      uid,
-    };
-    setUserProfile(profile);
-    setPhase("welcome");
+    setSaving(true);
+    setCompleteError("");
+    try {
+      const saved = await upsertProfileFn({
+        data: {
+          name: name.trim(),
+          email: email.trim(),
+          profession,
+          businessName: businessName.trim() || undefined,
+        },
+      });
+      const profile: UserProfile = {
+        name: saved.name ?? name.trim(),
+        email: saved.email ?? email.trim(),
+        phone: `${country.code} ${phone.replace(/\D/g, "")}`,
+        profession: (saved.profession as UserProfile["profession"]) ?? profession,
+        businessName: saved.businessName ?? undefined,
+        uid: saved.id,
+      };
+      setUserProfile(profile);
+      setPhase("welcome");
+    } catch (err) {
+      setCompleteError(
+        err instanceof Error ? err.message : "Couldn't save profile. Try again.",
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   const activeIdx = STEPS.indexOf(step);
