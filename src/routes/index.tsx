@@ -1,9 +1,11 @@
+import { useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { properties } from "@/data/properties";
 import { PropertyListRow } from "@/components/property/PropertyListRow";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ComparisonBoard } from "@/components/compare/ComparisonBoard";
+import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,9 +27,11 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const comparisonRef = useRef<HTMLDivElement | null>(null);
   return (
     <div className="min-h-screen pb-32">
       <SiteHeader />
+      <StickyCompareTray watchRef={comparisonRef} />
 
       <section className="relative overflow-hidden pt-36 pb-12">
         <div
@@ -55,7 +59,9 @@ function Index() {
         </div>
       </section>
 
-      <ComparisonBoard />
+      <div ref={comparisonRef}>
+        <ComparisonBoard />
+      </div>
 
       <section className="mx-auto mt-20 max-w-7xl px-6">
         <div className="flex items-end justify-between border-b border-champagne/15 pb-5">
