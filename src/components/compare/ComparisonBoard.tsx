@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, ChevronDown, Sparkles, Check, Minus } from "lucide-react";
+import { Plus, X, ChevronDown, Sparkles, Check, Minus, TrendingDown, TrendingUp, Equal, GitCompareArrows, Trophy } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
@@ -293,51 +293,246 @@ function SlotCard({
   );
 }
 
+// --- helpers for comparison decoration ---
+const parseNum = (s: string | null | undefined): number | null => {
+  if (!s) return null;
+  const m = String(s).replace(/,/g, "").match(/-?\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : null;
+};
+const parseMaxNum = (s: string | null | undefined): number | null => {
+  if (!s) return null;
+  const nums = String(s).replace(/,/g, "").match(/\d+(\.\d+)?/g);
+  if (!nums) return null;
+  return Math.max(...nums.map(parseFloat));
+};
+type Winner = { idx: number; tone: "low" | "high" } | null;
+function computeWinner(
+  values: (number | null)[],
+  prefer: "low" | "high",
+): Winner {
+  const valid = values
+    .map((v, i) => ({ v, i }))
+    .filter((x) => x.v !== null) as { v: number; i: number }[];
+  if (valid.length < 2) return null;
+  const target =
+    prefer === "low"
+      ? Math.min(...valid.map((x) => x.v))
+      : Math.max(...valid.map((x) => x.v));
+  const winners = valid.filter((x) => x.v === target);
+  if (winners.length === valid.length) return null; // all equal
+  return { idx: winners[0].i, tone: prefer };
+}
+
 function ComparisonGrid({ items }: { items: Property[] }) {
   const cols = items.length;
   const rows = buildRows();
   const gridCols =
-    cols === 2 ? "md:grid-cols-[220px_1fr_1fr]" : "md:grid-cols-[220px_1fr_1fr_1fr]";
+    cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
+
+  // pre-compute per-row meta (winners + sameness)
+  const rowMeta = rows.map((row) => {
+    const label = row.label;
+    const isConfig = (CONFIG_KEYS as string[]).includes(label);
+    if (isConfig) {
+      const key = label as ConfigKey;
+      const cfgs = items.map((p) => p.configurations[key]);
+      const priceWin = computeWinner(
+        cfgs.map((c) => parseNum(c?.price ?? null)),
+        "low",
+      );
+      const areaWin = computeWinner(
+        cfgs.map((c) => parseMaxNum(c?.area ?? null)),
+        "high",
+      );
+      const rateWin = computeWinner(
+        cfgs.map((c) => parseNum(c?.rate ?? null)),
+        "low",
+      );
+      return { type: "config" as const, priceWin, areaWin, rateWin };
+    }
+    if (["Location", "Status", "Possession", "Developer", "Super Built-up Area", "Carpet Area"].includes(label)) {
+      const vals = items.map((p) => {
+        const r = row.render(p);
+        return typeof r === "string" ? r.toLowerCase().trim() : null;
+      });
+      const allSame =
+        vals.every((x) => x !== null) && vals.every((x) => x === vals[0]);
+      return { type: "text" as const, allSame };
+    }
+    return { type: "other" as const };
+  });
 
   return (
-    <div className="overflow-hidden rounded-[24px] border border-champagne/15 bg-lux-black/40">
+    <div className="overflow-hidden rounded-[24px] border border-champagne/20 bg-lux-black/40 shadow-[0_30px_80px_-40px_rgba(200,164,93,0.25)]">
+      {/* Legend */}
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-champagne/15 bg-soft-black/70 px-5 py-3 text-[10px] tracking-luxury text-muted-foreground">
+        <span className="inline-flex items-center gap-1.5 text-champagne">
+          <GitCompareArrows className="h-3 w-3" /> Comparison Matrix
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <Trophy className="h-3 w-3 text-champagne" /> Best in row
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <TrendingDown className="h-3 w-3" /> Lower is better
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <TrendingUp className="h-3 w-3" /> Higher is better
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <Equal className="h-3 w-3" /> Identical
+        </span>
+      </div>
+
       {/* Header — Project Name */}
-      <div className={`hidden md:grid ${gridCols} border-b border-champagne/15 bg-soft-black/60`}>
+      <div className={`hidden md:grid ${gridCols} border-b border-champagne/20 bg-gradient-to-b from-soft-black/80 to-soft-black/30`}>
         <div className="px-5 py-5 text-[10px] tracking-luxury text-muted-foreground">
-          Project Name
+          vs.
         </div>
-        {items.map((p) => (
-          <div key={p.id} className="px-5 py-5">
-            <p className="text-[10px] tracking-luxury text-champagne">{p.status}</p>
+        {items.map((p, i) => (
+          <div
+            key={p.id}
+            className={`relative px-5 py-5 ${i > 0 ? "md:border-l md:border-champagne/15" : ""}`}
+          >
+            <div className="absolute left-0 right-0 top-0 mx-5 h-0.5 bg-gradient-to-r from-transparent via-champagne to-transparent opacity-60" />
+            <p className="text-[10px] tracking-luxury text-champagne">
+              Option {String.fromCharCode(65 + i)} · {p.status}
+            </p>
             <p className="mt-1 font-display text-xl text-ivory line-clamp-1">{p.name}</p>
             <p className="text-[11px] text-muted-foreground line-clamp-1">{p.location}</p>
           </div>
         ))}
       </div>
 
-      {rows.map((row, ri) => (
-        <div
-          key={row.label}
-          className={`grid grid-cols-1 ${gridCols} ${
-            ri % 2 === 0 ? "bg-soft-black/40" : ""
-          } border-b border-champagne/5 last:border-b-0`}
-        >
-          <div className="px-5 py-4 text-[11px] tracking-luxury text-champagne md:border-r md:border-champagne/10">
-            {row.label}
-          </div>
-          {items.map((p) => (
-            <div
-              key={p.id}
-              className={`px-5 py-4 text-sm text-ivory/90 ${row.emphasis ? "" : ""}`}
-            >
-              <div className="md:hidden mb-1 text-[10px] tracking-luxury text-muted-foreground">
-                {p.name}
-              </div>
-              {row.render(p)}
+      {rows.map((row, ri) => {
+        const meta = rowMeta[ri];
+        return (
+          <div
+            key={row.label}
+            className={`grid grid-cols-1 ${gridCols} ${
+              ri % 2 === 0 ? "bg-soft-black/40" : "bg-transparent"
+            } border-b border-champagne/10 last:border-b-0`}
+          >
+            <div className="flex items-center justify-between gap-2 px-5 py-4 text-[11px] tracking-luxury text-champagne md:border-r md:border-champagne/15">
+              <span className="uppercase">{row.label}</span>
+              {meta.type === "text" && meta.allSame && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-ivory/15 px-2 py-0.5 text-[9px] text-muted-foreground">
+                  <Equal className="h-2.5 w-2.5" /> Same
+                </span>
+              )}
+              {meta.type === "config" && (
+                <span className="text-[9px] text-muted-foreground normal-case tracking-normal">
+                  comparing
+                </span>
+              )}
             </div>
-          ))}
-        </div>
-      ))}
+            {items.map((p, ci) => {
+              const isConfig = meta.type === "config";
+              const cfg = isConfig ? p.configurations[row.label as ConfigKey] : undefined;
+              return (
+                <div
+                  key={p.id}
+                  className={`relative px-5 py-4 text-sm text-ivory/90 ${
+                    ci > 0 ? "md:border-l md:border-champagne/10" : ""
+                  }`}
+                >
+                  <div className="md:hidden mb-1 text-[10px] tracking-luxury text-muted-foreground">
+                    Option {String.fromCharCode(65 + ci)} · {p.name}
+                  </div>
+
+                  {isConfig && cfg ? (
+                    <div className="space-y-2">
+                      <div className="inline-flex items-center gap-1.5 text-[10px] tracking-luxury text-champagne">
+                        <Check className="h-3 w-3" /> Available
+                      </div>
+                      <dl className="grid grid-cols-1 gap-1 text-[12.5px]">
+                        {cfg.area && (
+                          <StatRow
+                            label="Super"
+                            value={`${cfg.area} sq ft`}
+                            isWinner={meta.areaWin?.idx === ci}
+                            tone="high"
+                          />
+                        )}
+                        {cfg.carpet && (
+                          <StatRow label="Carpet" value={`${cfg.carpet} sq ft`} />
+                        )}
+                        {cfg.price && (
+                          <StatRow
+                            label="Price"
+                            value={`₹ ${cfg.price} Cr`}
+                            isWinner={meta.priceWin?.idx === ci}
+                            tone="low"
+                            emphasis
+                          />
+                        )}
+                        {cfg.rate && (
+                          <StatRow
+                            label="Rate"
+                            value={`₹ ${cfg.rate}/sq ft`}
+                            isWinner={meta.rateWin?.idx === ci}
+                            tone="low"
+                            muted
+                          />
+                        )}
+                      </dl>
+                    </div>
+                  ) : isConfig ? (
+                    <span className="inline-flex items-center gap-1.5 text-muted-foreground/70">
+                      <Minus className="h-3.5 w-3.5" /> Not Available
+                    </span>
+                  ) : (
+                    row.render(p)
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
     </div>
   );
 }
+
+function StatRow({
+  label,
+  value,
+  isWinner,
+  tone,
+  emphasis,
+  muted,
+}: {
+  label: string;
+  value: string;
+  isWinner?: boolean;
+  tone?: "low" | "high";
+  emphasis?: boolean;
+  muted?: boolean;
+}) {
+  return (
+    <div
+      className={`flex items-center justify-between gap-2 rounded-md px-2 py-1 -mx-2 ${
+        isWinner
+          ? "bg-champagne/10 ring-1 ring-champagne/40"
+          : "ring-1 ring-transparent"
+      }`}
+    >
+      <dt className="text-[10px] uppercase tracking-luxury text-muted-foreground">
+        {label}
+      </dt>
+      <dd
+        className={`inline-flex items-center gap-1.5 ${
+          muted ? "text-muted-foreground" : emphasis ? "text-ivory font-medium" : "text-ivory/90"
+        }`}
+      >
+        {value}
+        {isWinner && (
+          <span className="inline-flex items-center gap-0.5 rounded-full bg-champagne/20 px-1.5 py-0.5 text-[9px] tracking-luxury text-champagne">
+            {tone === "low" ? <TrendingDown className="h-2.5 w-2.5" /> : <TrendingUp className="h-2.5 w-2.5" />}
+            Best
+          </span>
+        )}
+      </dd>
+    </div>
+  );
+}
+
