@@ -26,8 +26,8 @@ function ConfigCell({ cfg }: { cfg: ConfigDetail | undefined }) {
         <Check className="h-3.5 w-3.5" /> Available
       </div>
       <div className="grid grid-cols-1 gap-1 text-[15px] text-ivory">
-        {cfg.area && <div><span className="text-muted-foreground">Super:</span> {cfg.area} sq ft</div>}
-        {cfg.carpet && <div><span className="text-muted-foreground">Carpet:</span> {cfg.carpet} sq ft</div>}
+        {cfg.area && <div><span className="text-muted-foreground">Super:</span> Approx. {cfg.area} sq ft</div>}
+        {cfg.carpet && <div><span className="text-muted-foreground">Carpet:</span> Approx. {cfg.carpet} sq ft</div>}
       </div>
     </div>
   );
@@ -48,8 +48,8 @@ const buildRows = (): RowDef[] => [
   })),
   { label: "Location", render: (p) => v(p.location) },
   { label: "Status", render: (p) => v(p.status) },
-  { label: "Super Built-up Area", render: (p) => v(p.superBuiltUpArea) },
-  { label: "Carpet Area", render: (p) => v(p.carpetArea) },
+    { label: "Super Built-up Area", render: (p) => p.superBuiltUpArea ? `Approx. ${p.superBuiltUpArea}` : DASH },
+    { label: "Carpet Area", render: (p) => p.carpetArea ? `Approx. ${p.carpetArea}` : DASH },
   {
     label: "Amenities",
     render: (p) =>
