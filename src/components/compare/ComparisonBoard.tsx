@@ -377,20 +377,20 @@ function ComparisonGrid({ items }: { items: Property[] }) {
 
       {/* Header — Project Name */}
       <div className={`hidden md:grid ${gridCols} border-b border-champagne/20 bg-gradient-to-b from-soft-black/80 to-soft-black/30`}>
-        <div className="px-5 py-5 text-[10px] tracking-luxury text-muted-foreground">
+        <div className="px-6 py-6 text-[12px] tracking-luxury text-muted-foreground">
           vs.
         </div>
         {items.map((p, i) => (
           <div
             key={p.id}
-            className={`relative px-5 py-5 ${i > 0 ? "md:border-l md:border-champagne/15" : ""}`}
+            className={`relative px-6 py-6 ${i > 0 ? "md:border-l md:border-champagne/15" : ""}`}
           >
             <div className="absolute left-0 right-0 top-0 mx-5 h-0.5 bg-gradient-to-r from-transparent via-champagne to-transparent opacity-60" />
-            <p className="text-[10px] tracking-luxury text-champagne">
+            <p className="text-[12px] tracking-luxury text-champagne">
               Option {String.fromCharCode(65 + i)} · {p.status}
             </p>
-            <p className="mt-1 font-display text-xl text-ivory line-clamp-1">{p.name}</p>
-            <p className="text-[11px] text-muted-foreground line-clamp-1">{p.location}</p>
+            <p className="mt-1.5 font-display text-2xl sm:text-3xl text-ivory line-clamp-1">{p.name}</p>
+            <p className="mt-1 text-[13px] text-muted-foreground line-clamp-1">{p.location}</p>
           </div>
         ))}
       </div>
@@ -404,15 +404,15 @@ function ComparisonGrid({ items }: { items: Property[] }) {
               ri % 2 === 0 ? "bg-soft-black/40" : "bg-transparent"
             } border-b border-champagne/10 last:border-b-0`}
           >
-            <div className="flex items-center justify-between gap-2 px-5 py-4 text-[11px] tracking-luxury text-champagne md:border-r md:border-champagne/15">
-              <span className="uppercase">{row.label}</span>
+            <div className="flex items-center justify-between gap-2 px-6 py-5 text-[13px] tracking-luxury text-champagne md:border-r md:border-champagne/15">
+              <span className="uppercase font-medium">{row.label}</span>
               {meta.type === "text" && meta.allSame && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-ivory/15 px-2 py-0.5 text-[9px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1 rounded-full border border-ivory/15 px-2 py-0.5 text-[10px] text-muted-foreground">
                   <Equal className="h-2.5 w-2.5" /> Same
                 </span>
               )}
               {meta.type === "config" && (
-                <span className="text-[9px] text-muted-foreground normal-case tracking-normal">
+                <span className="text-[10px] text-muted-foreground normal-case tracking-normal">
                   comparing
                 </span>
               )}
@@ -423,11 +423,12 @@ function ComparisonGrid({ items }: { items: Property[] }) {
               return (
                 <div
                   key={p.id}
-                  className={`relative px-5 py-4 text-sm text-ivory/90 ${
+                  className={`relative px-6 py-5 text-[15px] text-ivory/95 ${
                     ci > 0 ? "md:border-l md:border-champagne/10" : ""
                   }`}
                 >
-                  <div className="md:hidden mb-1 text-[10px] tracking-luxury text-muted-foreground">
+                  <div className="md:hidden mb-1 text-[11px] tracking-luxury text-muted-foreground">
+
                     Option {String.fromCharCode(65 + ci)} · {p.name}
                   </div>
 
