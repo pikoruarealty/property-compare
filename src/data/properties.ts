@@ -19,6 +19,10 @@ import anamikaCover from "@/assets/anamika-cover.jpg.asset.json";
 import anamikaExterior from "@/assets/anamika-exterior.jpg.asset.json";
 import anamikaHall from "@/assets/anamika-hall.png.asset.json";
 import anamikaBedroom from "@/assets/anamika-bedroom.jpg.asset.json";
+import anuritaCover from "@/assets/anurita-cover.jpg.asset.json";
+import anuritaExterior from "@/assets/anurita-exterior.jpg.asset.json";
+import anuritaLiving from "@/assets/anurita-living.jpg.asset.json";
+import anuritaBedroom from "@/assets/anurita-bedroom.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -41,6 +45,15 @@ const imageOverrides: Record<
       masterBedroom: anamikaBedroom.url,
       pool: anamikaExterior.url,
       clubhouse: anamikaCover.url,
+    },
+  },
+  anurita: {
+    cover: anuritaCover.url,
+    gallery: {
+      livingRoom: anuritaLiving.url,
+      masterBedroom: anuritaBedroom.url,
+      pool: anuritaExterior.url,
+      clubhouse: anuritaCover.url,
     },
   },
 };
