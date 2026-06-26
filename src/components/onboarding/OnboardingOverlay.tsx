@@ -67,7 +67,7 @@ export function OnboardingOverlay() {
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 12, opacity: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="flex w-full max-w-[520px] flex-col p-6 sm:my-10 sm:p-10"
+            className="relative flex w-full max-w-[520px] flex-col p-6 sm:my-10 sm:p-10"
             style={{
               minHeight: "min(100dvh, 640px)",
               borderRadius: 24,
