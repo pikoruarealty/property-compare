@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { Heart } from "lucide-react";
+import { Heart, Moon, Sun } from "lucide-react";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useFavoritesStore } from "@/stores/favorites-store";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { useTheme } from "@/context/ThemeContext";
 
 export function SiteHeader() {
   const { userProfile } = useOnboarding();
+  const { theme, toggle } = useTheme();
   const hydrated = useHydrated();
   const favCount = useFavoritesStore((s) => s.favorites.length);
   const initials = userProfile?.name
@@ -52,6 +54,15 @@ export function SiteHeader() {
               </span>
             )}
           </Link>
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label="Toggle theme"
+            title={theme === "dark" ? "Switch to light" : "Switch to dark"}
+            className="grid h-8 w-8 place-items-center rounded-full border border-champagne/30 text-ivory/80 transition hover:border-champagne hover:text-champagne"
+          >
+            {hydrated && theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+          </button>
           {userProfile && (
             <Link
               to="/account"

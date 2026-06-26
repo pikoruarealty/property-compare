@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { OnboardingProvider } from "../context/OnboardingContext";
 import { OnboardingOverlay } from "../components/onboarding/OnboardingOverlay";
+import { ThemeProvider } from "../context/ThemeContext";
 
 function NotFoundComponent() {
   return (
@@ -124,22 +125,23 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <OnboardingProvider>
-        <Outlet />
-        <OnboardingOverlay />
-        <Toaster
-          theme="dark"
-          position="top-center"
-          toastOptions={{
-            style: {
-              background: "rgba(28,30,34,0.9)",
-              border: "1px solid rgba(200,164,93,0.3)",
-              color: "#F7F3EA",
-              backdropFilter: "blur(20px)",
-            },
-          }}
-        />
-      </OnboardingProvider>
+      <ThemeProvider>
+        <OnboardingProvider>
+          <Outlet />
+          <OnboardingOverlay />
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              style: {
+                background: "var(--popover)",
+                border: "1px solid var(--glass-border)",
+                color: "var(--popover-foreground)",
+                backdropFilter: "blur(20px)",
+              },
+            }}
+          />
+        </OnboardingProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
