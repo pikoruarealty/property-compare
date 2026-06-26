@@ -19,7 +19,7 @@ export function OverviewSection({ properties }: OverviewSectionProps) {
     },
     { label: "Location", values: properties.map((p) => p.location) },
     { label: "Status", values: properties.map((p) => p.status) },
-    { label: "Price", values: properties.map((p) => p.pricePerSqft) },
+    { label: "Price", values: properties.map(() => "On Request") },
     { label: "Possession", values: properties.map((p) => p.possession) },
   ];
 
