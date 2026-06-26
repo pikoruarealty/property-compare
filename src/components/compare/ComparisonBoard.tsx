@@ -48,8 +48,8 @@ const buildRows = (): RowDef[] => [
   })),
   { label: "Location", render: (p) => v(p.location) },
   { label: "Status", render: (p) => v(p.status) },
-    { label: "Super Built-up Area", render: (p) => p.superBuiltUpArea ? `Approx. ${p.superBuiltUpArea}` : DASH },
-    { label: "Carpet Area", render: (p) => p.carpetArea ? `Approx. ${p.carpetArea}` : DASH },
+    { label: "Super Built-up Area", render: (p) => p.superBuiltUpArea ? `${p.superBuiltUpArea} (Approx.)` : DASH },
+    { label: "Carpet Area", render: (p) => p.carpetArea ? `${p.carpetArea} (Approx.)` : DASH },
   {
     label: "Amenities",
     render: (p) =>
