@@ -448,7 +448,7 @@ function ComparisonGrid({ items }: { items: Property[] }) {
                           />
                         )}
                         {cfg.carpet && (
-                          <StatRow label="Carpet" value={`Approx. ${cfg.carpet} sq ft`} />
+                          <StatRow label="Carpet" value={`${cfg.carpet} sq ft (Approx.)`} />
                         )}
                       </dl>
                     </div>
