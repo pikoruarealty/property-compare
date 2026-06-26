@@ -91,36 +91,89 @@
 }
 
 .light {
-  /* Light luxury palette — ivory canvas, deep ink, champagne accent */
-  --lux-black: #f4efe4;
+  /* Light luxury palette — porcelain canvas, espresso ink, antique gold */
+  /* Keep --lux-black DARK so image overlay gradients (from-lux-black) stay rich. */
+  --lux-black: #14110c;
   --soft-black: #ffffff;
-  --graphite: #ece5d3;
-  --ivory: #1a1814;
+  --graphite: #f1e9d6;
+  --ivory: #14110c; /* used as text color across the app → dark ink in light mode */
 
-  --background: #f7f2e6;
-  --foreground: #1a1814;
+  --champagne-gold: #a07d2c;
+  --antique-gold: #7a5a1f;
+  --muted-gold: #b8923f;
+
+  --background: #f8f3e7;
+  --foreground: #14110c;
   --card: #ffffff;
-  --card-foreground: #1a1814;
+  --card-foreground: #14110c;
   --popover: #ffffff;
-  --popover-foreground: #1a1814;
-  --primary: var(--antique-gold);
+  --popover-foreground: #14110c;
+  --primary: #7a5a1f;
   --primary-foreground: #ffffff;
-  --secondary: #ece5d3;
-  --secondary-foreground: #1a1814;
-  --muted: #ece5d3;
-  --muted-foreground: #6b6457;
-  --accent: var(--champagne-gold);
-  --accent-foreground: #1a1814;
-  --border: rgba(155, 122, 54, 0.25);
-  --input: rgba(155, 122, 54, 0.28);
-  --ring: var(--antique-gold);
+  --secondary: #efe7d3;
+  --secondary-foreground: #14110c;
+  --muted: #efe7d3;
+  --muted-foreground: #6a5d40;
+  --accent: #a07d2c;
+  --accent-foreground: #14110c;
+  --border: rgba(122, 90, 31, 0.22);
+  --input: rgba(122, 90, 31, 0.28);
+  --ring: #7a5a1f;
 
-  --shadow-gold: 0 20px 60px -20px rgba(155, 122, 54, 0.3);
-  --shadow-deep: 0 30px 80px -20px rgba(60, 50, 30, 0.18);
-  --shadow-glass: 0 8px 32px 0 rgba(60, 50, 30, 0.12);
+  --gradient-gold: linear-gradient(135deg, #a07d2c 0%, #7a5a1f 60%, #5b410f 100%);
+  --gradient-dark: linear-gradient(180deg, #f8f3e7 0%, #f1e9d6 100%);
+  --gradient-radial-gold: radial-gradient(circle at 30% 20%, rgba(160, 125, 44, 0.14), transparent 60%);
 
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(155, 122, 54, 0.28);
+  --shadow-gold: 0 20px 60px -20px rgba(122, 90, 31, 0.28);
+  --shadow-deep: 0 24px 60px -28px rgba(40, 30, 10, 0.18);
+  --shadow-glass: 0 10px 30px 0 rgba(40, 30, 10, 0.08);
+
+  --glass-bg: rgba(255, 253, 247, 0.72);
+  --glass-border: rgba(122, 90, 31, 0.22);
+}
+
+/* Light-mode surface overrides — keep image overlay gradients dark,
+   but recolor full-surface usages of the dark palette to porcelain. */
+.light .bg-lux-black,
+.light .bg-lux-black\/40,
+.light .bg-lux-black\/60,
+.light .bg-lux-black\/70 {
+  background-color: rgba(255, 253, 247, 0.78) !important;
+}
+.light .bg-soft-black,
+.light .bg-soft-black\/30,
+.light .bg-soft-black\/40,
+.light .bg-soft-black\/60,
+.light .bg-soft-black\/70,
+.light .bg-soft-black\/80 {
+  background-color: #ffffff !important;
+}
+.light .bg-graphite,
+.light .bg-graphite\/40,
+.light .bg-graphite\/60,
+.light .bg-graphite\/70 {
+  background-color: #efe7d3 !important;
+}
+/* Gradient-from variants on surface containers shouldn't fight the new palette */
+.light .from-soft-black\/80,
+.light .from-soft-black\/30,
+.light .from-soft-black {
+  --tw-gradient-from: rgba(255, 253, 247, 0.85) !important;
+}
+.light .to-soft-black\/30,
+.light .to-soft-black {
+  --tw-gradient-to: rgba(255, 253, 247, 0) !important;
+}
+
+/* Smooth theme transition */
+html,
+html * {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.25s ease;
+}
+/* Don't transition transforms/opacity to keep motion crisp */
+html *::before,
+html *::after {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.25s ease;
 }
 
 @layer base {
