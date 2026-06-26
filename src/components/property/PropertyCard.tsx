@@ -50,7 +50,7 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
             </span>
           </div>
           <div className="absolute top-5 right-5">
-            <FavoriteButton propertyId={property.id} propertyName={property.name} />
+            <FavoriteButton propertyId={property.id} propertyName={property.name} propertyImage={property.image} />
           </div>
         </div>
       </Link>
