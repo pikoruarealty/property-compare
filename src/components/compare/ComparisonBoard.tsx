@@ -441,7 +441,7 @@ function ComparisonGrid({ items }: { items: Property[] }) {
                         {cfg.area && (
                           <StatRow
                             label="Super Built-up"
-                            value={`Approx. ${cfg.area} sq ft`}
+                            value={`${cfg.area} sq ft (Approx.)`}
                             isWinner={meta.areaWin?.idx === ci}
                             tone="high"
                             emphasis
