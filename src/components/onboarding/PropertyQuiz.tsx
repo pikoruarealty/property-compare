@@ -8,9 +8,11 @@ import {
   Layers,
   Map as MapIcon,
 } from "lucide-react";
+import { toast } from "sonner";
 import { useOnboarding, type QuizAnswers } from "@/context/OnboardingContext";
 
 const BHK_OPTIONS = ["2", "3", "4", "5", "6", "7"];
+const MAX_BHK = 2;
 const PROPERTY_TYPES: Array<{ label: string; Icon: typeof HomeIcon }> = [
   { label: "Bungalow", Icon: HomeIcon },
   { label: "Apartment", Icon: Building },
@@ -43,15 +45,26 @@ export function PropertyQuiz({
 } = {}) {
   const { completeOnboarding } = useOnboarding();
   const [q, setQ] = useState<1 | 2 | 3>(1);
+  const [types, setTypes] = useState<string[]>(initialAnswers?.propertyType ?? []);
   const [bhk, setBhk] = useState<string[]>(
     initialAnswers?.bhk?.map((b) => b.replace(/\s*BHK$/i, "").trim()) ?? [],
   );
-  const [types, setTypes] = useState<string[]>(initialAnswers?.propertyType ?? []);
   const [budgetRange, setBudgetRange] = useState(initialAnswers?.budgetRange ?? "");
   const [budgetSub, setBudgetSub] = useState(initialAnswers?.budgetSub ?? "");
 
-  const toggle = (arr: string[], set: (a: string[]) => void, v: string) => {
-    set(arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
+  const toggleType = (v: string) => {
+    setTypes((arr) => (arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]));
+  };
+
+  const toggleBhk = (v: string) => {
+    setBhk((arr) => {
+      if (arr.includes(v)) return arr.filter((x) => x !== v);
+      if (arr.length >= MAX_BHK) {
+        toast.error(`You can choose up to ${MAX_BHK} BHK options.`);
+        return arr;
+      }
+      return [...arr, v];
+    });
   };
 
   const finish = () => {
@@ -64,13 +77,11 @@ export function PropertyQuiz({
     completeOnboarding(answers);
   };
 
-
   const showBudgetComplete =
     budgetRange === "₹ 20 Cr +" || (budgetRange && budgetSub);
 
   return (
     <div className="flex h-full flex-col">
-      {/* Top bar */}
       <div className="mb-6">
         <p className="text-[11px] tracking-[0.22em] text-[#C8A45D] uppercase">
           Question {q} of 3
@@ -85,7 +96,6 @@ export function PropertyQuiz({
         </div>
       </div>
 
-
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <AnimatePresence mode="wait">
           {q === 1 && (
@@ -98,36 +108,37 @@ export function PropertyQuiz({
               className="flex flex-1 flex-col"
             >
               <h3 className="font-display text-[28px] leading-tight text-[#F7F3EA]">
-                How much space do you have in mind?
+                What kind of residence speaks to you?
               </h3>
-              <p className="mt-2 text-sm text-[#F7F3EA]/55">You can select more than one.</p>
+              <p className="mt-2 text-sm text-[#F7F3EA]/55">Select all that interest you.</p>
 
-              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {BHK_OPTIONS.map((n) => {
-                  const selected = bhk.includes(n);
+              <div className="mt-6 grid grid-cols-3 gap-3">
+                {PROPERTY_TYPES.map(({ label, Icon }, i) => {
+                  const selected = types.includes(label);
                   return (
                     <button
-                      key={n}
-                      onClick={() => toggle(bhk, setBhk, n)}
+                      key={label}
+                      onClick={() => toggleType(label)}
                       className={`relative rounded-[20px] border p-5 text-center transition-all hover:scale-[1.03] ${
                         selected
                           ? "border-[#C8A45D] bg-[#C8A45D]/8"
                           : "border-white/10 bg-[#1C1E22] hover:border-white/25"
                       }`}
-                      style={selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}}
+                      style={{
+                        ...(selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}),
+                        ...(i === 3 ? { gridColumnStart: 1 } : {}),
+                      }}
                     >
                       {selected && <Checkmark />}
-                      <div className="font-display text-[44px] leading-none text-[#C8A45D]">
-                        {n}
-                      </div>
-                      <div className="mt-2 text-[13px] text-[#F7F3EA]/70">BHK</div>
+                      <Icon className="mx-auto h-8 w-8 text-[#C8A45D]" />
+                      <div className="mt-3 text-sm text-[#F7F3EA]">{label}</div>
                     </button>
                   );
                 })}
               </div>
 
               <div className="mt-auto pt-8">
-                <NextBtn disabled={bhk.length === 0} onClick={() => setQ(2)}>
+                <NextBtn disabled={types.length === 0} onClick={() => setQ(2)}>
                   Next question →
                 </NextBtn>
               </div>
@@ -144,38 +155,41 @@ export function PropertyQuiz({
               className="flex flex-1 flex-col"
             >
               <h3 className="font-display text-[28px] leading-tight text-[#F7F3EA]">
-                What kind of residence speaks to you?
+                How much space do you have in mind?
               </h3>
-              <p className="mt-2 text-sm text-[#F7F3EA]/55">Select all that interest you.</p>
+              <p className="mt-2 text-sm text-[#F7F3EA]/55">
+                Choose up to {MAX_BHK} options.
+              </p>
 
-              <div className="mt-6 grid grid-cols-3 gap-3">
-                {PROPERTY_TYPES.map(({ label, Icon }, i) => {
-                  const selected = types.includes(label);
-                  const isSecondRow = i >= 3;
+              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {BHK_OPTIONS.map((n) => {
+                  const selected = bhk.includes(n);
+                  const disabled = !selected && bhk.length >= MAX_BHK;
                   return (
                     <button
-                      key={label}
-                      onClick={() => toggle(types, setTypes, label)}
+                      key={n}
+                      onClick={() => toggleBhk(n)}
                       className={`relative rounded-[20px] border p-5 text-center transition-all hover:scale-[1.03] ${
                         selected
                           ? "border-[#C8A45D] bg-[#C8A45D]/8"
-                          : "border-white/10 bg-[#1C1E22] hover:border-white/25"
-                      } ${isSecondRow && i === 3 ? "col-start-1 sm:col-start-1" : ""}`}
-                      style={{
-                        ...(selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}),
-                        ...(i === 3 ? { gridColumnStart: 1 } : {}),
-                      }}
+                          : disabled
+                            ? "border-white/5 bg-[#1C1E22] opacity-40"
+                            : "border-white/10 bg-[#1C1E22] hover:border-white/25"
+                      }`}
+                      style={selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}}
                     >
                       {selected && <Checkmark />}
-                      <Icon className="mx-auto h-8 w-8 text-[#C8A45D]" />
-                      <div className="mt-3 text-sm text-[#F7F3EA]">{label}</div>
+                      <div className="font-display text-[44px] leading-none text-[#C8A45D]">
+                        {n}
+                      </div>
+                      <div className="mt-2 text-[13px] text-[#F7F3EA]/70">BHK</div>
                     </button>
                   );
                 })}
               </div>
 
               <div className="mt-auto pt-8">
-                <NextBtn disabled={types.length === 0} onClick={() => setQ(3)}>
+                <NextBtn disabled={bhk.length === 0} onClick={() => setQ(3)}>
                   Next question →
                 </NextBtn>
               </div>
