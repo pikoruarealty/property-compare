@@ -21,18 +21,17 @@ function ConfigCell({ cfg }: { cfg: ConfigDetail | undefined }) {
     );
   }
   return (
-    <div className="space-y-1">
-      <div className="inline-flex items-center gap-1.5 text-[11px] tracking-luxury text-champagne">
+    <div className="space-y-2">
+      <div className="inline-flex items-center gap-1.5 text-[12px] tracking-luxury text-champagne">
         <Check className="h-3.5 w-3.5" /> Available
       </div>
-      <div className="grid grid-cols-1 gap-0.5 text-[12.5px] text-ivory/85">
-        {cfg.area && <div>Super: {cfg.area} sq ft</div>}
-        {cfg.carpet && <div>Carpet: {cfg.carpet} sq ft</div>}
-        {cfg.price && <div className="text-ivory">Price: ₹ {cfg.price} Cr</div>}
-        {cfg.rate && <div className="text-muted-foreground">Rate: ₹ {cfg.rate}/sq ft</div>}
+      <div className="grid grid-cols-1 gap-1 text-[15px] text-ivory">
+        {cfg.area && <div><span className="text-muted-foreground">Super:</span> {cfg.area} sq ft</div>}
+        {cfg.carpet && <div><span className="text-muted-foreground">Carpet:</span> {cfg.carpet} sq ft</div>}
       </div>
     </div>
   );
+
 }
 
 type RowDef = {
