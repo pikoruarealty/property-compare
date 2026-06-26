@@ -433,49 +433,33 @@ function ComparisonGrid({ items }: { items: Property[] }) {
                   </div>
 
                   {isConfig && cfg ? (
-                    <div className="space-y-2">
-                      <div className="inline-flex items-center gap-1.5 text-[10px] tracking-luxury text-champagne">
-                        <Check className="h-3 w-3" /> Available
+                    <div className="space-y-3">
+                      <div className="inline-flex items-center gap-1.5 text-[11px] tracking-luxury text-champagne">
+                        <Check className="h-3.5 w-3.5" /> Available
                       </div>
-                      <dl className="grid grid-cols-1 gap-1 text-[12.5px]">
+                      <dl className="grid grid-cols-1 gap-2 text-[15px]">
                         {cfg.area && (
                           <StatRow
-                            label="Super"
+                            label="Super Built-up"
                             value={`${cfg.area} sq ft`}
                             isWinner={meta.areaWin?.idx === ci}
                             tone="high"
+                            emphasis
                           />
                         )}
                         {cfg.carpet && (
                           <StatRow label="Carpet" value={`${cfg.carpet} sq ft`} />
                         )}
-                        {cfg.price && (
-                          <StatRow
-                            label="Price"
-                            value={`₹ ${cfg.price} Cr`}
-                            isWinner={meta.priceWin?.idx === ci}
-                            tone="low"
-                            emphasis
-                          />
-                        )}
-                        {cfg.rate && (
-                          <StatRow
-                            label="Rate"
-                            value={`₹ ${cfg.rate}/sq ft`}
-                            isWinner={meta.rateWin?.idx === ci}
-                            tone="low"
-                            muted
-                          />
-                        )}
                       </dl>
                     </div>
                   ) : isConfig ? (
-                    <span className="inline-flex items-center gap-1.5 text-muted-foreground/70">
-                      <Minus className="h-3.5 w-3.5" /> Not Available
+                    <span className="inline-flex items-center gap-1.5 text-muted-foreground/70 text-[14px]">
+                      <Minus className="h-4 w-4" /> Not Available
                     </span>
                   ) : (
-                    row.render(p)
+                    <div className="text-[15px] leading-relaxed">{row.render(p)}</div>
                   )}
+
                 </div>
               );
             })}
