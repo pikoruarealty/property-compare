@@ -44,14 +44,13 @@ export function SiteHeader() {
             aria-label="Saved residences"
             className="relative flex items-center gap-2 text-[11px] tracking-luxury text-ivory/70 transition hover:text-champagne"
           >
-            <Heart className="h-3.5 w-3.5" />
+            <Heart data-saved-target className="h-3.5 w-3.5" />
             Saved
             {hydrated && favCount > 0 && (
-              <span data-saved-target className="grid h-4 min-w-4 place-items-center rounded-full bg-champagne px-1 text-[9px] font-medium text-lux-black">
+              <span className="grid h-4 min-w-4 place-items-center rounded-full bg-champagne px-1 text-[9px] font-medium text-lux-black">
                 {favCount}
               </span>
             )}
-            {hydrated && favCount === 0 && <span data-saved-target className="sr-only">saved target</span>}
           </Link>
           {userProfile && (
             <Link
