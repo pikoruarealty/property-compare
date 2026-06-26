@@ -1,0 +1,678 @@
+[
+  {
+    "name": "Ikebana",
+    "type": "Apartment",
+    "developer": "Gala",
+    "status": "Near Possession",
+    "location": "Sindhu Bhavan Road",
+    "configs": {
+      "4 BHK": {
+        "area": "7300",
+        "carpet": "3358",
+        "price": "6.57cr+",
+        "rate": "9800"
+      },
+      "5 BHK": {
+        "area": "8400",
+        "carpet": "3864",
+        "price": "7.56cr+",
+        "rate": "9800"
+      },
+      "Penthouse": {
+        "area": "13500-15500",
+        "carpet": "6210-7130",
+        "price": "19-26cr+",
+        "rate": null
+      },
+      "Duplex": {
+        "area": "13500-15500",
+        "carpet": "6210-7130",
+        "price": "19-26cr+",
+        "rate": null
+      }
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "9 Months"
+  },
+  {
+    "name": "Maruti 360",
+    "type": "Apartment",
+    "developer": "Maruti",
+    "status": "Near Possession",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "5700",
+        "carpet": "2622",
+        "price": "6cr+",
+        "rate": "10500"
+      },
+      "5 BHK": {
+        "area": "7600",
+        "carpet": "3496",
+        "price": "8cr+",
+        "rate": "10500"
+      },
+      "Penthouse": null,
+      "Duplex": {
+        "area": "11000",
+        "carpet": "5060",
+        "price": "14cr+",
+        "rate": null
+      }
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "1.5 Year"
+  },
+  {
+    "name": "Pashmina",
+    "type": "Apartment",
+    "developer": "Venus",
+    "status": "Ready to Move in",
+    "location": "Sindhu Bhavan Road",
+    "configs": {
+      "4 BHK": {
+        "area": "5250",
+        "carpet": "2415",
+        "price": "5.25",
+        "rate": "10000"
+      },
+      "5 BHK": {
+        "area": "6875",
+        "carpet": "3162.5",
+        "price": "6.875",
+        "rate": "10000"
+      },
+      "Penthouse": {
+        "area": "11500",
+        "carpet": "5290",
+        "price": "18",
+        "rate": null
+      },
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "RTMI"
+  },
+  {
+    "name": "Triveni 84",
+    "type": "Apartment",
+    "developer": "Triveni",
+    "status": "Under Construction",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "3700",
+        "carpet": "1702",
+        "price": "4cr+",
+        "rate": "9000"
+      },
+      "5 BHK": null,
+      "Penthouse": {
+        "area": "6500",
+        "carpet": "2990",
+        "price": "7.15",
+        "rate": null
+      },
+      "Duplex": {
+        "area": "6500",
+        "carpet": "2990",
+        "price": "7.15cr+",
+        "rate": null
+      }
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "2 YEAR"
+  },
+  {
+    "name": "Anamika",
+    "type": "Apartment",
+    "developer": "Constera",
+    "status": "Under Construction",
+    "location": "Sindhu Bhavan Road",
+    "configs": {
+      "4 BHK": {
+        "area": "3300-4300",
+        "carpet": "1518-1978",
+        "price": "3-4cr+",
+        "rate": "8500"
+      },
+      "5 BHK": {
+        "area": "6700",
+        "carpet": "3082",
+        "price": "5.75cr+",
+        "rate": "8500"
+      },
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "2 YEAR"
+  },
+  {
+    "name": "Swati Senor",
+    "type": "Apartment",
+    "developer": "Swati",
+    "status": "Ready to Move in",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "8000",
+        "carpet": "3680",
+        "price": "8cr+",
+        "rate": "9700"
+      },
+      "5 BHK": {
+        "area": "10000",
+        "carpet": "4600",
+        "price": "10cr+",
+        "rate": "9700"
+      },
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "RTMI"
+  },
+  {
+    "name": "Rashmi",
+    "type": "Apartment",
+    "developer": "Skyscape",
+    "status": "Under Construction",
+    "location": "Thaltej",
+    "configs": {
+      "4 BHK": {
+        "area": "3300",
+        "carpet": "1518",
+        "price": "2.5cr+",
+        "rate": "6800"
+      },
+      "5 BHK": null,
+      "Penthouse": {
+        "area": "5700",
+        "carpet": "2622",
+        "price": "6",
+        "rate": null
+      },
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "2 YEAR"
+  },
+  {
+    "name": "Avant",
+    "type": "Apartment",
+    "developer": "Ravi Desai",
+    "status": "Ready to Move in",
+    "location": "Sindhu Bhavan Road",
+    "configs": {
+      "4 BHK": {
+        "area": "4700",
+        "carpet": "2162",
+        "price": "4.5cr+",
+        "rate": "8600"
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": {
+        "area": "8500",
+        "carpet": "3910",
+        "price": "8.5",
+        "rate": null
+      }
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "RTMI"
+  },
+  {
+    "name": "Capstone",
+    "type": "Apartment",
+    "developer": "Beaumonde",
+    "status": "Under Construction",
+    "location": "Thaltej",
+    "configs": {
+      "4 BHK": {
+        "area": "5200",
+        "carpet": "2392",
+        "price": "3.744",
+        "rate": "7200"
+      },
+      "5 BHK": null,
+      "Penthouse": {
+        "area": "8700",
+        "carpet": "4002",
+        "price": "8",
+        "rate": null
+      },
+      "Duplex": {
+        "area": "8700",
+        "carpet": "4002",
+        "price": null,
+        "rate": null
+      }
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "2 YEAR"
+  },
+  {
+    "name": "Eminence 96",
+    "type": "Apartment",
+    "developer": "Arista",
+    "status": "Ready to Move in",
+    "location": "Thaltej",
+    "configs": {
+      "4 BHK": {
+        "area": "3400",
+        "carpet": "1564",
+        "price": "2.8cr+",
+        "rate": "7500"
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "RTMI"
+  },
+  {
+    "name": "Belrosa",
+    "type": "Apartment",
+    "developer": "Adani",
+    "status": "Pre-Launch",
+    "location": "Vaishnodevi",
+    "configs": {
+      "4 BHK": {
+        "area": "5300",
+        "carpet": "2438",
+        "price": "3.975",
+        "rate": "7500"
+      },
+      "5 BHK": {
+        "area": "6800",
+        "carpet": "3128",
+        "price": "5.1",
+        "rate": "7500"
+      },
+      "Penthouse": null,
+      "Duplex": {
+        "area": "11000-12500",
+        "carpet": null,
+        "price": "12",
+        "rate": null
+      }
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "3 YEAR"
+  },
+  {
+    "name": "Anurita",
+    "type": "Bungalow",
+    "developer": "Constera",
+    "status": "Ready to Move in",
+    "location": "Thaltej",
+    "configs": {
+      "4 BHK": {
+        "area": null,
+        "carpet": null,
+        "price": "20",
+        "rate": null
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": "313.5 sq.yd",
+    "plotCarpet": "175 sq.yd",
+    "possession": "RTMI"
+  },
+  {
+    "name": "Vaikunth",
+    "type": "Bungalow",
+    "developer": "A. Shridhar",
+    "status": "Near Possession",
+    "location": "Shilaj",
+    "configs": {
+      "4 BHK": {
+        "area": null,
+        "carpet": null,
+        "price": "6",
+        "rate": null
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": "128.7sq.yd",
+    "plotCarpet": "110 sq.yd",
+    "possession": "1 YEAR"
+  },
+  {
+    "name": "Kalrav Alpines",
+    "type": "Plots",
+    "developer": "A. Shridhar",
+    "status": "Near Possession",
+    "location": "Nandoli",
+    "configs": {
+      "4 BHK": {
+        "area": null,
+        "carpet": null,
+        "price": "8",
+        "rate": null
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": "363 sq.yd",
+    "plotCarpet": "500 sq.yd",
+    "possession": "1 YEAR"
+  },
+  {
+    "name": "Northpark",
+    "type": "Bungalow",
+    "developer": "Adani",
+    "status": "Near Possession",
+    "location": "Vaishnodevi",
+    "configs": {
+      "4 BHK": {
+        "area": null,
+        "carpet": null,
+        "price": "8",
+        "rate": null
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": "165 sq.yd",
+    "plotCarpet": "137.5 sq.yd",
+    "possession": "1 YEAR"
+  },
+  {
+    "name": "Westpark",
+    "type": "Plots",
+    "developer": "Adani",
+    "status": "Ready to Move in",
+    "location": "Vaishnodevi",
+    "configs": {
+      "4 BHK": {
+        "area": null,
+        "carpet": null,
+        "price": "8",
+        "rate": null
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": "231 sq.yd",
+    "plotCarpet": "525 sq.yd",
+    "possession": "RTMI"
+  },
+  {
+    "name": "Atman",
+    "type": "Apartment",
+    "developer": "Maruti",
+    "status": "Ready to Move in",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "5000",
+        "carpet": "2300",
+        "price": "4.5",
+        "rate": "9000"
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "6 Months"
+  },
+  {
+    "name": "Shaligram Luxuria",
+    "type": "Apartment",
+    "developer": "Shaligram",
+    "status": "Ready to Move in",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "3900",
+        "carpet": "1794",
+        "price": "3.432",
+        "rate": "8800"
+      },
+      "5 BHK": null,
+      "Penthouse": {
+        "area": "6500",
+        "carpet": "2990",
+        "price": "6.5CR+",
+        "rate": null
+      },
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "RTMI"
+  },
+  {
+    "name": "Kimana",
+    "type": "Apartment",
+    "developer": "Sun",
+    "status": "Near Possession",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "6000",
+        "carpet": "2760",
+        "price": "6.3",
+        "rate": "10500"
+      },
+      "5 BHK": {
+        "area": "8000",
+        "carpet": "3680",
+        "price": "8.4",
+        "rate": "10500"
+      },
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "RTMI"
+  },
+  {
+    "name": "Belagio",
+    "type": "Apartment",
+    "developer": "Palak",
+    "status": "Near Possession",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "6100",
+        "carpet": "2806",
+        "price": "5.795",
+        "rate": "9500"
+      },
+      "5 BHK": {
+        "area": "8500",
+        "carpet": "3910",
+        "price": "8.075",
+        "rate": "9500"
+      },
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "1 YEAR"
+  },
+  {
+    "name": "The Park",
+    "type": "Apartment",
+    "developer": "HN Safal",
+    "status": "Under Construction",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": null,
+      "5 BHK": {
+        "area": "8800",
+        "carpet": "4048",
+        "price": "8.36Cr+",
+        "rate": "9500"
+      },
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "2 Years"
+  },
+  {
+    "name": "SATYAMEV Luxor",
+    "type": "Apartment",
+    "developer": "Satyamev",
+    "status": "Under Construction",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "4200",
+        "carpet": "1932",
+        "price": "3.15",
+        "rate": "7500"
+      },
+      "5 BHK": null,
+      "Penthouse": {
+        "area": "7700",
+        "carpet": "3542",
+        "price": "6.93CR+",
+        "rate": null
+      },
+      "Duplex": {
+        "area": "7700",
+        "carpet": "3542",
+        "price": "6.93CR+",
+        "rate": null
+      }
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "1.5 Years"
+  },
+  {
+    "name": "GOYAL (6900,9600)",
+    "type": "Apartment",
+    "developer": "Goyal",
+    "status": "Under Construction",
+    "location": "Iskon Ambli Road",
+    "configs": {
+      "4 BHK": {
+        "area": "6900",
+        "carpet": "3174",
+        "price": "6.55cr+",
+        "rate": null
+      },
+      "5 BHK": {
+        "area": "9600",
+        "carpet": "4416",
+        "price": "9.2Cr+",
+        "rate": null
+      },
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "2 Years"
+  },
+  {
+    "name": "VENUS UNIVERSE",
+    "type": "Apartment",
+    "developer": "Venus",
+    "status": "Pre-Launch",
+    "location": "Nehrunagar",
+    "configs": {
+      "4 BHK": {
+        "area": "2900-5000",
+        "carpet": "1334-2300",
+        "price": "3-5.5",
+        "rate": null
+      },
+      "5 BHK": {
+        "area": "5800-10000",
+        "carpet": "2668-4600",
+        "price": "6-10 Cr+",
+        "rate": null
+      },
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "3.5 Years"
+  },
+  {
+    "name": "GODREJ ALTUS",
+    "type": "Apartment",
+    "developer": "Godrej Properties",
+    "status": "Pre-Launch",
+    "location": "Vastrapur",
+    "configs": {
+      "4 BHK": {
+        "area": "4000-4800",
+        "carpet": "1840-2208",
+        "price": "5.6-6.8",
+        "rate": null
+      },
+      "5 BHK": null,
+      "Penthouse": null,
+      "Duplex": {
+        "area": "6000-9600 (Ika)",
+        "carpet": "2760-4416",
+        "price": "8.6-13.6",
+        "rate": null
+      }
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "3.5 Years"
+  },
+  {
+    "name": "AMARIS",
+    "type": "Apartment",
+    "developer": "Adani",
+    "status": "Pre-Launch",
+    "location": "Gota",
+    "configs": {
+      "4 BHK": {
+        "area": "4000-5000",
+        "carpet": "1840-2300",
+        "price": "2.6-3.4",
+        "rate": null
+      },
+      "5 BHK": {
+        "area": "7000-9000",
+        "carpet": "3220-4140",
+        "price": "5.5-6.75",
+        "rate": null
+      },
+      "Penthouse": null,
+      "Duplex": null
+    },
+    "plotSuper": null,
+    "plotCarpet": null,
+    "possession": "3 Years"
+  }
+]
