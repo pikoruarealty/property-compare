@@ -1,44 +1,114 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Plus, X, ChevronDown, Sparkles } from "lucide-react";
+import { Plus, X, ChevronDown, Sparkles, Check, Minus } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import type { Property } from "@/types/property";
+import type { ConfigDetail, ConfigKey, Property } from "@/types/property";
+import { CONFIG_KEYS } from "@/types/property";
 import { toast } from "sonner";
 
-interface Row {
+const DASH = "-";
+const v = (x: string | null | undefined) => (x && String(x).trim() ? String(x) : DASH);
+
+function ConfigCell({ cfg }: { cfg: ConfigDetail | undefined }) {
+  if (!cfg) {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+        <Minus className="h-3.5 w-3.5" /> Not Available
+      </span>
+    );
+  }
+  return (
+    <div className="space-y-1">
+      <div className="inline-flex items-center gap-1.5 text-[11px] tracking-luxury text-champagne">
+        <Check className="h-3.5 w-3.5" /> Available
+      </div>
+      <div className="grid grid-cols-1 gap-0.5 text-[12.5px] text-ivory/85">
+        {cfg.area && <div>Super: {cfg.area} sq ft</div>}
+        {cfg.carpet && <div>Carpet: {cfg.carpet} sq ft</div>}
+        {cfg.price && <div className="text-ivory">Price: ₹ {cfg.price} Cr</div>}
+        {cfg.rate && <div className="text-muted-foreground">Rate: ₹ {cfg.rate}/sq ft</div>}
+      </div>
+    </div>
+  );
+}
+
+type RowDef = {
   label: string;
-  get: (p: Property) => string | string[];
-  highlight?: "max" | "min";
-  numeric?: (p: Property) => number;
-}
+  render: (p: Property) => React.ReactNode;
+  emphasis?: boolean;
+};
 
-const ROWS: Row[] = [
-  { label: "Developer", get: (p) => p.developer },
-  { label: "Configuration", get: (p) => p.configuration },
-  { label: "Location", get: (p) => p.location },
-  { label: "Status", get: (p) => p.status },
+const buildRows = (): RowDef[] => [
+  { label: "Developer", render: (p) => v(p.developer) },
+  ...CONFIG_KEYS.map<RowDef>((k) => ({
+    label: k,
+    render: (p) => <ConfigCell cfg={p.configurations[k as ConfigKey]} />,
+  })),
+  { label: "Location", render: (p) => v(p.location) },
+  { label: "Status", render: (p) => v(p.status) },
+  { label: "Super Built-up Area", render: (p) => v(p.superBuiltUpArea) },
+  { label: "Carpet Area", render: (p) => v(p.carpetArea) },
   {
-    label: "Built-up Area",
-    get: (p) => p.size,
-    highlight: "max",
-    numeric: (p) => p.sizeNumeric,
+    label: "Amenities",
+    render: (p) =>
+      p.amenities?.length ? (
+        <div className="flex flex-wrap gap-1.5">
+          {p.amenities.map((a) => (
+            <span
+              key={a}
+              className="rounded-full border border-champagne/15 bg-graphite/60 px-2.5 py-1 text-[11px] text-ivory/85"
+            >
+              {a}
+            </span>
+          ))}
+        </div>
+      ) : (
+        DASH
+      ),
   },
-  { label: "Price / sq ft", get: (p) => p.pricePerSqft },
-  { label: "Possession", get: (p) => p.possession },
-  { label: "Amenities", get: () => "All Luxurious Amenities are available" },
-  { label: "Key Advantages", get: (p) => p.advantages },
-  { label: "Expert Verdict", get: (p) => p.expertNote },
+  { label: "Possession", render: (p) => v(p.possession) },
+  {
+    label: "Key Advantages",
+    render: (p) =>
+      p.advantages?.length ? (
+        <ul className="list-disc space-y-1 pl-4 text-[13px] text-ivory/90 marker:text-champagne">
+          {p.advantages.map((a) => (
+            <li key={a}>{a}</li>
+          ))}
+        </ul>
+      ) : (
+        DASH
+      ),
+  },
+  {
+    label: "Expert Verdict",
+    emphasis: true,
+    render: (p) =>
+      p.expertNote ? (
+        <div className="rounded-2xl border border-champagne/30 bg-gradient-to-br from-champagne/10 to-transparent p-4 text-[13px] leading-relaxed text-ivory/95">
+          {p.expertNote}
+        </div>
+      ) : (
+        DASH
+      ),
+  },
+  {
+    label: "Photo",
+    render: (p) => (
+      <div className="overflow-hidden rounded-2xl border border-champagne/15">
+        <img
+          src={p.image}
+          alt={p.name}
+          loading="lazy"
+          className="aspect-[4/3] w-full object-cover"
+        />
+      </div>
+    ),
+  },
 ];
-
-function computeHighlight(row: Row, items: Property[]): number | undefined {
-  if (!row.highlight || !row.numeric) return undefined;
-  const vals = items.map(row.numeric);
-  const target = row.highlight === "max" ? Math.max(...vals) : Math.min(...vals);
-  return vals.indexOf(target);
-}
 
 export function ComparisonBoard() {
   const hydrated = useHydrated();
@@ -66,8 +136,8 @@ export function ComparisonBoard() {
               Compose your <span className="gold-text">comparison</span>
             </h2>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-              Select {MIN_COMPARE} to {MAX_COMPARE} residences. Each becomes a column. Pikorua
-              highlights what distinguishes them.
+              Select {MIN_COMPARE} to {MAX_COMPARE} residences. Each becomes a column. Every row stays
+              perfectly aligned across selections.
             </p>
           </div>
           {items.length > 0 && (
@@ -80,7 +150,6 @@ export function ComparisonBoard() {
           )}
         </div>
 
-        {/* Slot pickers */}
         <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {slots.map((slot, idx) => (
             <SlotCard
@@ -97,7 +166,6 @@ export function ComparisonBoard() {
           ))}
         </div>
 
-        {/* Column-wise comparison */}
         <AnimatePresence initial={false}>
           {ready ? (
             <motion.div
@@ -105,7 +173,7 @@ export function ComparisonBoard() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="mt-8"
             >
               <ComparisonGrid items={items} />
@@ -155,12 +223,7 @@ function SlotCard({
         style={{ border: "1px solid var(--glass-border)" }}
       >
         <div className="relative aspect-[16/10] overflow-hidden">
-          <img
-            src={slot.image}
-            alt={slot.name}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
+          <img src={slot.image} alt={slot.name} className="h-full w-full object-cover" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-lux-black via-lux-black/40 to-transparent" />
           <button
             onClick={() => onRemove(slot.id)}
@@ -172,7 +235,7 @@ function SlotCard({
           <div className="absolute bottom-3 left-4 right-4">
             <p className="text-[10px] tracking-luxury text-champagne">Slot 0{index + 1}</p>
             <h3 className="mt-0.5 font-display text-lg text-ivory line-clamp-1">{slot.name}</h3>
-            <p className="text-xs text-muted-foreground line-clamp-1">{slot.location}</p>
+            <p className="text-xs text-muted-foreground line-clamp-1">{slot.developer} · {slot.location}</p>
           </div>
         </div>
       </motion.div>
@@ -184,9 +247,7 @@ function SlotCard({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button
-          className="group flex h-full min-h-[180px] w-full flex-col items-center justify-center gap-3 rounded-[24px] border border-dashed border-champagne/30 bg-soft-black/40 px-6 py-10 text-center transition-all duration-300 hover:border-champagne hover:bg-soft-black"
-        >
+        <button className="group flex h-full min-h-[180px] w-full flex-col items-center justify-center gap-3 rounded-[24px] border border-dashed border-champagne/30 bg-soft-black/40 px-6 py-10 text-center transition-all duration-300 hover:border-champagne hover:bg-soft-black">
           <div className="grid h-12 w-12 place-items-center rounded-full gold-border text-champagne transition-transform duration-300 group-hover:scale-110">
             <Plus className="h-5 w-5" />
           </div>
@@ -216,14 +277,12 @@ function SlotCard({
                 }}
                 className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-graphite"
               >
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  className="h-12 w-16 rounded-lg object-cover"
-                />
+                <img src={p.image} alt={p.name} className="h-12 w-16 rounded-lg object-cover" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm text-ivory">{p.name}</p>
-                  <p className="truncate text-[11px] text-muted-foreground">{p.location}</p>
+                  <p className="truncate text-[11px] text-muted-foreground">
+                    {p.developer} · {p.location}
+                  </p>
                 </div>
               </button>
             ))}
@@ -236,72 +295,49 @@ function SlotCard({
 
 function ComparisonGrid({ items }: { items: Property[] }) {
   const cols = items.length;
-  const gridCols = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
+  const rows = buildRows();
+  const gridCols =
+    cols === 2 ? "md:grid-cols-[220px_1fr_1fr]" : "md:grid-cols-[220px_1fr_1fr_1fr]";
 
   return (
     <div className="overflow-hidden rounded-[24px] border border-champagne/15 bg-lux-black/40">
-      {/* Header strip */}
-      <div className={`hidden md:grid ${gridCols} border-b border-champagne/10`}>
-        <div className="px-5 py-4 text-[10px] tracking-luxury text-muted-foreground">
-          Attribute
+      {/* Header — Project Name */}
+      <div className={`hidden md:grid ${gridCols} border-b border-champagne/15 bg-soft-black/60`}>
+        <div className="px-5 py-5 text-[10px] tracking-luxury text-muted-foreground">
+          Project Name
         </div>
         {items.map((p) => (
-          <div key={p.id} className="px-5 py-4">
+          <div key={p.id} className="px-5 py-5">
             <p className="text-[10px] tracking-luxury text-champagne">{p.status}</p>
-            <p className="mt-1 font-display text-lg text-ivory line-clamp-1">{p.name}</p>
+            <p className="mt-1 font-display text-xl text-ivory line-clamp-1">{p.name}</p>
             <p className="text-[11px] text-muted-foreground line-clamp-1">{p.location}</p>
           </div>
         ))}
       </div>
 
-      {ROWS.map((row, ri) => {
-        const winner = computeHighlight(row, items);
-        return (
-          <div
-            key={row.label}
-            className={`grid grid-cols-1 ${gridCols} ${
-              ri % 2 === 0 ? "bg-soft-black/40" : ""
-            } border-b border-champagne/5 last:border-b-0`}
-          >
-            <div className="px-5 py-4 text-[11px] tracking-luxury text-champagne md:border-r md:border-champagne/10">
-              {row.label}
-            </div>
-            {items.map((p, i) => {
-              const value = row.get(p);
-              const isWinner = winner === i;
-              return (
-                <div
-                  key={p.id}
-                  className={`px-5 py-4 text-sm text-ivory/90 ${
-                    isWinner ? "bg-champagne/[0.06]" : ""
-                  }`}
-                >
-                  <div className="md:hidden mb-1 text-[10px] tracking-luxury text-muted-foreground">
-                    {p.name}
-                  </div>
-                  {Array.isArray(value) ? (
-                    <ul className="flex flex-wrap gap-1.5">
-                      {value.map((v) => (
-                        <li
-                          key={v}
-                          className="rounded-full border border-champagne/15 bg-graphite/60 px-2.5 py-1 text-[11px] text-ivory/85"
-                        >
-                          {v}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <span className="inline-flex items-center gap-2">
-                      {value}
-                      {isWinner && <Check className="h-3.5 w-3.5 text-champagne" />}
-                    </span>
-                  )}
-                </div>
-              );
-            })}
+      {rows.map((row, ri) => (
+        <div
+          key={row.label}
+          className={`grid grid-cols-1 ${gridCols} ${
+            ri % 2 === 0 ? "bg-soft-black/40" : ""
+          } border-b border-champagne/5 last:border-b-0`}
+        >
+          <div className="px-5 py-4 text-[11px] tracking-luxury text-champagne md:border-r md:border-champagne/10">
+            {row.label}
           </div>
-        );
-      })}
+          {items.map((p) => (
+            <div
+              key={p.id}
+              className={`px-5 py-4 text-sm text-ivory/90 ${row.emphasis ? "" : ""}`}
+            >
+              <div className="md:hidden mb-1 text-[10px] tracking-luxury text-muted-foreground">
+                {p.name}
+              </div>
+              {row.render(p)}
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
