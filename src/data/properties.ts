@@ -47,6 +47,15 @@ const imageOverrides: Record<
       clubhouse: anamikaCover.url,
     },
   },
+  anurita: {
+    cover: anuritaCover.url,
+    gallery: {
+      livingRoom: anuritaLiving.url,
+      masterBedroom: anuritaBedroom.url,
+      pool: anuritaExterior.url,
+      clubhouse: anuritaCover.url,
+    },
+  },
 };
 
 
