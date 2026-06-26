@@ -1,6 +1,6 @@
 import { useEffect, useState, type RefObject } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { getPropertyById } from "@/data/properties";
 import { useHydrated } from "@/hooks/use-hydrated";
