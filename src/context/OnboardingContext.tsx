@@ -48,6 +48,7 @@ interface OnboardingContextValue {
   completeOnboarding: (answers: QuizAnswers | null) => void;
   quizEditMode: boolean;
   openQuizForEdit: () => void;
+  cancelQuizEdit: () => void;
   signOut: () => Promise<void>;
   hydrated: boolean;
 }
@@ -175,6 +176,11 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     setPhase("quiz");
   }, []);
 
+  const cancelQuizEdit = useCallback(() => {
+    setQuizEditMode(false);
+    setPhase("complete");
+  }, []);
+
   const signOut = useCallback(async () => {
     try {
       await signOutFn();
@@ -205,6 +211,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       completeOnboarding,
       quizEditMode,
       openQuizForEdit,
+      cancelQuizEdit,
       signOut,
       hydrated,
     }),
@@ -217,6 +224,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       completeOnboarding,
       quizEditMode,
       openQuizForEdit,
+      cancelQuizEdit,
       signOut,
       hydrated,
     ],
