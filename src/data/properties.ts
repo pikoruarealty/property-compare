@@ -15,6 +15,10 @@ import gLiving from "@/assets/gallery-living.jpg";
 import gPool from "@/assets/gallery-pool.jpg";
 import gClub from "@/assets/gallery-clubhouse.jpg";
 import gBed from "@/assets/gallery-bedroom.jpg";
+import anamikaCover from "@/assets/anamika-cover.jpg.asset.json";
+import anamikaExterior from "@/assets/anamika-exterior.jpg.asset.json";
+import anamikaHall from "@/assets/anamika-hall.png.asset.json";
+import anamikaBedroom from "@/assets/anamika-bedroom.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -24,6 +28,23 @@ const sharedGallery = {
 };
 
 const images = [p1, p2, p3, p4];
+
+// Per-property image overrides (cover + gallery), keyed by slug.
+const imageOverrides: Record<
+  string,
+  { cover?: string; gallery?: Partial<typeof sharedGallery> }
+> = {
+  anamika: {
+    cover: anamikaCover.url,
+    gallery: {
+      livingRoom: anamikaHall.url,
+      masterBedroom: anamikaBedroom.url,
+      pool: anamikaExterior.url,
+      clubhouse: anamikaCover.url,
+    },
+  },
+};
+
 
 interface RawRow {
   name: string;
@@ -163,13 +184,16 @@ export const properties: Property[] = rawRows.map((r, i) => {
         ? superBuiltUpArea
         : carpetArea;
 
+  const id = slug(r.name);
+  const ov = imageOverrides[id];
+
   return {
-    id: slug(r.name),
+    id,
     name: r.name,
     developer: r.developer || "-",
     category,
     tagline: taglineFor(r),
-    image: images[i % images.length],
+    image: ov?.cover ?? images[i % images.length],
     size: sizeDisplay,
     sizeNumeric: parseNumeric(superBuiltUpArea),
     superBuiltUpArea,
@@ -182,9 +206,10 @@ export const properties: Property[] = rawRows.map((r, i) => {
     possession: r.possession || "-",
     amenities: amenitiesFor(category),
     advantages: advantagesFor(r),
-    gallery: sharedGallery,
+    gallery: { ...sharedGallery, ...(ov?.gallery ?? {}) },
     expertNote: expertNoteFor(r),
   };
+
 });
 
 export const getPropertyById = (id: string): Property | undefined =>
