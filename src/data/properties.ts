@@ -1,4 +1,12 @@
-import type { Property, PropertyStatus } from "@/types/property";
+import type {
+  Property,
+  PropertyCategory,
+  PropertyConfigurations,
+  ConfigDetail,
+  ConfigKey,
+} from "@/types/property";
+import { CONFIG_KEYS } from "@/types/property";
+import raw from "./_raw.json";
 import p1 from "@/assets/property-1.jpg";
 import p2 from "@/assets/property-2.jpg";
 import p3 from "@/assets/property-3.jpg";
@@ -17,63 +25,22 @@ const sharedGallery = {
 
 const images = [p1, p2, p3, p4];
 
-type UnitToken = string | number;
-
-interface Raw {
+interface RawRow {
   name: string;
-  type: "Apartment" | "Bungalow" | "Plots";
-  units: UnitToken[] | null;
-  size: string;
-  location: string;
-  status: PropertyStatus;
+  type: string;
   developer: string;
+  status: string;
+  location: string;
+  configs: Record<string, ConfigDetail | null>;
+  plotSuper: string | null;
+  plotCarpet: string | null;
+  possession: string;
 }
 
 const slug = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+  s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-const formatConfiguration = (type: Raw["type"], units: UnitToken[] | null): string => {
-  if (type === "Plots") return "Residential Plot";
-  if (!units || units.length === 0) return type;
-  const bhk: string[] = [];
-  const extras: string[] = [];
-  for (const u of units) {
-    const s = String(u).trim();
-    if (s.toUpperCase() === "P") extras.push("Penthouse");
-    else if (s.toUpperCase() === "D") extras.push("Duplex");
-    else bhk.push(s);
-  }
-  const bhkStr = bhk.length ? `${bhk.join(", ")} BHK` : "";
-  const tail = extras.length ? ` · ${extras.join(" · ")}` : "";
-  const prefix = type === "Bungalow" ? "Bungalow · " : "";
-  return `${prefix}${bhkStr}${tail}`.trim();
-};
-
-const parseSizeNumeric = (size: string): number => {
-  const m = size.match(/[\d,]+/g);
-  if (!m) return 0;
-  return parseInt(m[0].replace(/,/g, ""), 10) || 0;
-};
-
-const possessionFromStatus = (s: PropertyStatus): string => {
-  switch (s) {
-    case "Ready to Move in":
-      return "Immediate";
-    case "Near Possession":
-      return "Within 6 months";
-    case "Under Construction":
-      return "On Schedule";
-    case "Pre-Launch":
-      return "Announcing Soon";
-    default:
-      return "On Request";
-  }
-};
-
-const amenitiesFor = (type: Raw["type"]): string[] => {
+const amenitiesFor = (type: PropertyCategory): string[] => {
   if (type === "Plots")
     return [
       "Gated Community",
@@ -106,71 +73,119 @@ const amenitiesFor = (type: Raw["type"]): string[] => {
   ];
 };
 
-const advantagesFor = (r: Raw): string[] => {
+const advantagesFor = (r: RawRow): string[] => {
   const a: string[] = [];
   a.push(`${r.location} — premium West Ahmedabad address`);
   if (r.type === "Apartment") a.push("Curated luxury apartment living");
   if (r.type === "Bungalow") a.push("Standalone bungalow with private grounds");
   if (r.type === "Plots") a.push("Build-to-suit plotted development");
-  if (r.status === "Pre-Launch") a.push("Early-bird pricing window open");
-  if (r.status === "Ready to Move in") a.push("Move-in ready, zero wait");
-  if (r.status === "Near Possession") a.push("Handover within months");
+  if (/Pre-Launch/i.test(r.status)) a.push("Early-bird pricing window open");
+  if (/Ready/i.test(r.status)) a.push("Move-in ready, zero wait");
+  if (/Near Possession/i.test(r.status)) a.push("Handover within months");
   return a;
 };
 
-const expertNoteFor = (r: Raw): string =>
+const expertNoteFor = (r: RawRow): string =>
   `${r.name} by ${r.developer || "a reputed developer"} on ${r.location} offers ${r.type.toLowerCase()} living in a tightly held micro-market — a considered pick for discerning buyers in Ahmedabad's luxury corridor.`;
 
-const raw: Raw[] = [
-  { name: "Ikebana", type: "Apartment", units: ["4", "5", "P", "D"], size: "7,300 - 15,500 sq ft", location: "Sindhu Bhavan Road", status: "Near Possession", developer: "Gala" },
-  { name: "Maruti 360", type: "Apartment", units: ["4", "5", "D"], size: "5,700 - 7,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Maruti" },
-  { name: "Pashmina", type: "Apartment", units: ["4", "5", "P"], size: "5,200 - 7,500 sq ft", location: "Sindhu Bhavan Road", status: "Ready to Move in", developer: "Venus" },
-  { name: "Triveni 84", type: "Apartment", units: ["4", "P", "D"], size: "3,700 - 6,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Triveni" },
-  { name: "Anamika", type: "Apartment", units: ["4", "5", "D"], size: "3,200 - 10,000 sq ft", location: "Sindhu Bhavan Road", status: "Under Construction", developer: "Constera" },
-  { name: "Swati Senor", type: "Apartment", units: ["5"], size: "8,000 - 10,000 sq ft", location: "Iskon Ambli Road", status: "Ready to Move in", developer: "Swati" },
-  { name: "Rashmi", type: "Apartment", units: ["4", "P", "D"], size: "3,200 - 6,500 sq ft", location: "Thaltej", status: "Pre-Launch", developer: "Skyscape" },
-  { name: "Avant", type: "Apartment", units: ["4", "D"], size: "4,500 - 8,000 sq ft", location: "Sindhu Bhavan Road", status: "Ready to Move in", developer: "Ravi Desai" },
-  { name: "Capstone", type: "Apartment", units: ["4", "P", "D"], size: "5,200 - 9,000 sq ft", location: "Thaltej", status: "Under Construction", developer: "Beaumonde" },
-  { name: "Eminence 96", type: "Apartment", units: ["4", "D"], size: "3,800 - 7,000 sq ft", location: "Thaltej", status: "Ready to Move in", developer: "Eminence" },
-  { name: "Belrosa", type: "Apartment", units: ["4", "5", "D", "P"], size: "5,500 - 11,000 sq ft", location: "Vaishnodevi", status: "Pre-Launch", developer: "Adani" },
-  { name: "Anurita", type: "Bungalow", units: ["4"], size: "950 sqy Plot / 700 sqy Built-up", location: "Sindhu Bhavan Road", status: "Ready to Move in", developer: "Constera" },
-  { name: "Vaikunth", type: "Bungalow", units: ["4"], size: "390 sqy Plot / 440 sqy Built-up", location: "Shilaj", status: "Near Possession", developer: "A. Shridhar" },
-  { name: "Kalrav Alpines", type: "Plots", units: null, size: "1,100 - 2,000 sqy Plot", location: "Shilaj", status: "Under Construction", developer: "A. Shridhar" },
-  { name: "Northpark", type: "Bungalow", units: ["4"], size: "500 sqy Plot / 550 sqy Built-up", location: "Vaishnodevi", status: "Under Construction", developer: "Adani" },
-  { name: "Westpark", type: "Plots", units: null, size: "700 - 2,500 sqy Plot", location: "Vaishnodevi", status: "Under Construction", developer: "Adani" },
-  { name: "Atman", type: "Apartment", units: ["4"], size: "5,000 sq ft", location: "Iskon Ambli Road", status: "Ready to Move in", developer: "Maruti" },
-  { name: "Shaligram Luxuria", type: "Apartment", units: ["4", "P"], size: "3,800 - 7,500 sq ft", location: "Iskon Ambli Road", status: "Near Possession", developer: "Shaligram" },
-  { name: "Kimana", type: "Apartment", units: ["4.5"], size: "6,000 - 8,000 sq ft", location: "Iskon Ambli Road", status: "Near Possession", developer: "Sun" },
-  { name: "Belagio", type: "Apartment", units: ["4.5"], size: "6,100 - 8,500 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Palak" },
-  { name: "HN 8800", type: "Apartment", units: ["4.5"], size: "8,800 - 17,000 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "The Park by HN Safal" },
-  { name: "Satyamev 4200", type: "Apartment", units: ["4.5"], size: "4,200 - 8,000 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Luxor" },
-  { name: "Goyal", type: "Apartment", units: ["4.5"], size: "6,900 - 9,600 sq ft", location: "Iskon Ambli Road", status: "Under Construction", developer: "Riviera" },
-];
-
-const taglineFor = (r: Raw): string => {
+const taglineFor = (r: RawRow): string => {
   if (r.type === "Plots") return `Plotted enclave at ${r.location}.`;
   if (r.type === "Bungalow") return `Private bungalow address in ${r.location}.`;
   return `Luxury residences on ${r.location}.`;
 };
 
-export const properties: Property[] = raw.map((r, i) => ({
-  id: slug(r.name),
-  name: r.name,
-  developer: r.developer,
-  tagline: taglineFor(r),
-  image: images[i % images.length],
-  size: r.size,
-  sizeNumeric: parseSizeNumeric(r.size),
-  location: r.location,
-  status: r.status,
-  configuration: formatConfiguration(r.type, r.units),
-  pricePerSqft: "Price on Request",
-  possession: possessionFromStatus(r.status),
-  amenities: amenitiesFor(r.type),
-  advantages: advantagesFor(r),
-  gallery: sharedGallery,
-  expertNote: expertNoteFor(r),
-}));
+const summariseConfiguration = (cfgs: PropertyConfigurations, type: PropertyCategory): string => {
+  if (type === "Plots") return "Residential Plot";
+  const bhk: string[] = [];
+  const extras: string[] = [];
+  for (const k of CONFIG_KEYS) {
+    if (!cfgs[k]) continue;
+    if (k === "Penthouse" || k === "Duplex") extras.push(k);
+    else bhk.push(k.replace(" BHK", ""));
+  }
+  const bhkStr = bhk.length ? `${bhk.join(", ")} BHK` : "";
+  const tail = extras.length ? ` · ${extras.join(" · ")}` : "";
+  const prefix = type === "Bungalow" ? "Bungalow · " : "";
+  const out = `${prefix}${bhkStr}${tail}`.trim();
+  return out || type;
+};
+
+const parseNumeric = (s: string | null | undefined): number => {
+  if (!s) return 0;
+  const m = String(s).match(/[\d.]+/);
+  return m ? parseFloat(m[0]) : 0;
+};
+
+const aggregateArea = (cfgs: PropertyConfigurations, field: "area" | "carpet"): string => {
+  const vals = CONFIG_KEYS.map((k) => cfgs[k]?.[field]).filter((v): v is string => !!v);
+  if (vals.length === 0) return "-";
+  const nums = vals.flatMap((v) => v.split(/[-–]/).map((x) => parseFloat(x.replace(/[^\d.]/g, ""))))
+    .filter((n) => !isNaN(n) && n > 0);
+  if (nums.length === 0) return vals[0];
+  const lo = Math.min(...nums);
+  const hi = Math.max(...nums);
+  const fmt = (n: number) => n.toLocaleString("en-IN");
+  return lo === hi ? `${fmt(lo)} sq ft` : `${fmt(lo)} – ${fmt(hi)} sq ft`;
+};
+
+const buildPriceSummary = (cfgs: PropertyConfigurations): string => {
+  const prices = CONFIG_KEYS.map((k) => cfgs[k]?.price).filter((v): v is string => !!v);
+  if (prices.length === 0) return "Price on Request";
+  return `${prices[0]} Cr onwards`;
+};
+
+const rawRows = raw as RawRow[];
+
+export const properties: Property[] = rawRows.map((r, i) => {
+  const cfgs: PropertyConfigurations = {};
+  for (const k of CONFIG_KEYS) {
+    const c = r.configs[k];
+    if (c) cfgs[k as ConfigKey] = c;
+  }
+  const category = (r.type as PropertyCategory) || "Apartment";
+  const isPlot = category === "Plots" || category === "Bungalow";
+
+  const superBuiltUpArea = isPlot
+    ? r.plotSuper
+      ? `${r.plotSuper} Plot`
+      : "-"
+    : aggregateArea(cfgs, "area");
+  const carpetArea = isPlot
+    ? r.plotCarpet
+      ? `${r.plotCarpet} Built-up`
+      : "-"
+    : aggregateArea(cfgs, "carpet");
+
+  const sizeDisplay =
+    superBuiltUpArea !== "-" && carpetArea !== "-"
+      ? superBuiltUpArea
+      : superBuiltUpArea !== "-"
+        ? superBuiltUpArea
+        : carpetArea;
+
+  return {
+    id: slug(r.name),
+    name: r.name,
+    developer: r.developer || "-",
+    category,
+    tagline: taglineFor(r),
+    image: images[i % images.length],
+    size: sizeDisplay,
+    sizeNumeric: parseNumeric(superBuiltUpArea),
+    superBuiltUpArea,
+    carpetArea,
+    location: r.location || "-",
+    status: r.status || "-",
+    configuration: summariseConfiguration(cfgs, category),
+    configurations: cfgs,
+    pricePerSqft: buildPriceSummary(cfgs),
+    possession: r.possession || "-",
+    amenities: amenitiesFor(category),
+    advantages: advantagesFor(r),
+    gallery: sharedGallery,
+    expertNote: expertNoteFor(r),
+  };
+});
 
 export const getPropertyById = (id: string): Property | undefined =>
   properties.find((p) => p.id === id);
