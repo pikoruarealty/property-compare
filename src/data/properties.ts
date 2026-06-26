@@ -184,13 +184,16 @@ export const properties: Property[] = rawRows.map((r, i) => {
         ? superBuiltUpArea
         : carpetArea;
 
+  const id = slug(r.name);
+  const ov = imageOverrides[id];
+
   return {
-    id: slug(r.name),
+    id,
     name: r.name,
     developer: r.developer || "-",
     category,
     tagline: taglineFor(r),
-    image: images[i % images.length],
+    image: ov?.cover ?? images[i % images.length],
     size: sizeDisplay,
     sizeNumeric: parseNumeric(superBuiltUpArea),
     superBuiltUpArea,
@@ -203,9 +206,10 @@ export const properties: Property[] = rawRows.map((r, i) => {
     possession: r.possession || "-",
     amenities: amenitiesFor(category),
     advantages: advantagesFor(r),
-    gallery: sharedGallery,
+    gallery: { ...sharedGallery, ...(ov?.gallery ?? {}) },
     expertNote: expertNoteFor(r),
   };
+
 });
 
 export const getPropertyById = (id: string): Property | undefined =>
