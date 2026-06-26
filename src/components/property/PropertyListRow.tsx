@@ -65,7 +65,6 @@ export function PropertyListRow({ property, index = 0 }: Props) {
           <span className="inline-flex items-center gap-1.5">
             <Calendar className="h-3.5 w-3.5 text-champagne" /> {property.possession}
           </span>
-          <span className="text-champagne">Price on Request</span>
         </div>
       </div>
 
