@@ -336,20 +336,13 @@ function ComparisonGrid({ items }: { items: Property[] }) {
     if (isConfig) {
       const key = label as ConfigKey;
       const cfgs = items.map((p) => p.configurations[key]);
-      const priceWin = computeWinner(
-        cfgs.map((c) => parseNum(c?.price ?? null)),
-        "low",
-      );
       const areaWin = computeWinner(
         cfgs.map((c) => parseMaxNum(c?.area ?? null)),
         "high",
       );
-      const rateWin = computeWinner(
-        cfgs.map((c) => parseNum(c?.rate ?? null)),
-        "low",
-      );
-      return { type: "config" as const, priceWin, areaWin, rateWin };
+      return { type: "config" as const, areaWin };
     }
+
     if (["Location", "Status", "Possession", "Developer", "Super Built-up Area", "Carpet Area"].includes(label)) {
       const vals = items.map((p) => {
         const r = row.render(p);
