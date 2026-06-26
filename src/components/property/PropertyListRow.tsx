@@ -43,7 +43,7 @@ export function PropertyListRow({ property, index = 0 }: Props) {
           {property.status}
         </span>
         <div className="absolute right-3 top-3">
-          <FavoriteButton propertyId={property.id} propertyName={property.name} />
+          <FavoriteButton propertyId={property.id} propertyName={property.name} propertyImage={property.image} />
         </div>
       </div>
 
