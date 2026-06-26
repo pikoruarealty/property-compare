@@ -441,14 +441,14 @@ function ComparisonGrid({ items }: { items: Property[] }) {
                         {cfg.area && (
                           <StatRow
                             label="Super Built-up"
-                            value={`${cfg.area} sq ft`}
+                            value={`Approx. ${cfg.area} sq ft`}
                             isWinner={meta.areaWin?.idx === ci}
                             tone="high"
                             emphasis
                           />
                         )}
                         {cfg.carpet && (
-                          <StatRow label="Carpet" value={`${cfg.carpet} sq ft`} />
+                          <StatRow label="Carpet" value={`Approx. ${cfg.carpet} sq ft`} />
                         )}
                       </dl>
                     </div>
