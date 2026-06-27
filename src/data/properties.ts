@@ -58,6 +58,15 @@ const imageOverrides: Record<
       clubhouse: anuritaCover.url,
     },
   },
+  atman: {
+    cover: atmanExterior.url,
+    gallery: {
+      livingRoom: atmanLobby.url,
+      masterBedroom: atmanLobby.url,
+      pool: atmanExterior.url,
+      clubhouse: atmanLobby.url,
+    },
+  },
 };
 
 
