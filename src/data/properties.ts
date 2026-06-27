@@ -68,6 +68,10 @@ import northparkBungalow from "@/assets/northpark-bungalow.jpg.asset.json";
 import northparkHall from "@/assets/northpark-hall.jpg.asset.json";
 import northparkDining from "@/assets/northpark-dining.jpg.asset.json";
 import northparkBedroom from "@/assets/northpark-bedroom.jpg.asset.json";
+import pashminaCover from "@/assets/pashmina-cover.jpg.asset.json";
+import pashminaBedroom from "@/assets/pashmina-bedroom.jpeg.asset.json";
+import pashminaDining from "@/assets/pashmina-dining.jpg.asset.json";
+import pashminaLiving from "@/assets/pashmina-living.png.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -205,6 +209,15 @@ const imageOverrides: Record<
       masterBedroom: northparkBedroom.url,
       pool: northparkBungalow.url,
       clubhouse: northparkDining.url,
+    },
+  },
+  pashmina: {
+    cover: pashminaCover.url,
+    gallery: {
+      livingRoom: pashminaLiving.url,
+      masterBedroom: pashminaBedroom.url,
+      pool: pashminaDining.url,
+      clubhouse: pashminaDining.url,
     },
   },
 };
