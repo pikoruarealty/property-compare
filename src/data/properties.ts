@@ -286,6 +286,15 @@ const imageOverrides: Record<
       clubhouse: godrejAltusFacade.url,
     },
   },
+  westpark: {
+    cover: westparkVilla.url,
+    gallery: {
+      livingRoom: westparkBungalow.url,
+      masterBedroom: westparkBungalow.url,
+      pool: westparkVilla.url,
+      clubhouse: westparkBungalow.url,
+    },
+  },
 };
 
 
