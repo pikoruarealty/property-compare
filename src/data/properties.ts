@@ -91,6 +91,8 @@ import vaikunthBungalow from "@/assets/vaikunth-bungalow.png.asset.json";
 import godrejAltusBalcony from "@/assets/godrej-altus-balcony.jpg.asset.json";
 import godrejAltusPool from "@/assets/godrej-altus-pool.jpg.asset.json";
 import godrejAltusFacade from "@/assets/godrej-altus-facade.jpg.asset.json";
+import westparkVilla from "@/assets/westpark-villa.jpeg.asset.json";
+import westparkBungalow from "@/assets/westpark-bungalow.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
