@@ -88,6 +88,9 @@ import triveniBanquet from "@/assets/triveni-84-banquet.jpeg.asset.json";
 import vaikunthExterior from "@/assets/vaikunth-exterior.png.asset.json";
 import vaikunthPool from "@/assets/vaikunth-pool.png.asset.json";
 import vaikunthBungalow from "@/assets/vaikunth-bungalow.png.asset.json";
+import godrejAltusBalcony from "@/assets/godrej-altus-balcony.jpg.asset.json";
+import godrejAltusPool from "@/assets/godrej-altus-pool.jpg.asset.json";
+import godrejAltusFacade from "@/assets/godrej-altus-facade.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -272,7 +275,17 @@ const imageOverrides: Record<
       clubhouse: vaikunthPool.url,
     },
   },
+  "godrej-altus": {
+    cover: godrejAltusFacade.url,
+    gallery: {
+      livingRoom: godrejAltusBalcony.url,
+      masterBedroom: godrejAltusBalcony.url,
+      pool: godrejAltusPool.url,
+      clubhouse: godrejAltusFacade.url,
+    },
+  },
 };
+
 
 
 interface RawRow {
