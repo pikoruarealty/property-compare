@@ -8,6 +8,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import type { ConfigDetail, ConfigKey, Property } from "@/types/property";
 import { CONFIG_KEYS } from "@/types/property";
 import { toast } from "sonner";
+import { PhotoSlideshow } from "@/components/compare/PhotoSlideshow";
+
 
 const DASH = "-";
 const v = (x: string | null | undefined) => (x && String(x).trim() ? String(x) : DASH);
@@ -96,17 +98,9 @@ const buildRows = (): RowDef[] => [
   },
   {
     label: "Photo",
-    render: (p) => (
-      <div className="overflow-hidden rounded-2xl border border-champagne/15">
-        <img
-          src={p.image}
-          alt={p.name}
-          loading="lazy"
-          className="aspect-[4/3] w-full object-cover"
-        />
-      </div>
-    ),
+    render: (p) => <PhotoSlideshow property={p} />,
   },
+
 ];
 
 export function ComparisonBoard() {
