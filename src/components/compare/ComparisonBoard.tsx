@@ -476,9 +476,11 @@ function ComparisonGrid({ items }: { items: Property[] }) {
                     secondary={cfg.carpet ? `carpet ${cfg.carpet} sq ft` : undefined}
                     isBest={isWinner}
                     isSame={same}
+                    propertyId={p.id}
                   />
                 );
               }}
+
             />
           );
         })}
