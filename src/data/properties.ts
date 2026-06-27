@@ -25,6 +25,9 @@ import anuritaLiving from "@/assets/anurita-living.jpg.asset.json";
 import anuritaBedroom from "@/assets/anurita-bedroom.jpg.asset.json";
 import atmanExterior from "@/assets/atman-exterior.jpg.asset.json";
 import atmanLobby from "@/assets/atman-lobby.jpg.asset.json";
+import avantExterior from "@/assets/avant-exterior.png.asset.json";
+import avantHall from "@/assets/avant-hall.jpg.asset.json";
+import avantPark from "@/assets/avant-park.avif.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
