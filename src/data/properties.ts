@@ -147,6 +147,13 @@ const imageOverrides: Record<
       clubhouse: ikebanaWardrobe.url,
     },
   },
+  "kalrav-alpines": {
+    cover: kalravAlpinesExterior.url,
+    gallery: {
+      pool: kalravAlpinesExterior.url,
+      clubhouse: kalravAlpinesExterior.url,
+    },
+  },
 };
 
 
