@@ -32,15 +32,16 @@ export function SiteHeader() {
           </div>
         </Link>
         <nav className="hidden items-center gap-8 sm:flex">
-          <Link to="/" className="text-[11px] tracking-luxury text-ivory/70 hover:text-champagne">
-            Residences
-          </Link>
+          <a href="#suite" className="text-[11px] tracking-luxury text-ivory/70 hover:text-champagne">
+            Suite
+          </a>
+          <a href="#collection" className="text-[11px] tracking-luxury text-ivory/70 hover:text-champagne">
+            Collection
+          </a>
           <a href="#" className="text-[11px] tracking-luxury text-ivory/70 hover:text-champagne">
             Advisory
           </a>
-          <a href="#" className="text-[11px] tracking-luxury text-ivory/70 hover:text-champagne">
-            Contact
-          </a>
+
           <Link
             to="/favorites"
             aria-label="Saved residences"
