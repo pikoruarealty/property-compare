@@ -596,12 +596,17 @@ function ComparisonGrid({ items }: { items: Property[] }) {
             Photo
           </div>
           {items.map((p, i) => (
-            <div key={p.id} className={`p-3 ${i > 0 ? "md:border-l md:border-champagne/12" : ""}`}>
-              <div className="overflow-hidden rounded-2xl aspect-[16/10]">
+            <div
+              key={p.id}
+              id={`gallery-${p.id}`}
+              className={`p-3 scroll-mt-32 ${i > 0 ? "md:border-l md:border-champagne/12" : ""}`}
+            >
+              <div className="overflow-hidden rounded-2xl aspect-[16/10] ring-1 ring-champagne/10 transition-shadow [&.flash]:ring-2 [&.flash]:ring-champagne [&.flash]:shadow-[0_0_60px_-10px_rgba(200,164,93,0.7)]">
                 <PhotoSlideshow property={p} />
               </div>
             </div>
           ))}
+
         </div>
       </div>
     </div>
