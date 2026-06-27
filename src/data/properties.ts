@@ -28,6 +28,10 @@ import atmanLobby from "@/assets/atman-lobby.jpg.asset.json";
 import avantExterior from "@/assets/avant-exterior.png.asset.json";
 import avantHall from "@/assets/avant-hall.jpg.asset.json";
 import avantPark from "@/assets/avant-park.avif.asset.json";
+import belagioExterior from "@/assets/belagio-exterior.jpg.asset.json";
+import belagioTower from "@/assets/belagio-tower.jpg.asset.json";
+import belagioLibrary from "@/assets/belagio-library.jpg.asset.json";
+import belagioPool from "@/assets/belagio-pool.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
