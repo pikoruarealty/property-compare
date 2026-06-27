@@ -211,6 +211,15 @@ const imageOverrides: Record<
       clubhouse: northparkDining.url,
     },
   },
+  pashmina: {
+    cover: pashminaCover.url,
+    gallery: {
+      livingRoom: pashminaLiving.url,
+      masterBedroom: pashminaBedroom.url,
+      pool: pashminaDining.url,
+      clubhouse: pashminaDining.url,
+    },
+  },
 };
 
 
