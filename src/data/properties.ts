@@ -36,6 +36,12 @@ import belrosaExterior from "@/assets/belrosa-exterior.jpg.asset.json";
 import belrosaHall from "@/assets/belrosa-hall.jpg.asset.json";
 import belrosaView from "@/assets/belrosa-view.jpg.asset.json";
 import belrosaDining from "@/assets/belrosa-dining.jpg.asset.json";
+import capstoneCourtyard from "@/assets/capstone-courtyard.jpg.asset.json";
+import capstoneLiving from "@/assets/capstone-living.jpg.asset.json";
+import capstoneAerial from "@/assets/capstone-aerial.jpg.asset.json";
+import capstoneGameRoom from "@/assets/capstone-gameroom.jpg.asset.json";
+import capstoneHomeTheater from "@/assets/capstone-hometheater.jpg.asset.json";
+import capstoneKidsPlay from "@/assets/capstone-kidsplay.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -103,6 +109,15 @@ const imageOverrides: Record<
       masterBedroom: belrosaDining.url,
       pool: belrosaView.url,
       clubhouse: belrosaView.url,
+    },
+  },
+  capstone: {
+    cover: capstoneAerial.url,
+    gallery: {
+      livingRoom: capstoneLiving.url,
+      masterBedroom: capstoneCourtyard.url,
+      pool: capstoneCourtyard.url,
+      clubhouse: capstoneGameRoom.url,
     },
   },
 };
