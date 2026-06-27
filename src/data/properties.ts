@@ -46,6 +46,10 @@ import eminence96Exterior from "@/assets/eminence-96-exterior.png.asset.json";
 import eminence96Gym from "@/assets/eminence-96-gym.webp.asset.json";
 import eminence96Pool from "@/assets/eminence-96-pool.webp.asset.json";
 import eminence96Lounge from "@/assets/eminence-96-lounge.webp.asset.json";
+import ikebanaExterior from "@/assets/ikebana-exterior.png.asset.json";
+import ikebanaWardrobe from "@/assets/ikebana-wardrobe.png.asset.json";
+import ikebanaBedroom from "@/assets/ikebana-bedroom.png.asset.json";
+import ikebanaLiving from "@/assets/ikebana-living.png.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
