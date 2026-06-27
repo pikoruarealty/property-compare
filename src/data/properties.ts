@@ -51,6 +51,9 @@ import ikebanaWardrobe from "@/assets/ikebana-wardrobe.png.asset.json";
 import ikebanaBedroom from "@/assets/ikebana-bedroom.png.asset.json";
 import ikebanaLiving from "@/assets/ikebana-living.png.asset.json";
 import kalravAlpinesExterior from "@/assets/kalrav-alpines-exterior.jpg.asset.json";
+import kimanaTowers from "@/assets/kimana-towers.jpg.asset.json";
+import kimanaLobby from "@/assets/kimana-lobby.jpg.asset.json";
+import kimanaDusk from "@/assets/kimana-tower-dusk.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -152,6 +155,15 @@ const imageOverrides: Record<
     gallery: {
       pool: kalravAlpinesExterior.url,
       clubhouse: kalravAlpinesExterior.url,
+    },
+  },
+  kimana: {
+    cover: kimanaTowers.url,
+    gallery: {
+      livingRoom: kimanaLobby.url,
+      masterBedroom: kimanaDusk.url,
+      pool: kimanaTowers.url,
+      clubhouse: kimanaLobby.url,
     },
   },
 };
