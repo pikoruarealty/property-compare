@@ -184,6 +184,15 @@ const imageOverrides: Record<
       clubhouse: maruti360PlayArea.url,
     },
   },
+  "venus-universe": {
+    cover: venusUniverse1.url,
+    gallery: {
+      livingRoom: venusUniverse3.url,
+      masterBedroom: venusUniverse3.url,
+      pool: venusUniverse2.url,
+      clubhouse: venusUniverse4.url,
+    },
+  },
 };
 
 
