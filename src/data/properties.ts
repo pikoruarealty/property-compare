@@ -263,6 +263,15 @@ const imageOverrides: Record<
       clubhouse: triveniKids.url,
     },
   },
+  vaikunth: {
+    cover: vaikunthExterior.url,
+    gallery: {
+      livingRoom: vaikunthBungalow.url,
+      masterBedroom: vaikunthBungalow.url,
+      pool: vaikunthPool.url,
+      clubhouse: vaikunthPool.url,
+    },
+  },
 };
 
 
