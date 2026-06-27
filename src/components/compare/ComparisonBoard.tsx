@@ -726,13 +726,26 @@ function NumericCell({
   secondary,
   isBest,
   isSame,
+  propertyId,
 }: {
   primary: string;
   unit?: string;
   secondary?: string;
   isBest?: boolean;
   isSame?: boolean;
+  propertyId?: string;
 }) {
+  const jumpToGallery = () => {
+    if (!propertyId) return;
+    const el = document.getElementById(`gallery-${propertyId}`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    const target = el.querySelector(":scope > div");
+    if (target) {
+      target.classList.add("flash");
+      window.setTimeout(() => target.classList.remove("flash"), 1600);
+    }
+  };
   return (
     <div
       className={`relative inline-block rounded-xl px-4 py-3 ${
@@ -760,13 +773,20 @@ function NumericCell({
       )}
       <p className="mt-1 text-[10px] tracking-luxury text-champagne/70">(Approx.)</p>
       {isBest && (
-        <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 rounded-full bg-champagne text-lux-black px-2 py-0.5 text-[10px] tracking-luxury font-medium shadow-md">
+        <button
+          type="button"
+          onClick={jumpToGallery}
+          title="View gallery"
+          aria-label="Jump to gallery for this property"
+          className="absolute -top-2 -right-2 inline-flex items-center gap-1 rounded-full bg-champagne text-lux-black px-2 py-0.5 text-[10px] tracking-luxury font-medium shadow-md transition-transform hover:scale-105 hover:shadow-[0_0_20px_-2px_rgba(200,164,93,0.8)] focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-lux-black cursor-pointer"
+        >
           <Trophy className="h-2.5 w-2.5" /> Best
-        </span>
+        </button>
       )}
     </div>
   );
 }
+
 
 function UnavailableCell() {
   return (
