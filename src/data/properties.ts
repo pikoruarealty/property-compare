@@ -23,6 +23,8 @@ import anuritaCover from "@/assets/anurita-cover.jpg.asset.json";
 import anuritaExterior from "@/assets/anurita-exterior.jpg.asset.json";
 import anuritaLiving from "@/assets/anurita-living.jpg.asset.json";
 import anuritaBedroom from "@/assets/anurita-bedroom.jpg.asset.json";
+import atmanExterior from "@/assets/atman-exterior.jpg.asset.json";
+import atmanLobby from "@/assets/atman-lobby.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -54,6 +56,15 @@ const imageOverrides: Record<
       masterBedroom: anuritaBedroom.url,
       pool: anuritaExterior.url,
       clubhouse: anuritaCover.url,
+    },
+  },
+  atman: {
+    cover: atmanExterior.url,
+    gallery: {
+      livingRoom: atmanLobby.url,
+      masterBedroom: atmanLobby.url,
+      pool: atmanExterior.url,
+      clubhouse: atmanLobby.url,
     },
   },
 };
