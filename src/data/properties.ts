@@ -72,6 +72,9 @@ import pashminaCover from "@/assets/pashmina-cover.jpg.asset.json";
 import pashminaBedroom from "@/assets/pashmina-bedroom.jpeg.asset.json";
 import pashminaDining from "@/assets/pashmina-dining.jpg.asset.json";
 import pashminaLiving from "@/assets/pashmina-living.png.asset.json";
+import shaligramExterior from "@/assets/shaligram-luxuria-1.jpg.asset.json";
+import shaligramGym from "@/assets/shaligram-luxuria-2-gym.jpg.asset.json";
+import shaligramAerial from "@/assets/shaligram-luxuria-3.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -218,6 +221,15 @@ const imageOverrides: Record<
       masterBedroom: pashminaBedroom.url,
       pool: pashminaDining.url,
       clubhouse: pashminaDining.url,
+    },
+  },
+  "shaligram-luxuria": {
+    cover: shaligramExterior.url,
+    gallery: {
+      livingRoom: shaligramExterior.url,
+      masterBedroom: shaligramGym.url,
+      pool: shaligramAerial.url,
+      clubhouse: shaligramGym.url,
     },
   },
 };
