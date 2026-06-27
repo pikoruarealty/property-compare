@@ -250,6 +250,12 @@ html *::after {
   backdrop-filter: blur(32px) saturate(180%);
   border: 1px solid rgba(200, 164, 93, 0.28);
 }
+.light .glass-strong {
+  background: rgba(255, 250, 240, 0.86);
+  border-color: rgba(96, 67, 18, 0.22);
+  box-shadow: 0 24px 60px -28px rgba(60, 40, 12, 0.22);
+}
+
 
 @utility gold-border {
   border: 1px solid transparent;
