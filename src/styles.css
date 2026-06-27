@@ -319,3 +319,24 @@ html *::after {
   letter-spacing: 0.3em;
   text-transform: uppercase;
 }
+
+@utility container-lux {
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media (min-width: 640px) {
+  .container-lux {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Light-mode adjustments for new homepage shell */
+.light .border-champagne\/12,
+.light .divide-champagne\/12 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(112, 76, 16, 0.22) !important;
+}
+
