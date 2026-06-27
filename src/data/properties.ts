@@ -59,6 +59,10 @@ import maruti360Bedroom from "@/assets/maruti-360-bedroom.png.asset.json";
 import maruti360PlayArea from "@/assets/maruti-360-play-area.png.asset.json";
 import maruti360Pool from "@/assets/maruti-360-pool.png.asset.json";
 import maruti360View from "@/assets/maruti-360-view.jpg.asset.json";
+import venusUniverse1 from "@/assets/venus-universe-1.jpeg.asset.json";
+import venusUniverse2 from "@/assets/venus-universe-2.jpeg.asset.json";
+import venusUniverse3 from "@/assets/venus-universe-3.jpeg.asset.json";
+import venusUniverse4 from "@/assets/venus-universe-4.jpeg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -178,6 +182,15 @@ const imageOverrides: Record<
       masterBedroom: maruti360Bedroom.url,
       pool: maruti360Pool.url,
       clubhouse: maruti360PlayArea.url,
+    },
+  },
+  "venus-universe": {
+    cover: venusUniverse1.url,
+    gallery: {
+      livingRoom: venusUniverse3.url,
+      masterBedroom: venusUniverse3.url,
+      pool: venusUniverse2.url,
+      clubhouse: venusUniverse4.url,
     },
   },
 };
