@@ -221,6 +221,13 @@ html *::after {
       radial-gradient(ellipse at bottom right, rgba(155, 122, 54, 0.06), transparent 50%);
     background-attachment: fixed;
   }
+  .light body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(176, 138, 58, 0.22), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(232, 200, 130, 0.28), transparent 55%),
+      radial-gradient(ellipse at bottom right, rgba(255, 240, 210, 0.5), transparent 55%);
+  }
+
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     letter-spacing: -0.01em;
