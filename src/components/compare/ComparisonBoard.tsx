@@ -497,6 +497,7 @@ function ComparisonGrid({ items }: { items: Property[] }) {
               primary={p.superBuiltUpArea ?? "—"}
               isBest={superWinner === i}
               isSame={allSame(items.map((x) => x.superBuiltUpArea))}
+              propertyId={p.id}
             />
           )}
         />
@@ -510,9 +511,11 @@ function ComparisonGrid({ items }: { items: Property[] }) {
               primary={p.carpetArea ?? "—"}
               isBest={carpetWinner === i}
               isSame={allSame(items.map((x) => x.carpetArea))}
+              propertyId={p.id}
             />
           )}
         />
+
 
         {/* === Section: Location & Timeline === */}
         <SectionLabel title="Location & Timeline" />
