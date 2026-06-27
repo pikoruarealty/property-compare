@@ -316,194 +316,232 @@ function computeWinner(
   return { idx: winners[0].i, tone: prefer };
 }
 
+/* =========================================================================
+   VARIANT 1 — Editorial Spec Sheet
+   Each property becomes a vertical "dossier" column, organised by chapters
+   (Identity · Residences · Spaces · Location & Timeline · Highlights · Verdict)
+   Hairline rules, roman numerals, serif headings, museum-label spacing.
+   ========================================================================= */
+
 function ComparisonGrid({ items }: { items: Property[] }) {
   const cols = items.length;
-  const rows = buildRows();
-  const gridCols =
-    cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
+  const gridTemplate = cols === 2 ? "md:grid-cols-2" : "md:grid-cols-3";
 
-  // pre-compute per-row meta (winners + sameness)
-  const rowMeta = rows.map((row) => {
-    const label = row.label;
-    const isConfig = (CONFIG_KEYS as string[]).includes(label);
-    if (isConfig) {
-      const key = label as ConfigKey;
-      const cfgs = items.map((p) => p.configurations[key]);
-      const areaWin = computeWinner(
-        cfgs.map((c) => parseMaxNum(c?.area ?? null)),
-        "high",
-      );
-      return { type: "config" as const, areaWin };
-    }
-
-    if (["Location", "Status", "Possession", "Developer", "Super Built-up Area", "Carpet Area"].includes(label)) {
-      const vals = items.map((p) => {
-        const r = row.render(p);
-        return typeof r === "string" ? r.toLowerCase().trim() : null;
-      });
-      const allSame =
-        vals.every((x) => x !== null) && vals.every((x) => x === vals[0]);
-      return { type: "text" as const, allSame };
-    }
-    return { type: "other" as const };
+  // pre-compute area winners for subtle "best" mark
+  const configWinners: Record<string, number | null> = {};
+  CONFIG_KEYS.forEach((k) => {
+    const areas = items.map((p) => parseMaxNum(p.configurations[k as ConfigKey]?.area ?? null));
+    const w = computeWinner(areas, "high");
+    configWinners[k] = w?.idx ?? null;
   });
+  const superWinner = computeWinner(items.map((p) => parseMaxNum(p.superBuiltUpArea)), "high");
+  const carpetWinner = computeWinner(items.map((p) => parseMaxNum(p.carpetArea)), "high");
 
   return (
-    <div className="overflow-hidden rounded-[24px] border border-champagne/20 bg-lux-black/40 shadow-[0_30px_80px_-40px_rgba(200,164,93,0.25)]">
-      {/* Legend */}
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-champagne/15 bg-soft-black/70 px-5 py-3 text-[10px] tracking-luxury text-muted-foreground">
-        <span className="inline-flex items-center gap-1.5 text-champagne">
-          <GitCompareArrows className="h-3 w-3" /> Comparison Matrix
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <Trophy className="h-3 w-3 text-champagne" /> Best in row
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <TrendingDown className="h-3 w-3" /> Lower is better
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <TrendingUp className="h-3 w-3" /> Higher is better
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <Equal className="h-3 w-3" /> Identical
-        </span>
+    <div className="relative overflow-hidden rounded-[28px] border border-champagne/25 bg-gradient-to-b from-soft-black/70 via-lux-black/40 to-soft-black/70 shadow-[0_40px_120px_-50px_rgba(200,164,93,0.30)]">
+      <div className="relative px-6 sm:px-10 pt-8 pb-6 border-b border-champagne/20">
+        <div className="flex items-center justify-center gap-3">
+          <span className="h-px w-10 bg-champagne/60" />
+          <span className="text-[10px] tracking-[0.32em] uppercase text-champagne">
+            The Comparison Folio
+          </span>
+          <span className="h-px w-10 bg-champagne/60" />
+        </div>
+        <h3 className="mt-4 font-display text-3xl sm:text-4xl text-ivory text-center">
+          A side-by-side <span className="gold-text italic">dossier</span>
+        </h3>
+        <p className="mt-2 text-center text-[12px] text-muted-foreground max-w-xl mx-auto">
+          Curated profiles of {cols} residences — read each column as a feature spread.
+        </p>
       </div>
 
-      {/* Header — Project Name */}
-      <div className={`hidden md:grid ${gridCols} border-b border-champagne/20 bg-gradient-to-b from-soft-black/80 to-soft-black/30`}>
-        <div className="px-6 py-6 text-[12px] tracking-luxury text-muted-foreground">
-          vs.
-        </div>
+      <div className={`grid grid-cols-1 ${gridTemplate} divide-y md:divide-y-0 md:divide-x divide-champagne/15`}>
         {items.map((p, i) => (
-          <div
+          <Dossier
             key={p.id}
-            className={`relative px-6 py-6 ${i > 0 ? "md:border-l md:border-champagne/15" : ""}`}
-          >
-            <div className="absolute left-0 right-0 top-0 mx-5 h-0.5 bg-gradient-to-r from-transparent via-champagne to-transparent opacity-60" />
-            <p className="text-[12px] tracking-luxury text-champagne">
-              Option {String.fromCharCode(65 + i)} · {p.status}
-            </p>
-            <p className="mt-1.5 font-display text-2xl sm:text-3xl text-ivory line-clamp-1">{p.name}</p>
-            <p className="mt-1 text-[13px] text-muted-foreground line-clamp-1">{p.location}</p>
-          </div>
+            property={p}
+            index={i}
+            configWinners={configWinners}
+            superWinner={superWinner?.idx === i}
+            carpetWinner={carpetWinner?.idx === i}
+          />
         ))}
       </div>
-
-      {rows.map((row, ri) => {
-        const meta = rowMeta[ri];
-        return (
-          <div
-            key={row.label}
-            className={`grid grid-cols-1 ${gridCols} ${
-              ri % 2 === 0 ? "bg-soft-black/40" : "bg-transparent"
-            } border-b border-champagne/10 last:border-b-0`}
-          >
-            <div className="flex items-center justify-between gap-2 px-6 py-5 text-[13px] tracking-luxury text-champagne md:border-r md:border-champagne/15">
-              <span className="uppercase font-medium">{row.label}</span>
-              {meta.type === "text" && meta.allSame && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-ivory/15 px-2 py-0.5 text-[10px] text-muted-foreground">
-                  <Equal className="h-2.5 w-2.5" /> Same
-                </span>
-              )}
-              {meta.type === "config" && (
-                <span className="text-[10px] text-muted-foreground normal-case tracking-normal">
-                  comparing
-                </span>
-              )}
-            </div>
-            {items.map((p, ci) => {
-              const isConfig = meta.type === "config";
-              const cfg = isConfig ? p.configurations[row.label as ConfigKey] : undefined;
-              return (
-                <div
-                  key={p.id}
-                  className={`relative px-6 py-5 text-[15px] text-ivory/95 ${
-                    ci > 0 ? "md:border-l md:border-champagne/10" : ""
-                  }`}
-                >
-                  <div className="md:hidden mb-1 text-[11px] tracking-luxury text-muted-foreground">
-
-                    Option {String.fromCharCode(65 + ci)} · {p.name}
-                  </div>
-
-                  {isConfig && cfg ? (
-                    <div className="space-y-3">
-                      <div className="inline-flex items-center gap-1.5 text-[11px] tracking-luxury text-champagne">
-                        <Check className="h-3.5 w-3.5" /> Available
-                      </div>
-                      <dl className="grid grid-cols-1 gap-2 text-[15px]">
-                        {cfg.area && (
-                          <StatRow
-                            label="Super Built-up"
-                            value={`${cfg.area} sq ft (Approx.)`}
-                            isWinner={meta.areaWin?.idx === ci}
-                            tone="high"
-                            emphasis
-                          />
-                        )}
-                        {cfg.carpet && (
-                          <StatRow label="Carpet" value={`${cfg.carpet} sq ft (Approx.)`} />
-                        )}
-                      </dl>
-                    </div>
-                  ) : isConfig ? (
-                    <span className="inline-flex items-center gap-1.5 text-muted-foreground/70 text-[14px]">
-                      <Minus className="h-4 w-4" /> Not Available
-                    </span>
-                  ) : (
-                    <div className="text-[15px] leading-relaxed">{row.render(p)}</div>
-                  )}
-
-                </div>
-              );
-            })}
-          </div>
-        );
-      })}
     </div>
   );
 }
 
-function StatRow({
-  label,
-  value,
-  isWinner,
-  tone,
-  emphasis,
-  muted,
+function Dossier({
+  property: p,
+  index,
+  configWinners,
+  superWinner,
+  carpetWinner,
 }: {
-  label: string;
-  value: string;
-  isWinner?: boolean;
-  tone?: "low" | "high";
-  emphasis?: boolean;
-  muted?: boolean;
+  property: Property;
+  index: number;
+  configWinners: Record<string, number | null>;
+  superWinner: boolean;
+  carpetWinner: boolean;
+}) {
+  const letter = String.fromCharCode(65 + index);
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="relative flex flex-col"
+    >
+      <div className="relative">
+        <div className="aspect-[4/3] overflow-hidden">
+          <PhotoSlideshow property={p} />
+        </div>
+        <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-lux-black/70 backdrop-blur px-3 py-1 text-[10px] tracking-luxury text-champagne border border-champagne/30">
+          Dossier · {letter}
+        </div>
+      </div>
+
+      <header className="px-6 sm:px-7 pt-7 pb-6 text-center border-b border-champagne/12">
+        <p className="text-[10px] tracking-[0.32em] uppercase text-champagne/90">{p.developer || "—"}</p>
+        <h4 className="mt-2 font-display text-[26px] leading-tight text-ivory italic">{p.name}</h4>
+        <p className="mt-2 text-[12px] text-muted-foreground">{p.location}</p>
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <span className="h-px w-8 bg-champagne/40" />
+          <span className="text-[10px] tracking-luxury text-champagne">{p.status}</span>
+          <span className="h-px w-8 bg-champagne/40" />
+        </div>
+      </header>
+
+      <Chapter numeral="I" title="The Residences">
+        <dl className="space-y-0">
+          {CONFIG_KEYS.map((k) => {
+            const cfg = p.configurations[k as ConfigKey];
+            const isWinner = configWinners[k] === index;
+            return (
+              <div key={k} className="flex items-start justify-between gap-3 py-3 border-b border-dashed border-champagne/12 last:border-b-0">
+                <dt className="text-[11px] tracking-luxury uppercase text-muted-foreground pt-1">{k}</dt>
+                <dd className="text-right">
+                  {cfg ? (
+                    <div className="space-y-0.5">
+                      <p className={`font-display text-[18px] leading-tight ${isWinner ? "text-champagne" : "text-ivory"}`}>
+                        {cfg.area ? cfg.area : "—"}
+                        {cfg.area && <span className="text-[10px] text-muted-foreground ml-1">sq ft</span>}
+                      </p>
+                      {cfg.carpet && (
+                        <p className="text-[10px] text-muted-foreground">carpet {cfg.carpet} sq ft</p>
+                      )}
+                      <p className="text-[9px] tracking-luxury text-champagne/70">(Approx.)</p>
+                    </div>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/60">
+                      <Minus className="h-3 w-3" /> n/a
+                    </span>
+                  )}
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+      </Chapter>
+
+      <Chapter numeral="II" title="Spaces & Scale">
+        <div className="grid grid-cols-2 gap-3">
+          <SpecBlock label="Super Built-up" value={p.superBuiltUpArea} winner={superWinner} />
+          <SpecBlock label="Carpet Area" value={p.carpetArea} winner={carpetWinner} />
+        </div>
+      </Chapter>
+
+      <Chapter numeral="III" title="Location & Timeline">
+        <ul className="space-y-0">
+          <LiRow label="Address" value={p.location} />
+          <LiRow label="Possession" value={p.possession} />
+          <LiRow label="Project Status" value={p.status} />
+        </ul>
+      </Chapter>
+
+      {p.advantages?.length ? (
+        <Chapter numeral="IV" title="Considered Highlights">
+          <ul className="space-y-2.5">
+            {p.advantages.map((a, idx) => (
+              <li key={a} className="flex gap-3 text-[13px] text-ivory/85 leading-relaxed">
+                <span className="text-champagne text-[10px] tracking-luxury pt-1 min-w-[20px]">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <span>{a}</span>
+              </li>
+            ))}
+          </ul>
+        </Chapter>
+      ) : null}
+
+      <Chapter numeral="V" title="Amenities">
+        <p className="text-[13px] italic text-ivory/85 leading-relaxed">
+          All luxurious amenities are available — curated for an elevated everyday.
+        </p>
+      </Chapter>
+
+      {p.expertNote ? (
+        <Chapter numeral="VI" title="Editor's Verdict" final>
+          <blockquote className="relative pl-7 italic text-[13px] leading-relaxed text-ivory/95">
+            <span className="absolute left-0 -top-2 font-display text-4xl text-champagne leading-none">"</span>
+            {p.expertNote}
+          </blockquote>
+        </Chapter>
+      ) : null}
+    </motion.article>
+  );
+}
+
+function Chapter({
+  numeral,
+  title,
+  children,
+  final,
+}: {
+  numeral: string;
+  title: string;
+  children: React.ReactNode;
+  final?: boolean;
 }) {
   return (
-    <div
-      className={`flex items-center justify-between gap-2 rounded-md px-2 py-1 -mx-2 ${
-        isWinner
-          ? "bg-champagne/10 ring-1 ring-champagne/40"
-          : "ring-1 ring-transparent"
-      }`}
-    >
-      <dt className="text-[10px] uppercase tracking-luxury text-muted-foreground">
-        {label}
-      </dt>
-      <dd
-        className={`inline-flex items-center gap-1.5 ${
-          muted ? "text-muted-foreground" : emphasis ? "text-ivory font-medium" : "text-ivory/90"
-        }`}
-      >
-        {value}
-        {isWinner && (
-          <span className="inline-flex items-center gap-0.5 rounded-full bg-champagne/20 px-1.5 py-0.5 text-[9px] tracking-luxury text-champagne">
-            {tone === "low" ? <TrendingDown className="h-2.5 w-2.5" /> : <TrendingUp className="h-2.5 w-2.5" />}
-            Best
-          </span>
-        )}
-      </dd>
+    <section className={`px-6 sm:px-7 py-6 ${final ? "" : "border-b border-champagne/12"}`}>
+      <div className="flex items-baseline gap-3 mb-4">
+        <span className="font-display italic text-champagne text-[22px] leading-none">{numeral}</span>
+        <span className="h-px flex-1 bg-champagne/20" />
+        <span className="text-[10px] tracking-[0.28em] uppercase text-champagne/90">{title}</span>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function SpecBlock({
+  label,
+  value,
+  winner,
+}: {
+  label: string;
+  value: string | null | undefined;
+  winner?: boolean;
+}) {
+  return (
+    <div className={`rounded-lg px-3 py-3 border ${winner ? "border-champagne/40 bg-champagne/[0.06]" : "border-champagne/12 bg-lux-black/30"}`}>
+      <p className="text-[10px] tracking-luxury uppercase text-muted-foreground">{label}</p>
+      <p className={`mt-1.5 font-display text-[17px] leading-tight ${winner ? "text-champagne" : "text-ivory"}`}>
+        {value || "—"}
+      </p>
+      {value && <p className="mt-0.5 text-[9px] tracking-luxury text-champagne/70">(Approx.)</p>}
     </div>
   );
 }
+
+function LiRow({ label, value }: { label: string; value: string | null | undefined }) {
+  return (
+    <li className="flex items-start justify-between gap-3 py-3 border-b border-dashed border-champagne/12 last:border-b-0 text-[13px]">
+      <span className="text-[10px] tracking-luxury uppercase text-muted-foreground pt-1">{label}</span>
+      <span className="text-right text-ivory/90 max-w-[60%]">{v(value)}</span>
+    </li>
+  );
+}
+
 
