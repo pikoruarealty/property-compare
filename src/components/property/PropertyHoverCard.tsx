@@ -44,7 +44,14 @@ export function PropertyHoverCard({
   onPointerEnter,
   onPointerLeave,
 }: Props) {
-  const [box, setBox] = useState<{ top: number; left: number; width: number } | null>(null);
+  const [box, setBox] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    originX: number;
+    originY: number;
+    initialScale: number;
+  } | null>(null);
 
   useLayoutEffect(() => {
     if (!open || !anchorRef.current) return;
@@ -59,7 +66,17 @@ export function PropertyHoverCard({
       left = Math.min(Math.max(12, left), vw - width - 12);
       let top = r.top + r.height / 2 - EXPANDED_HEIGHT / 2 - EXTRA_LIFT;
       top = Math.min(Math.max(12, top), vh - EXPANDED_HEIGHT - 12);
-      setBox({ top, left, width });
+      // anchor scale origin to the row's centre so the card grows out of it
+      const anchorCx = r.left + r.width / 2;
+      const anchorCy = r.top + r.height / 2;
+      const originX = Math.min(100, Math.max(0, ((anchorCx - left) / width) * 100));
+      const originY = Math.min(100, Math.max(0, ((anchorCy - top) / EXPANDED_HEIGHT) * 100));
+      // proportional starting scale (uniform — no stretch)
+      const initialScale = Math.max(
+        0.82,
+        Math.min(r.width / width, r.height / EXPANDED_HEIGHT),
+      );
+      setBox({ top, left, width, originX, originY, initialScale });
     };
     compute();
     window.addEventListener("scroll", compute, true);
@@ -82,25 +99,34 @@ export function PropertyHoverCard({
         <motion.div
           onPointerEnter={onPointerEnter}
           onPointerLeave={onPointerLeave}
-          initial={{ opacity: 0, scale: 0.96, y: 6 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.97, y: 4 }}
-          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="pointer-events-auto fixed z-[80] hidden md:grid"
+          initial={{ opacity: 0, scale: box.initialScale }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: box.initialScale }}
+          transition={{
+            opacity: { duration: 0.28, ease: [0.22, 1, 0.36, 1] },
+            scale: { type: "spring", stiffness: 260, damping: 32, mass: 0.9 },
+          }}
+          className="pointer-events-auto fixed z-[80] hidden md:block"
           style={{
             top: box.top,
             left: box.left,
             width: box.width,
             height: EXPANDED_HEIGHT,
-            gridTemplateColumns: "55% 45%",
+            transformOrigin: `${box.originX}% ${box.originY}%`,
+            willChange: "transform, opacity",
             borderRadius: 32,
             background: "rgba(16,16,16,0.88)",
             backdropFilter: "blur(28px) saturate(140%)",
             border: "1px solid rgba(255,255,255,0.09)",
             boxShadow: "0 40px 100px -20px rgba(0,0,0,0.65)",
             overflow: "hidden",
+            display: "grid",
+            gridTemplateColumns: "55% 45%",
+            backfaceVisibility: "hidden",
+            transform: "translateZ(0)",
           }}
         >
+
           {/* LEFT — Image carousel */}
           <div className="relative h-full overflow-hidden">
             <AnimatePresence initial={false} mode="sync">
