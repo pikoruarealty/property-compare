@@ -148,6 +148,13 @@ export function PropertyListRow({ property, index = 0 }: Props) {
           )}
         </button>
       </div>
+      <PropertyHoverPreview
+        property={property}
+        anchorRef={imageRef}
+        open={hoverOpen}
+        onPointerEnterPanel={enter}
+        onPointerLeavePanel={leave}
+      />
     </motion.article>
   );
 }
