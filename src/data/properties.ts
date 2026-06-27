@@ -32,6 +32,10 @@ import belagioExterior from "@/assets/belagio-exterior.jpg.asset.json";
 import belagioTower from "@/assets/belagio-tower.jpg.asset.json";
 import belagioLibrary from "@/assets/belagio-library.jpg.asset.json";
 import belagioPool from "@/assets/belagio-pool.jpg.asset.json";
+import belrosaExterior from "@/assets/belrosa-exterior.jpg.asset.json";
+import belrosaHall from "@/assets/belrosa-hall.jpg.asset.json";
+import belrosaView from "@/assets/belrosa-view.jpg.asset.json";
+import belrosaDining from "@/assets/belrosa-dining.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
