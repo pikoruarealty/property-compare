@@ -80,6 +80,11 @@ import swatiDining from "@/assets/swati-senor-dining.jpg.asset.json";
 import swatiGallery from "@/assets/swati-senor-gallery.jpg.asset.json";
 import swatiBedroom from "@/assets/swati-senor-bedroom.jpg.asset.json";
 import swatiPool from "@/assets/swati-senor-pool.jpg.asset.json";
+import triveniExterior from "@/assets/triveni-84-exterior.jpg.asset.json";
+import triveniKids from "@/assets/triveni-84-kids.jpeg.asset.json";
+import triveniYoga from "@/assets/triveni-84-yoga.jpeg.asset.json";
+import triveniGym from "@/assets/triveni-84-gym.jpeg.asset.json";
+import triveniBanquet from "@/assets/triveni-84-banquet.jpeg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -244,6 +249,15 @@ const imageOverrides: Record<
       masterBedroom: swatiBedroom.url,
       pool: swatiPool.url,
       clubhouse: swatiDining.url,
+    },
+  },
+  "triveni-84": {
+    cover: triveniExterior.url,
+    gallery: {
+      livingRoom: triveniBanquet.url,
+      masterBedroom: triveniYoga.url,
+      pool: triveniGym.url,
+      clubhouse: triveniKids.url,
     },
   },
 };
