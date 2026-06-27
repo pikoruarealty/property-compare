@@ -96,6 +96,15 @@ const imageOverrides: Record<
       clubhouse: belagioLibrary.url,
     },
   },
+  belrosa: {
+    cover: belrosaExterior.url,
+    gallery: {
+      livingRoom: belrosaHall.url,
+      masterBedroom: belrosaDining.url,
+      pool: belrosaView.url,
+      clubhouse: belrosaView.url,
+    },
+  },
 };
 
 
