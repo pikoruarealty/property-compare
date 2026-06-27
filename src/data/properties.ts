@@ -85,6 +85,9 @@ import triveniKids from "@/assets/triveni-84-kids.jpeg.asset.json";
 import triveniYoga from "@/assets/triveni-84-yoga.jpeg.asset.json";
 import triveniGym from "@/assets/triveni-84-gym.jpeg.asset.json";
 import triveniBanquet from "@/assets/triveni-84-banquet.jpeg.asset.json";
+import vaikunthExterior from "@/assets/vaikunth-exterior.png.asset.json";
+import vaikunthPool from "@/assets/vaikunth-pool.png.asset.json";
+import vaikunthBungalow from "@/assets/vaikunth-bungalow.png.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -258,6 +261,15 @@ const imageOverrides: Record<
       masterBedroom: triveniYoga.url,
       pool: triveniGym.url,
       clubhouse: triveniKids.url,
+    },
+  },
+  vaikunth: {
+    cover: vaikunthExterior.url,
+    gallery: {
+      livingRoom: vaikunthBungalow.url,
+      masterBedroom: vaikunthBungalow.url,
+      pool: vaikunthPool.url,
+      clubhouse: vaikunthPool.url,
     },
   },
 };
