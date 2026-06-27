@@ -70,6 +70,15 @@ const imageOverrides: Record<
       clubhouse: atmanLobby.url,
     },
   },
+  avant: {
+    cover: avantExterior.url,
+    gallery: {
+      livingRoom: avantHall.url,
+      masterBedroom: avantHall.url,
+      pool: avantPark.url,
+      clubhouse: avantPark.url,
+    },
+  },
 };
 
 
