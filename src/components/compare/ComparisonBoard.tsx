@@ -317,41 +317,19 @@ function computeWinner(
 }
 
 /* =========================================================================
-   VARIANT 3 — Split-Pane Showcase
-   - Cinematic hero pane on top displaying the currently-focused property
-     (large image carousel + identity).
-   - Below it, full-height vertical PANELS — one per property — with a
-     shared attribute selector (Residences · Spaces · Location · Highlights
-     · Amenities · Verdict). Switching attribute slides content with
-     smooth Framer Motion transitions.
-   - Larger, more confident typography across the board.
+   VARIANT 4 — Diff-Highlight Matrix
+   - True comparison matrix: rows = attributes, columns = properties.
+   - Identical values across the row are MUTED (gray, italic, "matches").
+   - Unique / best values POP in champagne gold with a soft glow ring.
+   - Large typography, prominent highlight chips, subtle motion on scan.
    ========================================================================= */
-
-type AttrKey =
-  | "residences"
-  | "spaces"
-  | "location"
-  | "highlights"
-  | "amenities"
-  | "verdict";
-
-const ATTRS: { key: AttrKey; label: string; hint: string }[] = [
-  { key: "residences", label: "Residences", hint: "Configurations & areas" },
-  { key: "spaces", label: "Spaces", hint: "Super built-up vs carpet" },
-  { key: "location", label: "Location & Timeline", hint: "Address · possession · status" },
-  { key: "highlights", label: "Highlights", hint: "What sets each apart" },
-  { key: "amenities", label: "Amenities", hint: "Lifestyle & wellness" },
-  { key: "verdict", label: "Verdict", hint: "The editor's note" },
-];
 
 function ComparisonGrid({ items }: { items: Property[] }) {
   const cols = items.length;
-  const innerGrid = cols === 2 ? "md:grid-cols-2" : "md:grid-cols-3";
+  const gridTpl =
+    cols === 2 ? "md:grid-cols-[260px_1fr_1fr]" : "md:grid-cols-[260px_1fr_1fr_1fr]";
 
-  const [focus, setFocus] = useState(0);
-  const [attr, setAttr] = useState<AttrKey>("residences");
-
-  // winners
+  // Configuration area winners
   const configWinners: Record<string, number | null> = {};
   CONFIG_KEYS.forEach((k) => {
     const areas = items.map((p) => parseMaxNum(p.configurations[k as ConfigKey]?.area ?? null));
@@ -360,338 +338,457 @@ function ComparisonGrid({ items }: { items: Property[] }) {
   const superWinner = computeWinner(items.map((p) => parseMaxNum(p.superBuiltUpArea)), "high")?.idx ?? null;
   const carpetWinner = computeWinner(items.map((p) => parseMaxNum(p.carpetArea)), "high")?.idx ?? null;
 
-  // safe-clamp focus when items change
-  const focused = items[Math.min(focus, items.length - 1)] ?? items[0];
+  // Diff helpers — true if all string values are equal (case-insensitive)
+  const allSame = (vals: (string | null | undefined)[]) => {
+    const cleaned = vals.map((x) => (x ?? "").trim().toLowerCase());
+    return cleaned.every((x) => x.length > 0) && cleaned.every((x) => x === cleaned[0]);
+  };
+  const locSame = allSame(items.map((p) => p.location));
+  const possSame = allSame(items.map((p) => p.possession));
+  const statSame = allSame(items.map((p) => p.status));
+  const devSame = allSame(items.map((p) => p.developer));
+
+  // Diff counts for top-line summary
+  const diffStats = (() => {
+    let differs = 0;
+    let identical = 0;
+    let bests = 0;
+    if (!locSame) differs++; else identical++;
+    if (!possSame) differs++; else identical++;
+    if (!statSame) differs++; else identical++;
+    if (!devSame) differs++; else identical++;
+    CONFIG_KEYS.forEach((k) => {
+      if (configWinners[k] !== null) bests++;
+    });
+    if (superWinner !== null) bests++;
+    if (carpetWinner !== null) bests++;
+    return { differs, identical, bests };
+  })();
 
   return (
-    <div className="space-y-7">
-      {/* Folio header */}
+    <div className="space-y-6">
+      {/* Folio header + diff legend */}
       <div className="text-center">
         <div className="inline-flex items-center gap-3">
           <span className="h-px w-12 bg-champagne/60" />
           <span className="text-[12px] tracking-[0.34em] uppercase text-champagne">
-            Split-Pane Showcase
+            Diff-Highlight Matrix
           </span>
           <span className="h-px w-12 bg-champagne/60" />
         </div>
-        <h3 className="mt-4 font-display text-[34px] sm:text-[44px] leading-tight text-ivory">
-          Step into <span className="gold-text italic">each residence</span>
+        <h3 className="mt-4 font-display text-[36px] sm:text-[48px] leading-[1.05] text-ivory">
+          Only the <span className="gold-text italic">differences</span> shine
         </h3>
-        <p className="mt-3 text-[15px] text-muted-foreground max-w-2xl mx-auto">
-          A cinematic hero pane up top, attribute panels below — switch chapters and watch every property update in step.
+        <p className="mt-3 text-[16px] text-muted-foreground max-w-2xl mx-auto">
+          Identical values fade into the background. Unique and best-in-row values light up in gold so the choice writes itself.
         </p>
+
+        {/* legend chips */}
+        <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5">
+          <LegendChip tone="best" icon={<Trophy className="h-3.5 w-3.5" />}>
+            {diffStats.bests} best-in-row
+          </LegendChip>
+          <LegendChip tone="diff" icon={<GitCompareArrows className="h-3.5 w-3.5" />}>
+            {diffStats.differs} differences
+          </LegendChip>
+          <LegendChip tone="same" icon={<Equal className="h-3.5 w-3.5" />}>
+            {diffStats.identical} identical
+          </LegendChip>
+        </div>
       </div>
 
-      {/* HERO SHOWCASE */}
-      <div className="relative overflow-hidden rounded-[32px] border border-champagne/25 bg-gradient-to-br from-soft-black/80 to-lux-black/60 shadow-[0_40px_120px_-50px_rgba(200,164,93,0.35)]">
-        <div className="grid grid-cols-1 lg:grid-cols-[58%_42%]">
-          {/* Large image */}
-          <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[440px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={focused.id}
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0"
-              >
-                <PhotoSlideshow property={focused} />
-              </motion.div>
-            </AnimatePresence>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-lux-black/30 via-transparent to-transparent" />
-            <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-lux-black/70 backdrop-blur px-3 py-1 text-[11px] tracking-luxury text-champagne border border-champagne/30">
-              Now Viewing · {String.fromCharCode(65 + Math.min(focus, items.length - 1))}
-            </div>
+      {/* Matrix */}
+      <div className="overflow-hidden rounded-[28px] border border-champagne/25 bg-gradient-to-b from-soft-black/85 via-lux-black/55 to-soft-black/85 shadow-[0_40px_120px_-50px_rgba(200,164,93,0.35)]">
+        {/* Sticky column headers */}
+        <div className={`hidden md:grid ${gridTpl} border-b border-champagne/25 bg-soft-black/70 backdrop-blur`}>
+          <div className="px-7 py-6 flex items-center">
+            <span className="text-[12px] tracking-[0.34em] uppercase text-muted-foreground">Attribute</span>
           </div>
-
-          {/* Identity */}
-          <div className="relative flex flex-col justify-center p-7 sm:p-9 border-t lg:border-t-0 lg:border-l border-champagne/15">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={focused.id}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -14 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <p className="text-[11px] tracking-[0.34em] uppercase text-champagne/90">
-                  {focused.developer || "—"}
-                </p>
-                <h4 className="mt-3 font-display text-[32px] sm:text-[40px] leading-[1.05] text-ivory italic">
-                  {focused.name}
-                </h4>
-                <p className="mt-3 text-[15px] text-muted-foreground">
-                  {focused.location}
-                </p>
-                <div className="mt-5 flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center rounded-full border border-champagne/30 px-3 py-1 text-[11px] tracking-luxury text-champagne">
-                    {focused.status}
-                  </span>
-                  <span className="inline-flex items-center rounded-full border border-champagne/15 px-3 py-1 text-[11px] tracking-luxury text-muted-foreground">
-                    Possession · {focused.possession}
-                  </span>
-                </div>
-                {focused.tagline && (
-                  <p className="mt-6 text-[16px] leading-relaxed text-ivory/85 italic">
-                    "{focused.tagline}"
+          {items.map((p, i) => (
+            <div
+              key={p.id}
+              className={`relative px-6 py-6 ${i > 0 ? "border-l border-champagne/15" : ""}`}
+            >
+              <div className="absolute left-6 right-6 top-0 h-[2px] bg-gradient-to-r from-transparent via-champagne to-transparent opacity-70" />
+              <div className="flex items-center gap-3">
+                <span className="grid h-10 w-10 place-items-center rounded-full bg-champagne text-lux-black font-display text-[16px]">
+                  {String.fromCharCode(65 + i)}
+                </span>
+                <div className="min-w-0">
+                  <p className="font-display text-[22px] sm:text-[24px] leading-tight text-ivory line-clamp-1">
+                    {p.name}
                   </p>
-                )}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Property selector */}
-            <div className="mt-7 pt-5 border-t border-champagne/15">
-              <p className="text-[10px] tracking-[0.32em] uppercase text-muted-foreground mb-3">
-                Choose pane
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {items.map((p, i) => {
-                  const active = i === Math.min(focus, items.length - 1);
-                  return (
-                    <button
-                      key={p.id}
-                      onClick={() => setFocus(i)}
-                      className={`group inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[13px] transition-all ${
-                        active
-                          ? "border-champagne bg-champagne/15 text-ivory"
-                          : "border-champagne/20 bg-lux-black/40 text-muted-foreground hover:border-champagne/40 hover:text-ivory"
-                      }`}
-                    >
-                      <span className={`grid h-5 w-5 place-items-center rounded-full text-[10px] tracking-luxury ${active ? "bg-champagne text-lux-black" : "border border-champagne/30 text-champagne"}`}>
-                        {String.fromCharCode(65 + i)}
-                      </span>
-                      <span className="max-w-[140px] truncate font-display">{p.name}</span>
-                    </button>
-                  );
-                })}
+                  <p className="text-[12px] tracking-luxury uppercase text-champagne/90 truncate">
+                    {p.developer}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
-      </div>
 
-      {/* ATTRIBUTE SELECTOR */}
-      <div className="overflow-hidden rounded-[20px] border border-champagne/20 bg-soft-black/60 backdrop-blur p-2">
-        <div className="flex flex-wrap gap-1.5">
-          {ATTRS.map((a) => {
-            const active = a.key === attr;
-            return (
-              <button
-                key={a.key}
-                onClick={() => setAttr(a.key)}
-                className={`relative flex-1 min-w-[140px] rounded-[14px] px-4 py-3 text-left transition-colors ${
-                  active ? "bg-champagne/15 text-ivory" : "text-muted-foreground hover:text-ivory hover:bg-lux-black/40"
-                }`}
-              >
-                {active && (
-                  <motion.span
-                    layoutId="attr-pill"
-                    className="absolute inset-0 rounded-[14px] ring-1 ring-champagne/50"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+        {/* Mobile column headers — pills */}
+        <div className="md:hidden flex flex-wrap gap-2 px-5 py-4 border-b border-champagne/20 bg-soft-black/60">
+          {items.map((p, i) => (
+            <span key={p.id} className="inline-flex items-center gap-2 rounded-full border border-champagne/30 px-3 py-1.5 text-[12px] text-ivory">
+              <span className="grid h-5 w-5 place-items-center rounded-full bg-champagne text-lux-black text-[10px] font-display">
+                {String.fromCharCode(65 + i)}
+              </span>
+              <span className="font-display truncate max-w-[120px]">{p.name}</span>
+            </span>
+          ))}
+        </div>
+
+        {/* === Section: Identity === */}
+        <SectionLabel title="Identity" />
+        <MatrixRow
+          label="Developer"
+          items={items}
+          gridTpl={gridTpl}
+          allSame={devSame}
+          render={(p) => <PlainCell value={p.developer} muted={devSame} />}
+        />
+
+        {/* === Section: Residences === */}
+        <SectionLabel title="Residences & Configurations" />
+        {CONFIG_KEYS.map((k) => {
+          const winnerIdx = configWinners[k];
+          // identical if all configs have the same area string
+          const areas = items.map((p) => p.configurations[k as ConfigKey]?.area ?? null);
+          const same = areas.every((x) => x !== null) && areas.every((x) => x === areas[0]);
+          const allMissing = areas.every((x) => x === null);
+          return (
+            <MatrixRow
+              key={k}
+              label={k}
+              items={items}
+              gridTpl={gridTpl}
+              allSame={same}
+              noneAvailable={allMissing}
+              render={(p, i) => {
+                const cfg = p.configurations[k as ConfigKey];
+                if (!cfg) return <UnavailableCell />;
+                const isWinner = winnerIdx === i;
+                return (
+                  <NumericCell
+                    primary={cfg.area ?? "—"}
+                    unit="sq ft"
+                    secondary={cfg.carpet ? `carpet ${cfg.carpet} sq ft` : undefined}
+                    isBest={isWinner}
+                    isSame={same}
                   />
-                )}
-                <span className="relative font-display text-[16px] sm:text-[17px]">{a.label}</span>
-                <span className="relative block text-[11px] tracking-luxury text-muted-foreground mt-0.5">
-                  {a.hint}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+                );
+              }}
+            />
+          );
+        })}
 
-      {/* PANELS */}
-      <div className={`grid grid-cols-1 ${innerGrid} gap-5`}>
-        {items.map((p, i) => (
-          <PropertyPanel
-            key={p.id}
-            property={p}
-            index={i}
-            attr={attr}
-            focused={i === Math.min(focus, items.length - 1)}
-            onFocus={() => setFocus(i)}
-            configWinners={configWinners}
-            superWinner={superWinner === i}
-            carpetWinner={carpetWinner === i}
-          />
-        ))}
+        {/* === Section: Spaces & Scale === */}
+        <SectionLabel title="Spaces & Scale" />
+        <MatrixRow
+          label="Super Built-up"
+          items={items}
+          gridTpl={gridTpl}
+          allSame={allSame(items.map((p) => p.superBuiltUpArea))}
+          render={(p, i) => (
+            <NumericCell
+              primary={p.superBuiltUpArea ?? "—"}
+              isBest={superWinner === i}
+              isSame={allSame(items.map((x) => x.superBuiltUpArea))}
+            />
+          )}
+        />
+        <MatrixRow
+          label="Carpet Area"
+          items={items}
+          gridTpl={gridTpl}
+          allSame={allSame(items.map((p) => p.carpetArea))}
+          render={(p, i) => (
+            <NumericCell
+              primary={p.carpetArea ?? "—"}
+              isBest={carpetWinner === i}
+              isSame={allSame(items.map((x) => x.carpetArea))}
+            />
+          )}
+        />
+
+        {/* === Section: Location & Timeline === */}
+        <SectionLabel title="Location & Timeline" />
+        <MatrixRow
+          label="Address"
+          items={items}
+          gridTpl={gridTpl}
+          allSame={locSame}
+          render={(p) => <PlainCell value={p.location} muted={locSame} />}
+        />
+        <MatrixRow
+          label="Possession"
+          items={items}
+          gridTpl={gridTpl}
+          allSame={possSame}
+          render={(p) => <PlainCell value={p.possession} muted={possSame} highlight={!possSame} />}
+        />
+        <MatrixRow
+          label="Project Status"
+          items={items}
+          gridTpl={gridTpl}
+          allSame={statSame}
+          render={(p) => <StatusCell value={p.status} muted={statSame} />}
+        />
+
+        {/* === Section: Distinctions === */}
+        <SectionLabel title="Distinctions" />
+        <MatrixRow
+          label="Highlights"
+          items={items}
+          gridTpl={gridTpl}
+          render={(p) =>
+            p.advantages?.length ? (
+              <ul className="space-y-2.5">
+                {p.advantages.slice(0, 5).map((a, idx) => (
+                  <li key={a} className="flex gap-3 text-[15px] text-ivory/90 leading-relaxed">
+                    <span className="text-champagne text-[11px] tracking-luxury pt-1.5 min-w-[22px]">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <span>{a}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span className="text-[14px] text-muted-foreground italic">—</span>
+            )
+          }
+        />
+        <MatrixRow
+          label="Amenities"
+          items={items}
+          gridTpl={gridTpl}
+          allSame
+          render={() => (
+            <PlainCell value="All luxurious amenities available" muted italic />
+          )}
+        />
+        <MatrixRow
+          label="Editor's Verdict"
+          items={items}
+          gridTpl={gridTpl}
+          render={(p) =>
+            p.expertNote ? (
+              <blockquote className="relative pl-7 italic text-[15px] leading-relaxed text-ivory/95">
+                <span className="absolute left-0 -top-2 font-display text-4xl text-champagne leading-none">"</span>
+                {p.expertNote}
+              </blockquote>
+            ) : (
+              <span className="text-[14px] text-muted-foreground italic">—</span>
+            )
+          }
+        />
+
+        {/* === Section: Gallery === */}
+        <SectionLabel title="Gallery" final />
+        <div className={`grid grid-cols-1 ${gridTpl}`}>
+          <div className="hidden md:flex items-center px-7 py-5 text-[13px] tracking-[0.32em] uppercase text-champagne border-r border-champagne/12">
+            Photo
+          </div>
+          {items.map((p, i) => (
+            <div key={p.id} className={`p-3 ${i > 0 ? "md:border-l md:border-champagne/12" : ""}`}>
+              <div className="overflow-hidden rounded-2xl aspect-[16/10]">
+                <PhotoSlideshow property={p} />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-function PropertyPanel({
-  property: p,
-  index,
-  attr,
-  focused,
-  onFocus,
-  configWinners,
-  superWinner,
-  carpetWinner,
-}: {
-  property: Property;
-  index: number;
-  attr: AttrKey;
-  focused: boolean;
-  onFocus: () => void;
-  configWinners: Record<string, number | null>;
-  superWinner: boolean;
-  carpetWinner: boolean;
-}) {
-  const letter = String.fromCharCode(65 + index);
+/* ---------------- Matrix primitives ---------------- */
+
+function SectionLabel({ title, final }: { title: string; final?: boolean }) {
   return (
-    <motion.article
-      onMouseEnter={onFocus}
-      onClick={onFocus}
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      className={`relative flex flex-col overflow-hidden rounded-[24px] border bg-gradient-to-b from-soft-black/80 to-lux-black/50 transition-all duration-500 cursor-pointer ${
-        focused
-          ? "border-champagne/55 shadow-[0_30px_80px_-40px_rgba(200,164,93,0.45)]"
-          : "border-champagne/15 hover:border-champagne/35"
+    <div
+      className={`flex items-center gap-3 px-6 sm:px-7 py-4 bg-gradient-to-r from-champagne/10 via-champagne/5 to-transparent border-y border-champagne/20 ${
+        final ? "" : ""
       }`}
     >
-      {/* Panel header */}
-      <header className="flex items-center justify-between gap-3 px-6 pt-5 pb-4 border-b border-champagne/15">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className={`grid h-9 w-9 place-items-center rounded-full text-[12px] tracking-luxury transition-colors ${focused ? "bg-champagne text-lux-black" : "border border-champagne/30 text-champagne"}`}>
-            {letter}
-          </div>
-          <div className="min-w-0">
-            <p className="font-display text-[18px] text-ivory leading-tight truncate">{p.name}</p>
-            <p className="text-[11px] tracking-luxury uppercase text-muted-foreground truncate">{p.developer}</p>
-          </div>
-        </div>
-        {focused && (
-          <span className="text-[10px] tracking-[0.3em] uppercase text-champagne whitespace-nowrap">In Focus</span>
-        )}
-      </header>
-
-      {/* Animated body — switches with attribute */}
-      <div className="relative px-6 py-6 min-h-[280px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={attr}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -14 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {attr === "residences" && (
-              <dl className="space-y-0">
-                {CONFIG_KEYS.map((k) => {
-                  const cfg = p.configurations[k as ConfigKey];
-                  const isWinner = configWinners[k] === index;
-                  return (
-                    <div key={k} className="flex items-start justify-between gap-3 py-3 border-b border-dashed border-champagne/12 last:border-b-0">
-                      <dt className="text-[13px] tracking-luxury uppercase text-muted-foreground pt-1">{k}</dt>
-                      <dd className="text-right">
-                        {cfg ? (
-                          <>
-                            <p className={`font-display text-[22px] leading-tight ${isWinner ? "text-champagne" : "text-ivory"}`}>
-                              {cfg.area ?? "—"} <span className="text-[12px] text-muted-foreground">sq ft</span>
-                            </p>
-                            {cfg.carpet && <p className="text-[12px] text-muted-foreground">carpet {cfg.carpet} sq ft</p>}
-                            <p className="text-[10px] tracking-luxury text-champagne/70 mt-0.5">(Approx.)</p>
-                          </>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-[13px] text-muted-foreground/60">
-                            <Minus className="h-3.5 w-3.5" /> n/a
-                          </span>
-                        )}
-                      </dd>
-                    </div>
-                  );
-                })}
-              </dl>
-            )}
-
-            {attr === "spaces" && (
-              <div className="grid grid-cols-2 gap-4">
-                <SpecBlock label="Super Built-up" value={p.superBuiltUpArea} winner={superWinner} />
-                <SpecBlock label="Carpet Area" value={p.carpetArea} winner={carpetWinner} />
-              </div>
-            )}
-
-            {attr === "location" && (
-              <ul className="space-y-0">
-                <LiRow label="Address" value={p.location} />
-                <LiRow label="Possession" value={p.possession} />
-                <LiRow label="Project Status" value={p.status} />
-              </ul>
-            )}
-
-            {attr === "highlights" && (
-              p.advantages?.length ? (
-                <ul className="space-y-3">
-                  {p.advantages.map((a, idx) => (
-                    <li key={a} className="flex gap-3 text-[15px] text-ivory/90 leading-relaxed">
-                      <span className="text-champagne text-[11px] tracking-luxury pt-1.5 min-w-[22px]">
-                        {String(idx + 1).padStart(2, "0")}
-                      </span>
-                      <span>{a}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-[14px] text-muted-foreground italic">No highlights listed.</p>
-              )
-            )}
-
-            {attr === "amenities" && (
-              <p className="text-[15px] italic text-ivory/90 leading-relaxed">
-                All luxurious amenities are available — curated for an elevated everyday.
-              </p>
-            )}
-
-            {attr === "verdict" && (
-              p.expertNote ? (
-                <blockquote className="relative pl-8 italic text-[15px] leading-relaxed text-ivory/95">
-                  <span className="absolute left-0 -top-3 font-display text-5xl text-champagne leading-none">"</span>
-                  {p.expertNote}
-                </blockquote>
-              ) : (
-                <p className="text-[14px] text-muted-foreground italic">No verdict provided.</p>
-              )
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </motion.article>
-  );
-}
-
-function SpecBlock({
-  label,
-  value,
-  winner,
-}: {
-  label: string;
-  value: string | null | undefined;
-  winner?: boolean;
-}) {
-  return (
-    <div className={`rounded-xl px-4 py-4 border ${winner ? "border-champagne/45 bg-champagne/[0.07]" : "border-champagne/15 bg-lux-black/30"}`}>
-      <p className="text-[11px] tracking-luxury uppercase text-muted-foreground">{label}</p>
-      <p className={`mt-2 font-display text-[22px] leading-tight ${winner ? "text-champagne" : "text-ivory"}`}>
-        {value || "—"}
-      </p>
-      {value && <p className="mt-1 text-[10px] tracking-luxury text-champagne/70">(Approx.)</p>}
+      <span className="text-[13px] tracking-[0.34em] uppercase text-champagne font-medium">
+        {title}
+      </span>
+      <span className="h-px flex-1 bg-champagne/20" />
     </div>
   );
 }
 
-function LiRow({ label, value }: { label: string; value: string | null | undefined }) {
+function MatrixRow({
+  label,
+  items,
+  gridTpl,
+  render,
+  allSame,
+  noneAvailable,
+}: {
+  label: string;
+  items: Property[];
+  gridTpl: string;
+  render: (p: Property, i: number) => React.ReactNode;
+  allSame?: boolean;
+  noneAvailable?: boolean;
+}) {
   return (
-    <li className="flex items-start justify-between gap-3 py-3 border-b border-dashed border-champagne/12 last:border-b-0 text-[15px]">
-      <span className="text-[12px] tracking-luxury uppercase text-muted-foreground pt-1">{label}</span>
-      <span className="text-right text-ivory/90 max-w-[60%]">{v(value)}</span>
-    </li>
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.45 }}
+      className={`grid grid-cols-1 ${gridTpl} border-b border-champagne/10 last:border-b-0 hover:bg-champagne/[0.02] transition-colors`}
+    >
+      <div className="flex items-center justify-between gap-2 px-6 sm:px-7 py-5 md:border-r md:border-champagne/12">
+        <span className="text-[14px] sm:text-[15px] tracking-luxury uppercase text-ivory/95 font-medium">
+          {label}
+        </span>
+        {allSame && !noneAvailable && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-ivory/5 border border-ivory/15 px-2.5 py-1 text-[10px] tracking-luxury text-muted-foreground">
+            <Equal className="h-2.5 w-2.5" /> same
+          </span>
+        )}
+        {!allSame && !noneAvailable && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-champagne/10 border border-champagne/30 px-2.5 py-1 text-[10px] tracking-luxury text-champagne">
+            <GitCompareArrows className="h-2.5 w-2.5" /> diff
+          </span>
+        )}
+      </div>
+      {items.map((p, i) => (
+        <div key={p.id} className={`px-6 sm:px-7 py-5 ${i > 0 ? "md:border-l md:border-champagne/10" : ""}`}>
+          <div className="md:hidden mb-2 text-[11px] tracking-luxury uppercase text-champagne/80">
+            {String.fromCharCode(65 + i)} · {p.name}
+          </div>
+          {render(p, i)}
+        </div>
+      ))}
+    </motion.div>
   );
 }
+
+function PlainCell({
+  value,
+  muted,
+  italic,
+  highlight,
+}: {
+  value: string | null | undefined;
+  muted?: boolean;
+  italic?: boolean;
+  highlight?: boolean;
+}) {
+  const text = value ?? "—";
+  if (highlight) {
+    return (
+      <span className="inline-flex items-center rounded-lg bg-champagne/10 ring-1 ring-champagne/35 px-3 py-1.5 text-[16px] text-ivory font-medium">
+        {text}
+      </span>
+    );
+  }
+  return (
+    <p className={`text-[16px] leading-relaxed ${muted ? "text-muted-foreground/80 italic" : "text-ivory"} ${italic ? "italic" : ""}`}>
+      {text}
+    </p>
+  );
+}
+
+function StatusCell({ value, muted }: { value: string | null | undefined; muted?: boolean }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] tracking-luxury ${
+        muted
+          ? "bg-ivory/5 border border-ivory/15 text-muted-foreground"
+          : "bg-champagne/15 border border-champagne/40 text-champagne"
+      }`}
+    >
+      {value ?? "—"}
+    </span>
+  );
+}
+
+function NumericCell({
+  primary,
+  unit,
+  secondary,
+  isBest,
+  isSame,
+}: {
+  primary: string;
+  unit?: string;
+  secondary?: string;
+  isBest?: boolean;
+  isSame?: boolean;
+}) {
+  return (
+    <div
+      className={`relative inline-block rounded-xl px-4 py-3 ${
+        isBest
+          ? "bg-champagne/12 ring-1 ring-champagne/45 shadow-[0_0_30px_-10px_rgba(200,164,93,0.6)]"
+          : isSame
+          ? "bg-ivory/[0.03] ring-1 ring-ivory/10"
+          : ""
+      }`}
+    >
+      <p
+        className={`font-display leading-tight ${
+          isBest
+            ? "text-champagne text-[26px] sm:text-[28px]"
+            : isSame
+            ? "text-muted-foreground italic text-[22px]"
+            : "text-ivory text-[24px] sm:text-[26px]"
+        }`}
+      >
+        {primary}
+        {unit && <span className="ml-1.5 text-[12px] text-muted-foreground tracking-luxury">{unit}</span>}
+      </p>
+      {secondary && (
+        <p className="mt-0.5 text-[12px] text-muted-foreground">{secondary}</p>
+      )}
+      <p className="mt-1 text-[10px] tracking-luxury text-champagne/70">(Approx.)</p>
+      {isBest && (
+        <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 rounded-full bg-champagne text-lux-black px-2 py-0.5 text-[10px] tracking-luxury font-medium shadow-md">
+          <Trophy className="h-2.5 w-2.5" /> Best
+        </span>
+      )}
+    </div>
+  );
+}
+
+function UnavailableCell() {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-lg bg-ivory/[0.03] border border-ivory/10 px-3 py-1.5 text-[13px] text-muted-foreground/70 italic">
+      <Minus className="h-3.5 w-3.5" /> Not Available
+    </span>
+  );
+}
+
+function LegendChip({
+  tone,
+  icon,
+  children,
+}: {
+  tone: "best" | "diff" | "same";
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  const styles =
+    tone === "best"
+      ? "bg-champagne text-lux-black border-champagne"
+      : tone === "diff"
+      ? "bg-champagne/10 text-champagne border-champagne/40"
+      : "bg-ivory/5 text-muted-foreground border-ivory/15";
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] tracking-luxury ${styles}`}>
+      {icon}
+      {children}
+    </span>
+  );
+}
+
 
 
 
