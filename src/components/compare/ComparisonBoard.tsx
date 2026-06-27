@@ -115,20 +115,20 @@ export function ComparisonBoard() {
   const ready = items.length >= MIN_COMPARE;
 
   return (
-    <section className="mx-auto max-w-7xl px-6">
+    <section className="container-lux">
       <div
-        className="glass rounded-[32px] p-6 sm:p-8"
-        style={{ border: "1px solid var(--glass-border)" }}
+        className="relative overflow-hidden rounded-[36px] border border-champagne/22 bg-gradient-to-b from-soft-black/85 via-lux-black/55 to-soft-black/85 p-6 sm:p-10 shadow-[0_50px_120px_-60px_rgba(200,164,93,0.32)]"
       >
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
+        {/* Folio toolbar */}
+        <div className="flex flex-wrap items-end justify-between gap-6 border-b border-champagne/15 pb-6">
+          <div className="min-w-0">
             <p className="text-[11px] tracking-luxury text-champagne">
               Comparison Suite · {items.length} / {MAX_COMPARE}
             </p>
-            <h2 className="mt-2 font-display text-3xl text-ivory sm:text-4xl">
-              Compose your <span className="gold-text">comparison</span>
+            <h2 className="mt-2 font-display text-[36px] leading-[1.05] text-ivory sm:text-[48px]">
+              Compose your <span className="gold-text italic">comparison</span>
             </h2>
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+            <p className="mt-3 max-w-xl text-[15px] text-muted-foreground">
               Select {MIN_COMPARE} to {MAX_COMPARE} residences. Each becomes a column. Every row stays
               perfectly aligned across selections.
             </p>
@@ -136,12 +136,13 @@ export function ComparisonBoard() {
           {items.length > 0 && (
             <button
               onClick={clear}
-              className="text-[11px] tracking-luxury text-muted-foreground hover:text-champagne transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full border border-champagne/25 px-4 py-2 text-[11px] tracking-luxury text-muted-foreground hover:border-champagne hover:text-champagne transition-colors"
             >
-              Clear all
+              <X className="h-3 w-3" /> Reset
             </button>
           )}
         </div>
+
 
         <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {slots.map((slot, idx) => (

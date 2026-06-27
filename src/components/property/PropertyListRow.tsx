@@ -63,7 +63,7 @@ export function PropertyListRow({ property, index = 0 }: Props) {
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.45, delay: Math.min(index, 6) * 0.04, ease: [0.22, 1, 0.36, 1] }}
         animate={{ opacity: hoverOpen ? 0.35 : 1 }}
-        className="group grid grid-cols-1 gap-5 overflow-hidden rounded-[28px] bg-card p-4 sm:grid-cols-[260px_1fr_auto] sm:items-center sm:gap-7 sm:p-5"
+        className="group grid grid-cols-1 gap-5 overflow-hidden rounded-[28px] bg-card p-4 sm:grid-cols-[320px_minmax(0,1fr)_auto] sm:items-center sm:gap-8 sm:p-6"
         style={{ border: "1px solid var(--glass-border)", contentVisibility: "auto", containIntrinsicSize: "240px", transition: "opacity 0.3s ease" }}
       >
         <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] sm:aspect-[5/3]">
@@ -87,12 +87,12 @@ export function PropertyListRow({ property, index = 0 }: Props) {
             <FavoriteButton propertyId={property.id} propertyName={property.name} propertyImage={property.image} />
           </div>
           {slides.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+            <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1">
               {slides.map((_, i) => (
                 <span
                   key={i}
-                  className={`h-1 rounded-full transition-all duration-500 ${
-                    i === slideIdx ? "w-5 bg-champagne" : "w-1.5 bg-ivory/40"
+                  className={`h-[3px] rounded-full transition-all duration-500 ${
+                    i === slideIdx ? "w-4 bg-champagne" : "w-1 bg-ivory/30"
                   }`}
                 />
               ))}
@@ -100,13 +100,15 @@ export function PropertyListRow({ property, index = 0 }: Props) {
           )}
         </div>
 
-        <div className="min-w-0">
+        <div className="min-w-0 sm:border-l sm:border-champagne/12 sm:pl-7">
           <p className="text-[10px] tracking-luxury text-muted-foreground">{property.configuration}</p>
-          <h3 className="mt-1.5 font-display text-2xl text-ivory">{property.name}</h3>
-          <p className="mt-0.5 text-[11px] tracking-luxury text-champagne">{property.developer}</p>
-          <p className="mt-1 text-sm text-muted-foreground line-clamp-1">{property.tagline}</p>
+          <h3 className="mt-2 font-display text-[28px] leading-tight text-ivory sm:text-[32px]">
+            {property.name}
+          </h3>
+          <p className="mt-1 text-[11px] tracking-luxury text-champagne">{property.developer}</p>
+          <p className="mt-2 text-[14px] text-muted-foreground line-clamp-1">{property.tagline}</p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-ivory/80">
+          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14px] text-ivory/85">
             <span className="inline-flex items-center gap-1.5">
               <MapPin className="h-3.5 w-3.5 text-champagne" /> {property.location}
             </span>
@@ -118,6 +120,7 @@ export function PropertyListRow({ property, index = 0 }: Props) {
             </span>
           </div>
         </div>
+
 
         <div className="flex sm:justify-end">
           <button
