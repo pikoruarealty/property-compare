@@ -63,6 +63,11 @@ import venusUniverse1 from "@/assets/venus-universe-1.jpeg.asset.json";
 import venusUniverse2 from "@/assets/venus-universe-2.jpeg.asset.json";
 import venusUniverse3 from "@/assets/venus-universe-3.jpeg.asset.json";
 import venusUniverse4 from "@/assets/venus-universe-4.jpeg.asset.json";
+import northparkExterior from "@/assets/northpark-exterior.jpg.asset.json";
+import northparkBungalow from "@/assets/northpark-bungalow.jpg.asset.json";
+import northparkHall from "@/assets/northpark-hall.jpg.asset.json";
+import northparkDining from "@/assets/northpark-dining.jpg.asset.json";
+import northparkBedroom from "@/assets/northpark-bedroom.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -191,6 +196,15 @@ const imageOverrides: Record<
       masterBedroom: venusUniverse3.url,
       pool: venusUniverse2.url,
       clubhouse: venusUniverse4.url,
+    },
+  },
+  northpark: {
+    cover: northparkExterior.url,
+    gallery: {
+      livingRoom: northparkHall.url,
+      masterBedroom: northparkBedroom.url,
+      pool: northparkBungalow.url,
+      clubhouse: northparkDining.url,
     },
   },
 };
