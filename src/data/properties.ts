@@ -54,6 +54,11 @@ import kalravAlpinesExterior from "@/assets/kalrav-alpines-exterior.jpg.asset.js
 import kimanaTowers from "@/assets/kimana-towers.jpg.asset.json";
 import kimanaLobby from "@/assets/kimana-lobby.jpg.asset.json";
 import kimanaDusk from "@/assets/kimana-tower-dusk.jpg.asset.json";
+import maruti360Exterior from "@/assets/maruti-360-exterior.jpeg.asset.json";
+import maruti360Bedroom from "@/assets/maruti-360-bedroom.png.asset.json";
+import maruti360PlayArea from "@/assets/maruti-360-play-area.png.asset.json";
+import maruti360Pool from "@/assets/maruti-360-pool.png.asset.json";
+import maruti360View from "@/assets/maruti-360-view.jpg.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
@@ -164,6 +169,15 @@ const imageOverrides: Record<
       masterBedroom: kimanaDusk.url,
       pool: kimanaTowers.url,
       clubhouse: kimanaLobby.url,
+    },
+  },
+  "maruti-360": {
+    cover: maruti360Exterior.url,
+    gallery: {
+      livingRoom: maruti360View.url,
+      masterBedroom: maruti360Bedroom.url,
+      pool: maruti360Pool.url,
+      clubhouse: maruti360PlayArea.url,
     },
   },
 };
