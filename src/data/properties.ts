@@ -137,6 +137,15 @@ const imageOverrides: Record<
       clubhouse: eminence96Gym.url,
     },
   },
+  ikebana: {
+    cover: ikebanaExterior.url,
+    gallery: {
+      livingRoom: ikebanaLiving.url,
+      masterBedroom: ikebanaBedroom.url,
+      pool: ikebanaExterior.url,
+      clubhouse: ikebanaWardrobe.url,
+    },
+  },
 };
 
 
