@@ -91,46 +91,47 @@
 }
 
 .light {
-  /* Light luxury palette — warm cream porcelain, espresso ink, antique gold.
-     Inspired by Rolls-Royce ivory leather + Apple soft-light editorials. */
+  /* Light luxury palette — warm porcelain + espresso ink + deep antique gold.
+     Inspired by Rolls-Royce ivory leather + Apple soft-light editorials.
+     Tuned for high text contrast (AA+) against creamy surfaces. */
   /* Keep --lux-black DARK so image overlay gradients (from-lux-black) stay rich. */
-  --lux-black: #1a1410;
-  --soft-black: #fffaf0;       /* warm ivory card surface */
-  --graphite: #f3e9d2;          /* cream secondary surface */
-  --ivory: #1f1812;             /* espresso ink — used as text */
+  --lux-black: #15100b;
+  --soft-black: #fffaf0;        /* warm ivory card surface */
+  --graphite: #f1e6cc;           /* cream secondary surface */
+  --ivory: #14100b;              /* near-black espresso ink — primary text */
 
-  --champagne-gold: #8a6418;
-  --antique-gold: #604312;
-  --muted-gold: #b08a3a;
+  --champagne-gold: #704c10;     /* deeper for AA on cream */
+  --antique-gold: #4a3208;
+  --muted-gold: #9a7626;
 
-  --background: #f6ecd6;        /* creamy canvas */
-  --foreground: #1f1812;
+  --background: #f4ead2;         /* creamy canvas base */
+  --foreground: #14100b;
   --card: #fffaf0;
-  --card-foreground: #1f1812;
+  --card-foreground: #14100b;
   --popover: #fffaf0;
-  --popover-foreground: #1f1812;
-  --primary: #604312;
+  --popover-foreground: #14100b;
+  --primary: #4a3208;
   --primary-foreground: #fffaf0;
-  --secondary: #efe2c4;
-  --secondary-foreground: #1f1812;
-  --muted: #eadfc4;
-  --muted-foreground: #6b5836;  /* warm bronze for secondary text */
-  --accent: #8a6418;
+  --secondary: #ecdfbe;
+  --secondary-foreground: #14100b;
+  --muted: #e8dbb8;
+  --muted-foreground: #4d3d20;   /* deep bronze, AA on cream */
+  --accent: #704c10;
   --accent-foreground: #fffaf0;
-  --border: rgba(96, 67, 18, 0.18);
-  --input: rgba(96, 67, 18, 0.26);
-  --ring: #8a6418;
+  --border: rgba(74, 50, 8, 0.22);
+  --input: rgba(74, 50, 8, 0.3);
+  --ring: #704c10;
 
-  --gradient-gold: linear-gradient(135deg, #b08a3a 0%, #8a6418 55%, #5b410f 100%);
+  --gradient-gold: linear-gradient(135deg, #9a7626 0%, #704c10 55%, #3d2806 100%);
   --gradient-dark: linear-gradient(180deg, #fbf2dc 0%, #f0e2c0 100%);
-  --gradient-radial-gold: radial-gradient(circle at 30% 20%, rgba(176, 138, 58, 0.18), transparent 60%);
+  --gradient-radial-gold: radial-gradient(circle at 30% 20%, rgba(154, 118, 38, 0.20), transparent 60%);
 
-  --shadow-gold: 0 24px 60px -22px rgba(96, 67, 18, 0.32);
-  --shadow-deep: 0 30px 70px -30px rgba(60, 40, 12, 0.22);
-  --shadow-glass: 0 12px 36px -8px rgba(80, 55, 18, 0.10);
+  --shadow-gold: 0 28px 70px -26px rgba(74, 50, 8, 0.34);
+  --shadow-deep: 0 32px 80px -32px rgba(40, 26, 6, 0.28);
+  --shadow-glass: 0 16px 44px -10px rgba(74, 50, 8, 0.14);
 
-  --glass-bg: rgba(255, 250, 240, 0.78);
-  --glass-border: rgba(96, 67, 18, 0.18);
+  --glass-bg: rgba(255, 250, 240, 0.82);
+  --glass-border: rgba(74, 50, 8, 0.22);
 }
 
 /* Light-mode surface overrides — keep image overlay gradients dark,
@@ -139,27 +140,32 @@
 .light .bg-lux-black\/40,
 .light .bg-lux-black\/60,
 .light .bg-lux-black\/70 {
-  background-color: rgba(255, 250, 240, 0.82) !important;
+  background-color: rgba(255, 250, 240, 0.86) !important;
 }
 .light .bg-soft-black,
 .light .bg-soft-black\/30,
 .light .bg-soft-black\/40,
 .light .bg-soft-black\/60,
 .light .bg-soft-black\/70,
-.light .bg-soft-black\/80 {
+.light .bg-soft-black\/80,
+.light .bg-soft-black\/85 {
   background-color: #fffaf0 !important;
 }
 .light .bg-graphite,
 .light .bg-graphite\/40,
 .light .bg-graphite\/60,
 .light .bg-graphite\/70 {
-  background-color: #f3e9d2 !important;
+  background-color: #f1e6cc !important;
 }
 /* Gradient-from variants on surface containers shouldn't fight the new palette */
 .light .from-soft-black\/80,
 .light .from-soft-black\/30,
-.light .from-soft-black {
-  --tw-gradient-from: rgba(255, 250, 240, 0.92) !important;
+.light .from-soft-black,
+.light .via-lux-black\/55,
+.light .to-soft-black\/85 {
+  --tw-gradient-from: rgba(255, 250, 240, 0.94) !important;
+  --tw-gradient-via: rgba(252, 244, 224, 0.88) !important;
+  --tw-gradient-to: rgba(255, 250, 240, 0.94) !important;
 }
 .light .to-soft-black\/30,
 .light .to-soft-black {
@@ -167,29 +173,56 @@
 }
 
 /* Champagne text reads too pale on cream — deepen to antique gold in light mode */
-.light .text-champagne {
-  color: #7a5419 !important;
+.light .text-champagne,
+.light .text-champagne\/90,
+.light .text-champagne\/80,
+.light .text-champagne\/70 {
+  color: #5a3d0a !important;
+}
+.light .gold-text {
+  background: linear-gradient(135deg, #6b4810 0%, #4a3208 55%, #2e1d04 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
 }
 .light .text-ivory {
-  color: #1f1812 !important;
+  color: #14100b !important;
 }
-.light .text-ivory\/70,
+.light .text-ivory\/95,
+.light .text-ivory\/90 {
+  color: rgba(20, 16, 11, 0.94) !important;
+}
+.light .text-ivory\/85,
 .light .text-ivory\/80,
-.light .text-ivory\/85 {
-  color: rgba(31, 24, 18, 0.78) !important;
+.light .text-ivory\/70 {
+  color: rgba(20, 16, 11, 0.82) !important;
 }
 .light .text-ivory\/60,
 .light .text-ivory\/50 {
-  color: rgba(31, 24, 18, 0.6) !important;
+  color: rgba(20, 16, 11, 0.65) !important;
 }
+.light .text-muted-foreground {
+  color: #4d3d20 !important;
+}
+.light .border-champagne\/12,
+.light .border-champagne\/15,
+.light .border-champagne\/20,
+.light .border-champagne\/25,
 .light .border-champagne\/30,
 .light .border-champagne\/40 {
-  border-color: rgba(122, 84, 25, 0.35) !important;
+  border-color: rgba(112, 76, 16, 0.28) !important;
 }
 .light .bg-champagne\/5,
-.light .bg-champagne\/10 {
-  background-color: rgba(176, 138, 58, 0.12) !important;
+.light .bg-champagne\/10,
+.light .bg-champagne\/12 {
+  background-color: rgba(154, 118, 38, 0.14) !important;
 }
+.light .ring-champagne\/45,
+.light .ring-champagne\/40,
+.light .ring-champagne\/35 {
+  --tw-ring-color: rgba(112, 76, 16, 0.55) !important;
+}
+
 
 
 
