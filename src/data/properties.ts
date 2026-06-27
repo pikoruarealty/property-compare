@@ -157,6 +157,15 @@ const imageOverrides: Record<
       clubhouse: kalravAlpinesExterior.url,
     },
   },
+  kimana: {
+    cover: kimanaTowers.url,
+    gallery: {
+      livingRoom: kimanaLobby.url,
+      masterBedroom: kimanaDusk.url,
+      pool: kimanaTowers.url,
+      clubhouse: kimanaLobby.url,
+    },
+  },
 };
 
 
