@@ -5,7 +5,7 @@ import type { Property } from "@/types/property";
 
 export function PhotoSlideshow({ property }: { property: Property }) {
   const slides = useMemo(() => {
-    const g = (property.gallery ?? {}) as Record<string, string>;
+    const g = (property.gallery ?? {}) as unknown as Record<string, string>;
     const list = [property.image, g.livingRoom, g.masterBedroom, g.pool, g.clubhouse].filter(
       (s): s is string => Boolean(s),
     );
