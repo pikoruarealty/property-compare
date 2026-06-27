@@ -49,16 +49,25 @@ export function PropertyListRow({ property, index = 0 }: Props) {
     return () => clearInterval(id);
   }, [slides.length]);
 
+  const imageRef = useRef<HTMLDivElement>(null);
+  const { open: hoverOpen, enter, leave } = useHoverIntent(250);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, delay: Math.min(index, 6) * 0.04, ease: [0.22, 1, 0.36, 1] }}
-      className="group grid grid-cols-1 gap-5 overflow-hidden rounded-[28px] bg-card p-4 sm:grid-cols-[260px_1fr_auto] sm:items-center sm:gap-7 sm:p-5"
+      whileHover={{ y: -4, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }}
+      className="group grid grid-cols-1 gap-5 rounded-[28px] bg-card p-4 sm:grid-cols-[260px_1fr_auto] sm:items-center sm:gap-7 sm:p-5"
       style={{ border: "1px solid var(--glass-border)", contentVisibility: "auto", containIntrinsicSize: "240px" }}
     >
-      <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] sm:aspect-[5/3]">
+      <div
+        ref={imageRef}
+        onPointerEnter={enter}
+        onPointerLeave={leave}
+        className="relative aspect-[16/10] overflow-hidden rounded-[20px] sm:aspect-[5/3]"
+      >
         <AnimatePresence initial={false} mode="sync">
           <motion.img
             key={slides[slideIdx]}
@@ -66,12 +75,14 @@ export function PropertyListRow({ property, index = 0 }: Props) {
             alt={property.name}
             loading="lazy"
             initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: 1 }}
+            animate={{ opacity: hoverOpen ? 1 : 1, scale: hoverOpen ? 1.06 : 1 }}
             exit={{ opacity: 0, scale: 1.02 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.65, ease: "easeOut" }}
             className="absolute inset-0 h-full w-full object-cover"
+            style={{ filter: hoverOpen ? "brightness(1.08)" : "brightness(1)" }}
           />
         </AnimatePresence>
+
         <span className="glass absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[10px] tracking-luxury text-champagne">
           {property.status}
         </span>
