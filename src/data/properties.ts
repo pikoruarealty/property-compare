@@ -111,6 +111,15 @@ const imageOverrides: Record<
       clubhouse: belrosaView.url,
     },
   },
+  capstone: {
+    cover: capstoneAerial.url,
+    gallery: {
+      livingRoom: capstoneLiving.url,
+      masterBedroom: capstoneCourtyard.url,
+      pool: capstoneCourtyard.url,
+      clubhouse: capstoneGameRoom.url,
+    },
+  },
 };
 
 
