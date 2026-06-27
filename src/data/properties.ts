@@ -275,7 +275,17 @@ const imageOverrides: Record<
       clubhouse: vaikunthPool.url,
     },
   },
+  "godrej-altus": {
+    cover: godrejAltusFacade.url,
+    gallery: {
+      livingRoom: godrejAltusBalcony.url,
+      masterBedroom: godrejAltusBalcony.url,
+      pool: godrejAltusPool.url,
+      clubhouse: godrejAltusFacade.url,
+    },
+  },
 };
+
 
 
 interface RawRow {
