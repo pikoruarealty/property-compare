@@ -124,6 +124,15 @@ const imageOverrides: Record<
       clubhouse: capstoneGameRoom.url,
     },
   },
+  "eminence-96": {
+    cover: eminence96Exterior.url,
+    gallery: {
+      livingRoom: eminence96Lounge.url,
+      masterBedroom: eminence96Lounge.url,
+      pool: eminence96Pool.url,
+      clubhouse: eminence96Gym.url,
+    },
+  },
 };
 
 
