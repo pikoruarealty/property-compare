@@ -317,201 +317,262 @@ function computeWinner(
 }
 
 /* =========================================================================
-   VARIANT 1 — Editorial Spec Sheet
-   Each property becomes a vertical "dossier" column, organised by chapters
-   (Identity · Residences · Spaces · Location & Timeline · Highlights · Verdict)
-   Hairline rules, roman numerals, serif headings, museum-label spacing.
+   VARIANT 2 — Stacked Attribute Cards (with split summary header)
+   - Top: a single split-summary panel per property (image + identity card)
+   - Below: each attribute (Residences, Spaces, Location, Possession,
+     Highlights, Amenities, Verdict) is its OWN horizontal card,
+     containing all selected properties side-by-side.
+   - Apple-keynote feel: generous whitespace, hairline gold rules,
+     champagne accent for the "best" cell.
    ========================================================================= */
 
 function ComparisonGrid({ items }: { items: Property[] }) {
   const cols = items.length;
-  const gridTemplate = cols === 2 ? "md:grid-cols-2" : "md:grid-cols-3";
+  const innerGrid = cols === 2 ? "md:grid-cols-2" : "md:grid-cols-3";
 
-  // pre-compute area winners for subtle "best" mark
+  // winners
   const configWinners: Record<string, number | null> = {};
   CONFIG_KEYS.forEach((k) => {
     const areas = items.map((p) => parseMaxNum(p.configurations[k as ConfigKey]?.area ?? null));
-    const w = computeWinner(areas, "high");
-    configWinners[k] = w?.idx ?? null;
+    configWinners[k] = computeWinner(areas, "high")?.idx ?? null;
   });
-  const superWinner = computeWinner(items.map((p) => parseMaxNum(p.superBuiltUpArea)), "high");
-  const carpetWinner = computeWinner(items.map((p) => parseMaxNum(p.carpetArea)), "high");
+  const superWinner = computeWinner(items.map((p) => parseMaxNum(p.superBuiltUpArea)), "high")?.idx ?? null;
+  const carpetWinner = computeWinner(items.map((p) => parseMaxNum(p.carpetArea)), "high")?.idx ?? null;
 
   return (
-    <div className="relative overflow-hidden rounded-[28px] border border-champagne/25 bg-gradient-to-b from-soft-black/70 via-lux-black/40 to-soft-black/70 shadow-[0_40px_120px_-50px_rgba(200,164,93,0.30)]">
-      <div className="relative px-6 sm:px-10 pt-8 pb-6 border-b border-champagne/20">
-        <div className="flex items-center justify-center gap-3">
+    <div className="space-y-6">
+      {/* Folio header */}
+      <div className="text-center">
+        <div className="inline-flex items-center gap-3">
           <span className="h-px w-10 bg-champagne/60" />
           <span className="text-[10px] tracking-[0.32em] uppercase text-champagne">
             The Comparison Folio
           </span>
           <span className="h-px w-10 bg-champagne/60" />
         </div>
-        <h3 className="mt-4 font-display text-3xl sm:text-4xl text-ivory text-center">
-          A side-by-side <span className="gold-text italic">dossier</span>
+        <h3 className="mt-3 font-display text-3xl sm:text-4xl text-ivory">
+          Side-by-side, <span className="gold-text italic">attribute by attribute</span>
         </h3>
-        <p className="mt-2 text-center text-[12px] text-muted-foreground max-w-xl mx-auto">
-          Curated profiles of {cols} residences — read each column as a feature spread.
-        </p>
       </div>
 
-      <div className={`grid grid-cols-1 ${gridTemplate} divide-y md:divide-y-0 md:divide-x divide-champagne/15`}>
+      {/* Split summary headers (one per property) */}
+      <div className={`grid grid-cols-1 ${innerGrid} gap-5`}>
         {items.map((p, i) => (
-          <Dossier
-            key={p.id}
-            property={p}
-            index={i}
-            configWinners={configWinners}
-            superWinner={superWinner?.idx === i}
-            carpetWinner={carpetWinner?.idx === i}
-          />
+          <SummaryCard key={p.id} property={p} index={i} />
         ))}
+      </div>
+
+      {/* Attribute cards */}
+      <AttributeCard title="The Residences" eyebrow="Chapter I" hint="Configurations & areas">
+        <div className={`grid grid-cols-1 ${innerGrid} divide-y md:divide-y-0 md:divide-x divide-champagne/12`}>
+          {items.map((p, i) => (
+            <div key={p.id} className="p-5 sm:p-6">
+              <SummaryChip property={p} index={i} compact />
+              <dl className="mt-4 space-y-0">
+                {CONFIG_KEYS.map((k) => {
+                  const cfg = p.configurations[k as ConfigKey];
+                  const isWinner = configWinners[k] === i;
+                  return (
+                    <div key={k} className="flex items-start justify-between gap-3 py-2.5 border-b border-dashed border-champagne/12 last:border-b-0">
+                      <dt className="text-[11px] tracking-luxury uppercase text-muted-foreground pt-1">{k}</dt>
+                      <dd className="text-right">
+                        {cfg ? (
+                          <>
+                            <p className={`font-display text-[17px] leading-tight ${isWinner ? "text-champagne" : "text-ivory"}`}>
+                              {cfg.area ?? "—"} <span className="text-[10px] text-muted-foreground">sq ft</span>
+                            </p>
+                            {cfg.carpet && <p className="text-[10px] text-muted-foreground">carpet {cfg.carpet} sq ft</p>}
+                            <p className="text-[9px] tracking-luxury text-champagne/70">(Approx.)</p>
+                          </>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/60">
+                            <Minus className="h-3 w-3" /> n/a
+                          </span>
+                        )}
+                      </dd>
+                    </div>
+                  );
+                })}
+              </dl>
+            </div>
+          ))}
+        </div>
+      </AttributeCard>
+
+      <AttributeCard title="Spaces & Scale" eyebrow="Chapter II" hint="Super built-up vs carpet area">
+        <div className={`grid grid-cols-1 ${innerGrid} divide-y md:divide-y-0 md:divide-x divide-champagne/12`}>
+          {items.map((p, i) => (
+            <div key={p.id} className="p-5 sm:p-6">
+              <SummaryChip property={p} index={i} compact />
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <SpecBlock label="Super Built-up" value={p.superBuiltUpArea} winner={superWinner === i} />
+                <SpecBlock label="Carpet Area" value={p.carpetArea} winner={carpetWinner === i} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </AttributeCard>
+
+      <AttributeCard title="Location & Timeline" eyebrow="Chapter III" hint="Address, possession & status">
+        <div className={`grid grid-cols-1 ${innerGrid} divide-y md:divide-y-0 md:divide-x divide-champagne/12`}>
+          {items.map((p, i) => (
+            <div key={p.id} className="p-5 sm:p-6">
+              <SummaryChip property={p} index={i} compact />
+              <ul className="mt-4 space-y-0">
+                <LiRow label="Address" value={p.location} />
+                <LiRow label="Possession" value={p.possession} />
+                <LiRow label="Project Status" value={p.status} />
+              </ul>
+            </div>
+          ))}
+        </div>
+      </AttributeCard>
+
+      <AttributeCard title="Considered Highlights" eyebrow="Chapter IV" hint="What sets each apart">
+        <div className={`grid grid-cols-1 ${innerGrid} divide-y md:divide-y-0 md:divide-x divide-champagne/12`}>
+          {items.map((p, i) => (
+            <div key={p.id} className="p-5 sm:p-6">
+              <SummaryChip property={p} index={i} compact />
+              {p.advantages?.length ? (
+                <ul className="mt-4 space-y-2.5">
+                  {p.advantages.map((a, idx) => (
+                    <li key={a} className="flex gap-3 text-[13px] text-ivory/85 leading-relaxed">
+                      <span className="text-champagne text-[10px] tracking-luxury pt-1 min-w-[20px]">
+                        {String(idx + 1).padStart(2, "0")}
+                      </span>
+                      <span>{a}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-4 text-[12px] text-muted-foreground">—</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </AttributeCard>
+
+      <AttributeCard title="Amenities" eyebrow="Chapter V" hint="Lifestyle & wellness">
+        <div className={`grid grid-cols-1 ${innerGrid} divide-y md:divide-y-0 md:divide-x divide-champagne/12`}>
+          {items.map((p, i) => (
+            <div key={p.id} className="p-5 sm:p-6">
+              <SummaryChip property={p} index={i} compact />
+              <p className="mt-4 text-[13px] italic text-ivory/85 leading-relaxed">
+                All luxurious amenities are available — curated for an elevated everyday.
+              </p>
+            </div>
+          ))}
+        </div>
+      </AttributeCard>
+
+      <AttributeCard title="Editor's Verdict" eyebrow="Chapter VI" hint="The closing note">
+        <div className={`grid grid-cols-1 ${innerGrid} divide-y md:divide-y-0 md:divide-x divide-champagne/12`}>
+          {items.map((p, i) => (
+            <div key={p.id} className="p-5 sm:p-6">
+              <SummaryChip property={p} index={i} compact />
+              {p.expertNote ? (
+                <blockquote className="mt-4 relative pl-7 italic text-[13px] leading-relaxed text-ivory/95">
+                  <span className="absolute left-0 -top-2 font-display text-4xl text-champagne leading-none">"</span>
+                  {p.expertNote}
+                </blockquote>
+              ) : (
+                <p className="mt-4 text-[12px] text-muted-foreground">—</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </AttributeCard>
+    </div>
+  );
+}
+
+/* ---------- Summary header (split panel) ---------- */
+function SummaryCard({ property: p, index }: { property: Property; index: number }) {
+  const letter = String.fromCharCode(65 + index);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      className="relative overflow-hidden rounded-[24px] border border-champagne/25 bg-gradient-to-br from-soft-black/80 to-lux-black/60 shadow-[0_30px_80px_-50px_rgba(200,164,93,0.35)]"
+    >
+      <div className="grid grid-cols-[42%_58%]">
+        {/* LEFT — image */}
+        <div className="relative h-full min-h-[180px]">
+          <PhotoSlideshow property={p} />
+          <div className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-lux-black/70 backdrop-blur px-2.5 py-0.5 text-[10px] tracking-luxury text-champagne border border-champagne/30">
+            {letter}
+          </div>
+        </div>
+        {/* RIGHT — identity */}
+        <div className="flex flex-col justify-center px-5 py-4 border-l border-champagne/15">
+          <p className="text-[9px] tracking-[0.32em] uppercase text-champagne/90 truncate">
+            {p.developer || "—"}
+          </p>
+          <h4 className="mt-1 font-display text-[20px] leading-tight text-ivory italic line-clamp-2">
+            {p.name}
+          </h4>
+          <p className="mt-1.5 text-[11px] text-muted-foreground line-clamp-1">{p.location}</p>
+          <div className="mt-3 inline-flex items-center gap-2 self-start rounded-full border border-champagne/25 px-2.5 py-0.5 text-[9px] tracking-luxury text-champagne">
+            {p.status}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ---------- Compact chip used at top of every attribute card column ---------- */
+function SummaryChip({ property: p, index, compact }: { property: Property; index: number; compact?: boolean }) {
+  const letter = String.fromCharCode(65 + index);
+  return (
+    <div className="flex items-center gap-3 pb-3 border-b border-champagne/12">
+      <div className="grid h-7 w-7 place-items-center rounded-full border border-champagne/30 text-[10px] tracking-luxury text-champagne">
+        {letter}
+      </div>
+      <div className="min-w-0">
+        <p className={`font-display text-ivory leading-tight truncate ${compact ? "text-[14px]" : "text-[16px]"}`}>
+          {p.name}
+        </p>
+        <p className="text-[10px] tracking-luxury uppercase text-muted-foreground truncate">
+          {p.developer}
+        </p>
       </div>
     </div>
   );
 }
 
-function Dossier({
-  property: p,
-  index,
-  configWinners,
-  superWinner,
-  carpetWinner,
-}: {
-  property: Property;
-  index: number;
-  configWinners: Record<string, number | null>;
-  superWinner: boolean;
-  carpetWinner: boolean;
-}) {
-  const letter = String.fromCharCode(65 + index);
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="relative flex flex-col"
-    >
-      <div className="relative">
-        <div className="aspect-[4/3] overflow-hidden">
-          <PhotoSlideshow property={p} />
-        </div>
-        <div className="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-lux-black/70 backdrop-blur px-3 py-1 text-[10px] tracking-luxury text-champagne border border-champagne/30">
-          Dossier · {letter}
-        </div>
-      </div>
-
-      <header className="px-6 sm:px-7 pt-7 pb-6 text-center border-b border-champagne/12">
-        <p className="text-[10px] tracking-[0.32em] uppercase text-champagne/90">{p.developer || "—"}</p>
-        <h4 className="mt-2 font-display text-[26px] leading-tight text-ivory italic">{p.name}</h4>
-        <p className="mt-2 text-[12px] text-muted-foreground">{p.location}</p>
-        <div className="mt-4 flex items-center justify-center gap-2">
-          <span className="h-px w-8 bg-champagne/40" />
-          <span className="text-[10px] tracking-luxury text-champagne">{p.status}</span>
-          <span className="h-px w-8 bg-champagne/40" />
-        </div>
-      </header>
-
-      <Chapter numeral="I" title="The Residences">
-        <dl className="space-y-0">
-          {CONFIG_KEYS.map((k) => {
-            const cfg = p.configurations[k as ConfigKey];
-            const isWinner = configWinners[k] === index;
-            return (
-              <div key={k} className="flex items-start justify-between gap-3 py-3 border-b border-dashed border-champagne/12 last:border-b-0">
-                <dt className="text-[11px] tracking-luxury uppercase text-muted-foreground pt-1">{k}</dt>
-                <dd className="text-right">
-                  {cfg ? (
-                    <div className="space-y-0.5">
-                      <p className={`font-display text-[18px] leading-tight ${isWinner ? "text-champagne" : "text-ivory"}`}>
-                        {cfg.area ? cfg.area : "—"}
-                        {cfg.area && <span className="text-[10px] text-muted-foreground ml-1">sq ft</span>}
-                      </p>
-                      {cfg.carpet && (
-                        <p className="text-[10px] text-muted-foreground">carpet {cfg.carpet} sq ft</p>
-                      )}
-                      <p className="text-[9px] tracking-luxury text-champagne/70">(Approx.)</p>
-                    </div>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/60">
-                      <Minus className="h-3 w-3" /> n/a
-                    </span>
-                  )}
-                </dd>
-              </div>
-            );
-          })}
-        </dl>
-      </Chapter>
-
-      <Chapter numeral="II" title="Spaces & Scale">
-        <div className="grid grid-cols-2 gap-3">
-          <SpecBlock label="Super Built-up" value={p.superBuiltUpArea} winner={superWinner} />
-          <SpecBlock label="Carpet Area" value={p.carpetArea} winner={carpetWinner} />
-        </div>
-      </Chapter>
-
-      <Chapter numeral="III" title="Location & Timeline">
-        <ul className="space-y-0">
-          <LiRow label="Address" value={p.location} />
-          <LiRow label="Possession" value={p.possession} />
-          <LiRow label="Project Status" value={p.status} />
-        </ul>
-      </Chapter>
-
-      {p.advantages?.length ? (
-        <Chapter numeral="IV" title="Considered Highlights">
-          <ul className="space-y-2.5">
-            {p.advantages.map((a, idx) => (
-              <li key={a} className="flex gap-3 text-[13px] text-ivory/85 leading-relaxed">
-                <span className="text-champagne text-[10px] tracking-luxury pt-1 min-w-[20px]">
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <span>{a}</span>
-              </li>
-            ))}
-          </ul>
-        </Chapter>
-      ) : null}
-
-      <Chapter numeral="V" title="Amenities">
-        <p className="text-[13px] italic text-ivory/85 leading-relaxed">
-          All luxurious amenities are available — curated for an elevated everyday.
-        </p>
-      </Chapter>
-
-      {p.expertNote ? (
-        <Chapter numeral="VI" title="Editor's Verdict" final>
-          <blockquote className="relative pl-7 italic text-[13px] leading-relaxed text-ivory/95">
-            <span className="absolute left-0 -top-2 font-display text-4xl text-champagne leading-none">"</span>
-            {p.expertNote}
-          </blockquote>
-        </Chapter>
-      ) : null}
-    </motion.article>
-  );
-}
-
-function Chapter({
-  numeral,
+/* ---------- Attribute card wrapper ---------- */
+function AttributeCard({
   title,
+  eyebrow,
+  hint,
   children,
-  final,
 }: {
-  numeral: string;
   title: string;
+  eyebrow: string;
+  hint?: string;
   children: React.ReactNode;
-  final?: boolean;
 }) {
   return (
-    <section className={`px-6 sm:px-7 py-6 ${final ? "" : "border-b border-champagne/12"}`}>
-      <div className="flex items-baseline gap-3 mb-4">
-        <span className="font-display italic text-champagne text-[22px] leading-none">{numeral}</span>
-        <span className="h-px flex-1 bg-champagne/20" />
-        <span className="text-[10px] tracking-[0.28em] uppercase text-champagne/90">{title}</span>
-      </div>
+    <motion.section
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="overflow-hidden rounded-[24px] border border-champagne/20 bg-soft-black/40 backdrop-blur"
+    >
+      <header className="flex flex-wrap items-end justify-between gap-2 px-5 sm:px-6 pt-5 pb-4 border-b border-champagne/15">
+        <div>
+          <p className="text-[10px] tracking-[0.32em] uppercase text-champagne">{eyebrow}</p>
+          <h4 className="mt-1 font-display text-[22px] sm:text-[24px] text-ivory">{title}</h4>
+        </div>
+        {hint && (
+          <p className="text-[11px] tracking-luxury text-muted-foreground">{hint}</p>
+        )}
+      </header>
       {children}
-    </section>
+    </motion.section>
   );
 }
 
@@ -537,11 +598,12 @@ function SpecBlock({
 
 function LiRow({ label, value }: { label: string; value: string | null | undefined }) {
   return (
-    <li className="flex items-start justify-between gap-3 py-3 border-b border-dashed border-champagne/12 last:border-b-0 text-[13px]">
+    <li className="flex items-start justify-between gap-3 py-2.5 border-b border-dashed border-champagne/12 last:border-b-0 text-[13px]">
       <span className="text-[10px] tracking-luxury uppercase text-muted-foreground pt-1">{label}</span>
       <span className="text-right text-ivory/90 max-w-[60%]">{v(value)}</span>
     </li>
   );
 }
+
 
 
