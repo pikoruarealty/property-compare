@@ -24,6 +24,27 @@ export function PropertyListRow({ property, index = 0 }: Props) {
     else if (!selectedFlag) toast.success(`${property.name} added to compare`);
   };
 
+  const slides = useMemo(() => {
+    const g = property.gallery ?? ({} as Record<string, string>);
+    const list = [
+      property.image,
+      g.livingRoom,
+      g.masterBedroom,
+      g.pool,
+      g.clubhouse,
+    ].filter((src): src is string => Boolean(src));
+    return Array.from(new Set(list));
+  }, [property]);
+
+  const [slideIdx, setSlideIdx] = useState(0);
+  useEffect(() => {
+    if (slides.length <= 1) return;
+    const id = setInterval(() => {
+      setSlideIdx((i) => (i + 1) % slides.length);
+    }, 2000);
+    return () => clearInterval(id);
+  }, [slides.length]);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 12 }}
@@ -34,19 +55,39 @@ export function PropertyListRow({ property, index = 0 }: Props) {
       style={{ border: "1px solid var(--glass-border)", contentVisibility: "auto", containIntrinsicSize: "240px" }}
     >
       <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] sm:aspect-[5/3]">
-        <img
-          src={property.image}
-          alt={property.name}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-        />
-        <span className="glass absolute left-3 top-3 rounded-full px-3 py-1 text-[10px] tracking-luxury text-champagne">
+        <AnimatePresence initial={false} mode="sync">
+          <motion.img
+            key={slides[slideIdx]}
+            src={slides[slideIdx]}
+            alt={property.name}
+            loading="lazy"
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </AnimatePresence>
+        <span className="glass absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[10px] tracking-luxury text-champagne">
           {property.status}
         </span>
-        <div className="absolute right-3 top-3">
+        <div className="absolute right-3 top-3 z-10">
           <FavoriteButton propertyId={property.id} propertyName={property.name} propertyImage={property.image} />
         </div>
+        {slides.length > 1 && (
+          <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
+            {slides.map((_, i) => (
+              <span
+                key={i}
+                className={`h-1 rounded-full transition-all duration-500 ${
+                  i === slideIdx ? "w-5 bg-champagne" : "w-1.5 bg-ivory/40"
+                }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
+
 
       <div className="min-w-0">
         <p className="text-[10px] tracking-luxury text-muted-foreground">
