@@ -198,6 +198,15 @@ const imageOverrides: Record<
       clubhouse: venusUniverse4.url,
     },
   },
+  northpark: {
+    cover: northparkExterior.url,
+    gallery: {
+      livingRoom: northparkHall.url,
+      masterBedroom: northparkBedroom.url,
+      pool: northparkBungalow.url,
+      clubhouse: northparkDining.url,
+    },
+  },
 };
 
 
