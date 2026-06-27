@@ -42,6 +42,10 @@ import capstoneAerial from "@/assets/capstone-aerial.jpg.asset.json";
 import capstoneGameRoom from "@/assets/capstone-gameroom.jpg.asset.json";
 import capstoneHomeTheater from "@/assets/capstone-hometheater.jpg.asset.json";
 import capstoneKidsPlay from "@/assets/capstone-kidsplay.jpg.asset.json";
+import eminence96Exterior from "@/assets/eminence-96-exterior.png.asset.json";
+import eminence96Gym from "@/assets/eminence-96-gym.webp.asset.json";
+import eminence96Pool from "@/assets/eminence-96-pool.webp.asset.json";
+import eminence96Lounge from "@/assets/eminence-96-lounge.webp.asset.json";
 
 const sharedGallery = {
   livingRoom: gLiving,
