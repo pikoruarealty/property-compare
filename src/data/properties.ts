@@ -83,6 +83,15 @@ const imageOverrides: Record<
       clubhouse: avantPark.url,
     },
   },
+  belagio: {
+    cover: belagioExterior.url,
+    gallery: {
+      livingRoom: belagioLibrary.url,
+      masterBedroom: belagioTower.url,
+      pool: belagioPool.url,
+      clubhouse: belagioLibrary.url,
+    },
+  },
 };
 
 
