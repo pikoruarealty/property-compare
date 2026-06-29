@@ -25,7 +25,7 @@ export function OverviewSection({ properties }: OverviewSectionProps) {
   return (
     <Section
       id="overview"
-      eyebrow="01 · Overview"
+      eyebrow="Overview"
       title="The essentials, side by side"
       description="A quiet read of what defines each residence."
     >

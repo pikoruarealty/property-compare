@@ -7,7 +7,7 @@ export function AdvantagesSection({ properties }: { properties: Property[] }) {
   return (
     <Section
       id="advantages"
-      eyebrow="03 · Advantages"
+      eyebrow="Advantages"
       title="What sets each residence apart"
     >
       <div
