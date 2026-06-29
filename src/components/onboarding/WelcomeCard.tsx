@@ -23,7 +23,7 @@ export function WelcomeCard() {
 
       <h2 className="mt-6 font-display text-4xl text-[#F7F3EA]">Welcome, {firstName}.</h2>
       <p
-        className="mt-3 font-display text-2xl italic text-[#C8A45D]"
+        className="mt-3 font-display text-2xl text-[#C8A45D]"
         style={{ fontStyle: "normal" }}
       >
         Your private collection awaits.

@@ -447,7 +447,7 @@ function Row({
 
 function Plain({ value, italic }: { value: string | null | undefined; italic?: boolean }) {
   return (
-    <p className={`text-[14px] leading-snug text-foreground ${italic ? "italic text-foreground/75" : ""}`}>
+    <p className={`text-[14px] leading-snug text-foreground ${italic ? "text-foreground/75" : ""}`}>
       {value ?? DASH}
     </p>
   );
