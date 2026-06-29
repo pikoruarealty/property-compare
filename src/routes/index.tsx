@@ -125,8 +125,9 @@ function Index() {
                 className="font-display text-[44px] leading-[1.02] text-ivory sm:text-[68px] lg:text-[78px]"
                 style={{ maxWidth: "18ch" }}
               >
-                Compare residences with the eye of a{" "}
-                <span className="gold-text italic">collector</span>.
+                India's Smartest Property{" "}
+                <span className="gold-text italic">Comparison</span> Platform.
+
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
@@ -262,17 +263,15 @@ function Index() {
   );
 }
 
-function ChapterMark({ index, label }: { index: number; label: string }) {
+function ChapterMark({ label }: { index?: number; label: string }) {
   return (
     <div className="flex items-center gap-4">
-      <span className="font-display text-[28px] text-champagne leading-none tabular-nums">
-        {String(index).padStart(2, "0")}
-      </span>
       <span className="h-px w-12 bg-champagne/50" />
       <span className="text-[11px] tracking-luxury text-champagne">{label}</span>
     </div>
   );
 }
+
 
 function RowDivider({ n }: { n: number }) {
   return (
