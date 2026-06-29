@@ -403,10 +403,35 @@ function Row({
   gridTpl: string;
   render: (p: Property, i: number) => React.ReactNode;
 }) {
+  const info = TERM_INFO[label];
+  const [open, setOpen] = useState(false);
   return (
     <div className={`grid grid-cols-1 ${gridTpl} border-b border-border last:border-b-0`}>
-      <div className="px-4 py-2.5 md:border-r md:border-border bg-muted/10">
+      <div className="px-4 py-2.5 md:border-r md:border-border bg-muted/10 flex items-center gap-1.5">
         <span className="text-[12px] text-muted-foreground">{label}</span>
+        {info && (
+          <>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/80 hover:text-foreground transition-colors"
+              aria-label={`View more about ${label}`}
+            >
+              <Info className="h-3 w-3" />
+              <span className="hidden sm:inline">View more</span>
+            </button>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="font-display text-xl">{info.title}</DialogTitle>
+                  <DialogDescription className="pt-2 text-[14px] leading-relaxed text-foreground/80">
+                    {info.body}
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </>
+        )}
       </div>
       {items.map((p, i) => (
         <div key={p.id} className={`px-4 py-2.5 ${i > 0 ? "md:border-l md:border-border" : ""}`}>
