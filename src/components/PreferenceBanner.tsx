@@ -67,6 +67,23 @@ export function PreferenceBanner() {
       <div className="flex-1" />
       <button
         type="button"
+        onClick={clearAll}
+        className="text-[12px] transition-colors"
+        style={{ color: "rgba(247,243,234,0.5)" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "#F7F3EA")}
+        onMouseLeave={(e) =>
+          (e.currentTarget.style.color = "rgba(247,243,234,0.5)")
+        }
+      >
+        Clear all
+      </button>
+      <span
+        className="h-4 w-px"
+        style={{ backgroundColor: "rgba(247,243,234,0.1)" }}
+        aria-hidden
+      />
+      <button
+        type="button"
         onClick={openQuizForEdit}
         className="text-[12px] transition-colors"
         style={{ color: "rgba(247,243,234,0.5)" }}
@@ -77,6 +94,7 @@ export function PreferenceBanner() {
       >
         Edit preferences
       </button>
+
     </div>
   );
 }
