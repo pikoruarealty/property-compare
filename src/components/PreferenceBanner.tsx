@@ -4,7 +4,19 @@ import { saveQuizAnswers as saveQuizAnswersFn } from "@/lib/profile.functions";
 
 
 export function PreferenceBanner() {
-  const { quizAnswers, openQuizForEdit } = useOnboarding();
+  const { quizAnswers, openQuizForEdit, setQuizAnswers } = useOnboarding();
+  const saveQuiz = useServerFn(saveQuizAnswersFn);
+
+  const clearAll = () => {
+    setQuizAnswers(null);
+    try {
+      window.localStorage.removeItem("pikorua:quiz-answers");
+    } catch {
+      // ignore
+    }
+    saveQuiz({ data: { answers: null } }).catch(() => {});
+  };
+
 
   if (!quizAnswers) return null;
 
