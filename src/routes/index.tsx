@@ -125,7 +125,7 @@ function Index() {
                 style={{ maxWidth: "18ch" }}
               >
                 India's Smartest Property{" "}
-                <span className="gold-text italic">Comparison</span> Platform.
+                <span className="gold-text">Comparison</span> Platform.
 
               </motion.h1>
               <motion.p
@@ -201,7 +201,7 @@ function Index() {
           <div className="mt-8 flex flex-wrap items-end justify-between gap-6 border-b border-champagne/15 pb-6">
             <div>
               <h2 className="font-display text-[36px] leading-tight text-ivory sm:text-[48px]">
-                Residences in <span className="gold-text italic">focus</span>
+                Residences in <span className="gold-text">focus</span>
               </h2>
               <p className="mt-2 max-w-lg text-[15px] text-muted-foreground">
                 Hover any residence for the expanded card. Tap "Add to Compare" to bring it into the Suite above.

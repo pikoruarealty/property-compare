@@ -353,7 +353,7 @@ function ComparisonGrid({ items }: { items: Property[] }) {
         gridTpl={gridTpl}
         render={(p) =>
           p.expertNote ? (
-            <p className="text-[13px] leading-relaxed text-foreground/85 italic">"{p.expertNote}"</p>
+            <p className="text-[13px] leading-relaxed text-foreground/85">"{p.expertNote}"</p>
           ) : (
             <Plain value={null} />
           )
@@ -447,7 +447,7 @@ function Row({
 
 function Plain({ value, italic }: { value: string | null | undefined; italic?: boolean }) {
   return (
-    <p className={`text-[14px] leading-snug text-foreground ${italic ? "italic text-foreground/75" : ""}`}>
+    <p className={`text-[14px] leading-snug text-foreground ${italic ? "text-foreground/75" : ""}`}>
       {value ?? DASH}
     </p>
   );
@@ -455,7 +455,7 @@ function Plain({ value, italic }: { value: string | null | undefined; italic?: b
 
 function NotAvail() {
   return (
-    <span className="inline-flex items-center gap-1 text-[12px] text-muted-foreground italic">
+    <span className="inline-flex items-center gap-1 text-[12px] text-muted-foreground">
       <Minus className="h-3 w-3" /> Not available
     </span>
   );
