@@ -96,14 +96,16 @@ export function OnboardingOverlay() {
                 <X className="h-4 w-4" />
               </button>
             )}
-            {phase === "auth" && <AuthFlow />}
-            {phase === "welcome" && <WelcomeCard />}
-            {phase === "quiz" && (
-              <PropertyQuiz
-                initialAnswers={quizEditMode ? quizAnswers ?? undefined : undefined}
-                editMode={quizEditMode}
-              />
-            )}
+            <div className="relative flex flex-1 flex-col" style={{ zIndex: 1 }}>
+              {phase === "auth" && <AuthFlow />}
+              {phase === "welcome" && <WelcomeCard />}
+              {phase === "quiz" && (
+                <PropertyQuiz
+                  initialAnswers={quizEditMode ? quizAnswers ?? undefined : undefined}
+                  editMode={quizEditMode}
+                />
+              )}
+            </div>
           </motion.div>
         </motion.div>
       )}
