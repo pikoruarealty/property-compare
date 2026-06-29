@@ -285,6 +285,18 @@ function ChapterMark({ index, label }: { index: number; label: string }) {
   );
 }
 
+function RowDivider({ n }: { n: number }) {
+  return (
+    <div className="my-1 flex items-center gap-4 px-2 opacity-60">
+      <span className="h-px flex-1 bg-champagne/12" />
+      <span className="text-[10px] tracking-luxury text-champagne/60">
+        {String(n).padStart(2, "0")}
+      </span>
+      <span className="h-px flex-1 bg-champagne/12" />
+    </div>
+  );
+}
+
 function MiniIndexRow({
   num,
   label,
