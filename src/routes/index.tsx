@@ -40,6 +40,7 @@ const CHAPTERS = [
 function Index() {
   const heroRef = useRef<HTMLElement | null>(null);
   const comparisonRef = useRef<HTMLDivElement | null>(null);
+  const collectionRef = useRef<HTMLElement | null>(null);
   const [activeChapter, setActiveChapter] = useState("hero");
   const { quizAnswers } = useOnboarding();
 
