@@ -8,6 +8,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ComparisonBoard } from "@/components/compare/ComparisonBoard";
 import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
 import { PreferenceBanner } from "@/components/PreferenceBanner";
+import { PreferencePanel } from "@/components/PreferencePanel";
 import { useOnboarding } from "@/context/OnboardingContext";
 import type { Property } from "@/types/property";
 
