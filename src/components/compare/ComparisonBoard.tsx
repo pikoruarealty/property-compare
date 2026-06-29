@@ -1,107 +1,16 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, ChevronDown, Sparkles, Check, Minus, TrendingDown, TrendingUp, Equal, GitCompareArrows, Trophy } from "lucide-react";
+import { Plus, X, ChevronDown, Sparkles, Minus, Trophy } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import type { ConfigDetail, ConfigKey, Property } from "@/types/property";
+import type { ConfigKey, Property } from "@/types/property";
 import { CONFIG_KEYS } from "@/types/property";
 import { toast } from "sonner";
 import { PhotoSlideshow } from "@/components/compare/PhotoSlideshow";
 
-
-const DASH = "-";
-const v = (x: string | null | undefined) => (x && String(x).trim() ? String(x) : DASH);
-
-function ConfigCell({ cfg }: { cfg: ConfigDetail | undefined }) {
-  if (!cfg) {
-    return (
-      <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-        <Minus className="h-3.5 w-3.5" /> Not Available
-      </span>
-    );
-  }
-  return (
-    <div className="space-y-2">
-      <div className="inline-flex items-center gap-1.5 text-[12px] tracking-luxury text-champagne">
-        <Check className="h-3.5 w-3.5" /> Available
-      </div>
-      <div className="grid grid-cols-1 gap-1 text-[15px] text-ivory">
-        {cfg.area && <div><span className="text-muted-foreground">Super:</span> {cfg.area} sq ft (Approx.)</div>}
-        {cfg.carpet && <div><span className="text-muted-foreground">Carpet:</span> {cfg.carpet} sq ft (Approx.)</div>}
-      </div>
-    </div>
-  );
-
-}
-
-type RowDef = {
-  label: string;
-  render: (p: Property) => React.ReactNode;
-  emphasis?: boolean;
-};
-
-const buildRows = (): RowDef[] => [
-  { label: "Developer", render: (p) => v(p.developer) },
-  ...CONFIG_KEYS.map<RowDef>((k) => ({
-    label: k,
-    render: (p) => <ConfigCell cfg={p.configurations[k as ConfigKey]} />,
-  })),
-  { label: "Location", render: (p) => v(p.location) },
-  { label: "Status", render: (p) => v(p.status) },
-    { label: "Super Built-up Area", render: (p) => p.superBuiltUpArea ? `${p.superBuiltUpArea} (Approx.)` : DASH },
-    { label: "Carpet Area", render: (p) => p.carpetArea ? `${p.carpetArea} (Approx.)` : DASH },
-  {
-    label: "Amenities",
-    render: (p) =>
-      p.amenities?.length ? (
-        <div className="flex flex-wrap gap-1.5">
-          {p.amenities.map((a) => (
-            <span
-              key={a}
-              className="rounded-full border border-champagne/15 bg-graphite/60 px-2.5 py-1 text-[11px] text-ivory/85"
-            >
-              {a}
-            </span>
-          ))}
-        </div>
-      ) : (
-        DASH
-      ),
-  },
-  { label: "Possession", render: (p) => v(p.possession) },
-  {
-    label: "Key Advantages",
-    render: (p) =>
-      p.advantages?.length ? (
-        <ul className="list-disc space-y-1 pl-4 text-[13px] text-ivory/90 marker:text-champagne">
-          {p.advantages.map((a) => (
-            <li key={a}>{a}</li>
-          ))}
-        </ul>
-      ) : (
-        DASH
-      ),
-  },
-  {
-    label: "Expert Verdict",
-    emphasis: true,
-    render: (p) =>
-      p.expertNote ? (
-        <div className="rounded-2xl border border-champagne/30 bg-gradient-to-br from-champagne/10 to-transparent p-4 text-[13px] leading-relaxed text-ivory/95">
-          {p.expertNote}
-        </div>
-      ) : (
-        DASH
-      ),
-  },
-  {
-    label: "Photo",
-    render: (p) => <PhotoSlideshow property={p} />,
-  },
-
-];
+const DASH = "—";
 
 export function ComparisonBoard() {
   const hydrated = useHydrated();
@@ -116,35 +25,29 @@ export function ComparisonBoard() {
 
   return (
     <section className="container-lux">
-      <div
-        className="relative overflow-hidden rounded-[36px] border border-champagne/22 bg-gradient-to-b from-soft-black/85 via-lux-black/55 to-soft-black/85 p-6 sm:p-10 shadow-[0_50px_120px_-60px_rgba(200,164,93,0.32)]"
-      >
-        {/* Folio toolbar */}
-        <div className="flex flex-wrap items-end justify-between gap-6 border-b border-champagne/15 pb-6">
+      <div className="rounded-2xl border border-border bg-card/40 p-5 sm:p-7">
+        {/* Toolbar */}
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-4">
           <div className="min-w-0">
-            <p className="text-[11px] tracking-luxury text-champagne">
-              Comparison Suite · {items.length} / {MAX_COMPARE}
+            <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+              Comparison · {items.length} / {MAX_COMPARE}
             </p>
-            <h2 className="mt-2 font-display text-[36px] leading-[1.05] text-ivory sm:text-[48px]">
-              Compose your <span className="gold-text italic">comparison</span>
+            <h2 className="mt-1.5 font-display text-[24px] sm:text-[28px] leading-tight text-foreground">
+              Compare residences
             </h2>
-            <p className="mt-3 max-w-xl text-[15px] text-muted-foreground">
-              Select {MIN_COMPARE} to {MAX_COMPARE} residences. Each becomes a column. Every row stays
-              perfectly aligned across selections.
-            </p>
           </div>
           {items.length > 0 && (
             <button
               onClick={clear}
-              className="inline-flex items-center gap-1.5 rounded-full border border-champagne/25 px-4 py-2 text-[11px] tracking-luxury text-muted-foreground hover:border-champagne hover:text-champagne transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3.5 py-1.5 text-[11px] tracking-wide text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
             >
               <X className="h-3 w-3" /> Reset
             </button>
           )}
         </div>
 
-
-        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Slot picker */}
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {slots.map((slot, idx) => (
             <SlotCard
               key={idx}
@@ -164,11 +67,11 @@ export function ComparisonBoard() {
           {ready ? (
             <motion.div
               key="grid"
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-8"
+              transition={{ duration: 0.3 }}
+              className="mt-6"
             >
               <ComparisonGrid items={items} />
             </motion.div>
@@ -178,11 +81,11 @@ export function ComparisonBoard() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="mt-8 flex flex-col items-center justify-center rounded-[24px] border border-dashed border-champagne/25 px-6 py-12 text-center"
+              className="mt-6 flex flex-col items-center justify-center rounded-xl border border-dashed border-border px-6 py-10 text-center"
             >
-              <Sparkles className="h-5 w-5 text-champagne" />
-              <p className="mt-3 text-sm text-muted-foreground">
-                Add at least {MIN_COMPARE} properties to reveal the comparison.
+              <Sparkles className="h-4 w-4 text-muted-foreground" />
+              <p className="mt-2 text-[13px] text-muted-foreground">
+                Add at least {MIN_COMPARE} properties to compare.
               </p>
             </motion.div>
           )}
@@ -211,25 +114,26 @@ function SlotCard({
     return (
       <motion.div
         layout
-        initial={{ opacity: 0, scale: 0.96 }}
+        initial={{ opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative overflow-hidden rounded-[24px] bg-soft-black"
-        style={{ border: "1px solid var(--glass-border)" }}
+        className="relative overflow-hidden rounded-xl border border-border bg-card"
       >
-        <div className="relative aspect-[16/10] overflow-hidden">
+        <div className="relative aspect-[16/9] overflow-hidden">
           <img src={slot.image} alt={slot.name} className="h-full w-full object-cover" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-lux-black via-lux-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           <button
             onClick={() => onRemove(slot.id)}
-            aria-label="Remove from comparison"
-            className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full glass text-ivory hover:text-champagne transition-colors"
+            aria-label="Remove"
+            className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-black/55 text-white hover:bg-black/80 transition-colors"
           >
-            <X className="h-4 w-4" />
+            <X className="h-3.5 w-3.5" />
           </button>
-          <div className="absolute bottom-3 left-4 right-4">
-            <p className="text-[10px] tracking-luxury text-champagne">Slot 0{index + 1}</p>
-            <h3 className="mt-0.5 font-display text-lg text-ivory line-clamp-1">{slot.name}</h3>
-            <p className="text-xs text-muted-foreground line-clamp-1">{slot.developer} · {slot.location}</p>
+          <div className="absolute bottom-2.5 left-3 right-3 text-white">
+            <p className="text-[9px] uppercase tracking-[0.24em] opacity-80">
+              {String.fromCharCode(65 + index)}
+            </p>
+            <h3 className="mt-0.5 font-display text-[15px] leading-tight line-clamp-1">{slot.name}</h3>
+            <p className="text-[11px] opacity-80 line-clamp-1">{slot.developer}</p>
           </div>
         </div>
       </motion.div>
@@ -241,27 +145,19 @@ function SlotCard({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button className="group flex h-full min-h-[180px] w-full flex-col items-center justify-center gap-3 rounded-[24px] border border-dashed border-champagne/30 bg-soft-black/40 px-6 py-10 text-center transition-all duration-300 hover:border-champagne hover:bg-soft-black">
-          <div className="grid h-12 w-12 place-items-center rounded-full gold-border text-champagne transition-transform duration-300 group-hover:scale-110">
-            <Plus className="h-5 w-5" />
+        <button className="group flex h-full min-h-[140px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-transparent px-6 py-8 text-center transition-colors hover:border-foreground/40 hover:bg-muted/30">
+          <div className="grid h-9 w-9 place-items-center rounded-full border border-border text-muted-foreground group-hover:text-foreground group-hover:border-foreground/40 transition-colors">
+            <Plus className="h-4 w-4" />
           </div>
-          <div>
-            <p className="text-[10px] tracking-luxury text-champagne">Slot 0{index + 1}</p>
-            <p className="mt-1 text-sm text-ivory/90">Add a property</p>
-          </div>
-          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+          <p className="text-[12px] text-foreground/80">Add property {String.fromCharCode(65 + index)}</p>
+          <ChevronDown className="h-3 w-3 text-muted-foreground" />
         </button>
       </PopoverTrigger>
-      <PopoverContent
-        align="center"
-        className="w-[320px] rounded-2xl border-champagne/20 bg-soft-black p-2"
-      >
+      <PopoverContent align="center" className="w-[300px] rounded-xl border-border bg-popover p-1.5">
         {available.length === 0 ? (
-          <p className="px-3 py-6 text-center text-xs text-muted-foreground">
-            All properties already added.
-          </p>
+          <p className="px-3 py-5 text-center text-xs text-muted-foreground">All properties added.</p>
         ) : (
-          <div className="max-h-[320px] overflow-y-auto">
+          <div className="max-h-[300px] overflow-y-auto">
             {available.map((p) => (
               <button
                 key={p.id}
@@ -269,14 +165,12 @@ function SlotCard({
                   onPick(p.id);
                   setOpen(false);
                 }}
-                className="flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors hover:bg-graphite"
+                className="flex w-full items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-muted"
               >
-                <img src={p.image} alt={p.name} className="h-12 w-16 rounded-lg object-cover" />
+                <img src={p.image} alt={p.name} className="h-10 w-14 rounded-md object-cover" />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm text-ivory">{p.name}</p>
-                  <p className="truncate text-[11px] text-muted-foreground">
-                    {p.developer} · {p.location}
-                  </p>
+                  <p className="truncate text-[13px] text-foreground">{p.name}</p>
+                  <p className="truncate text-[11px] text-muted-foreground">{p.developer}</p>
                 </div>
               </button>
             ))}
@@ -287,453 +181,248 @@ function SlotCard({
   );
 }
 
-// --- helpers for comparison decoration ---
-const parseNum = (s: string | null | undefined): number | null => {
-  if (!s) return null;
-  const m = String(s).replace(/,/g, "").match(/-?\d+(\.\d+)?/);
-  return m ? parseFloat(m[0]) : null;
-};
+/* ---------------- helpers ---------------- */
 const parseMaxNum = (s: string | null | undefined): number | null => {
   if (!s) return null;
   const nums = String(s).replace(/,/g, "").match(/\d+(\.\d+)?/g);
   if (!nums) return null;
   return Math.max(...nums.map(parseFloat));
 };
-type Winner = { idx: number; tone: "low" | "high" } | null;
-function computeWinner(
-  values: (number | null)[],
-  prefer: "low" | "high",
-): Winner {
-  const valid = values
-    .map((v, i) => ({ v, i }))
-    .filter((x) => x.v !== null) as { v: number; i: number }[];
+function bestIndex(values: (number | null)[]): number | null {
+  const valid = values.map((v, i) => ({ v, i })).filter((x) => x.v !== null) as { v: number; i: number }[];
   if (valid.length < 2) return null;
-  const target =
-    prefer === "low"
-      ? Math.min(...valid.map((x) => x.v))
-      : Math.max(...valid.map((x) => x.v));
-  const winners = valid.filter((x) => x.v === target);
-  if (winners.length === valid.length) return null; // all equal
-  return { idx: winners[0].i, tone: prefer };
+  const max = Math.max(...valid.map((x) => x.v));
+  const winners = valid.filter((x) => x.v === max);
+  if (winners.length === valid.length) return null;
+  return winners[0].i;
 }
 
-/* =========================================================================
-   VARIANT 4 — Diff-Highlight Matrix
-   - True comparison matrix: rows = attributes, columns = properties.
-   - Identical values across the row are MUTED (gray, italic, "matches").
-   - Unique / best values POP in champagne gold with a soft glow ring.
-   - Large typography, prominent highlight chips, subtle motion on scan.
-   ========================================================================= */
-
+/* ---------------- grid ---------------- */
 function ComparisonGrid({ items }: { items: Property[] }) {
   const cols = items.length;
-  const gridTpl =
-    cols === 2 ? "md:grid-cols-[260px_1fr_1fr]" : "md:grid-cols-[260px_1fr_1fr_1fr]";
+  const gridTpl = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
 
-  // Configuration area winners
   const configWinners: Record<string, number | null> = {};
   CONFIG_KEYS.forEach((k) => {
-    const areas = items.map((p) => parseMaxNum(p.configurations[k as ConfigKey]?.area ?? null));
-    configWinners[k] = computeWinner(areas, "high")?.idx ?? null;
+    configWinners[k] = bestIndex(items.map((p) => parseMaxNum(p.configurations[k as ConfigKey]?.area ?? null)));
   });
-  const superWinner = computeWinner(items.map((p) => parseMaxNum(p.superBuiltUpArea)), "high")?.idx ?? null;
-  const carpetWinner = computeWinner(items.map((p) => parseMaxNum(p.carpetArea)), "high")?.idx ?? null;
-
-  // Diff helpers — true if all string values are equal (case-insensitive)
-  const allSame = (vals: (string | null | undefined)[]) => {
-    const cleaned = vals.map((x) => (x ?? "").trim().toLowerCase());
-    return cleaned.every((x) => x.length > 0) && cleaned.every((x) => x === cleaned[0]);
-  };
-  const locSame = allSame(items.map((p) => p.location));
-  const possSame = allSame(items.map((p) => p.possession));
-  const statSame = allSame(items.map((p) => p.status));
-  const devSame = allSame(items.map((p) => p.developer));
-
-  // Diff counts for top-line summary
-  const diffStats = (() => {
-    let differs = 0;
-    let identical = 0;
-    let bests = 0;
-    if (!locSame) differs++; else identical++;
-    if (!possSame) differs++; else identical++;
-    if (!statSame) differs++; else identical++;
-    if (!devSame) differs++; else identical++;
-    CONFIG_KEYS.forEach((k) => {
-      if (configWinners[k] !== null) bests++;
-    });
-    if (superWinner !== null) bests++;
-    if (carpetWinner !== null) bests++;
-    return { differs, identical, bests };
-  })();
+  const superWinner = bestIndex(items.map((p) => parseMaxNum(p.superBuiltUpArea)));
+  const carpetWinner = bestIndex(items.map((p) => parseMaxNum(p.carpetArea)));
 
   return (
-    <div className="space-y-6">
-      {/* Folio header + diff legend */}
-      <div className="text-center">
-        <div className="inline-flex items-center gap-3">
-          <span className="h-px w-12 bg-champagne/60" />
-          <span className="text-[12px] tracking-[0.34em] uppercase text-champagne">
-            Diff-Highlight Matrix
-          </span>
-          <span className="h-px w-12 bg-champagne/60" />
+    <div className="overflow-hidden rounded-xl border border-border bg-background/40">
+      {/* Header row */}
+      <div className={`hidden md:grid ${gridTpl} border-b border-border bg-muted/30`}>
+        <div className="px-4 py-3 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+          Attribute
         </div>
-        <h3 className="mt-4 font-display text-[36px] sm:text-[48px] leading-[1.05] text-ivory">
-          Only the <span className="gold-text italic">differences</span> shine
-        </h3>
-        <p className="mt-3 text-[16px] text-muted-foreground max-w-2xl mx-auto">
-          Identical values fade into the background. Unique and best-in-row values light up in gold so the choice writes itself.
-        </p>
-
-        {/* legend chips */}
-        <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5">
-          <LegendChip tone="best" icon={<Trophy className="h-3.5 w-3.5" />}>
-            {diffStats.bests} best-in-row
-          </LegendChip>
-          <LegendChip tone="diff" icon={<GitCompareArrows className="h-3.5 w-3.5" />}>
-            {diffStats.differs} differences
-          </LegendChip>
-          <LegendChip tone="same" icon={<Equal className="h-3.5 w-3.5" />}>
-            {diffStats.identical} identical
-          </LegendChip>
-        </div>
-      </div>
-
-      {/* Matrix */}
-      <div className="overflow-hidden rounded-[28px] border border-champagne/25 bg-gradient-to-b from-soft-black/85 via-lux-black/55 to-soft-black/85 shadow-[0_40px_120px_-50px_rgba(200,164,93,0.35)]">
-        {/* Sticky column headers */}
-        <div className={`hidden md:grid ${gridTpl} border-b border-champagne/25 bg-soft-black/70 backdrop-blur`}>
-          <div className="px-7 py-6 flex items-center">
-            <span className="text-[12px] tracking-[0.34em] uppercase text-muted-foreground">Attribute</span>
-          </div>
-          {items.map((p, i) => (
-            <div
-              key={p.id}
-              className={`relative px-6 py-6 ${i > 0 ? "border-l border-champagne/15" : ""}`}
-            >
-              <div className="absolute left-6 right-6 top-0 h-[2px] bg-gradient-to-r from-transparent via-champagne to-transparent opacity-70" />
-              <div className="flex items-center gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-full bg-champagne text-lux-black font-display text-[16px]">
-                  {String.fromCharCode(65 + i)}
-                </span>
-                <div className="min-w-0">
-                  <p className="font-display text-[22px] sm:text-[24px] leading-tight text-ivory line-clamp-1">
-                    {p.name}
-                  </p>
-                  <p className="text-[12px] tracking-luxury uppercase text-champagne/90 truncate">
-                    {p.developer}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Mobile column headers — pills */}
-        <div className="md:hidden flex flex-wrap gap-2 px-5 py-4 border-b border-champagne/20 bg-soft-black/60">
-          {items.map((p, i) => (
-            <span key={p.id} className="inline-flex items-center gap-2 rounded-full border border-champagne/30 px-3 py-1.5 text-[12px] text-ivory">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-champagne text-lux-black text-[10px] font-display">
+        {items.map((p, i) => (
+          <div key={p.id} className={`px-4 py-3 ${i > 0 ? "border-l border-border" : ""}`}>
+            <div className="flex items-center gap-2">
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-foreground text-background text-[10px] font-medium">
                 {String.fromCharCode(65 + i)}
               </span>
-              <span className="font-display truncate max-w-[120px]">{p.name}</span>
-            </span>
-          ))}
-        </div>
-
-        {/* === Section: Identity === */}
-        <SectionLabel title="Identity" />
-        <MatrixRow
-          label="Developer"
-          items={items}
-          gridTpl={gridTpl}
-          allSame={devSame}
-          render={(p) => <PlainCell value={p.developer} muted={devSame} />}
-        />
-
-        {/* === Section: Residences === */}
-        <SectionLabel title="Residences & Configurations" />
-        {CONFIG_KEYS.map((k) => {
-          const winnerIdx = configWinners[k];
-          // identical if all configs have the same area string
-          const areas = items.map((p) => p.configurations[k as ConfigKey]?.area ?? null);
-          const same = areas.every((x) => x !== null) && areas.every((x) => x === areas[0]);
-          const allMissing = areas.every((x) => x === null);
-          return (
-            <MatrixRow
-              key={k}
-              label={k}
-              items={items}
-              gridTpl={gridTpl}
-              allSame={same}
-              noneAvailable={allMissing}
-              render={(p, i) => {
-                const cfg = p.configurations[k as ConfigKey];
-                if (!cfg) return <UnavailableCell />;
-                const isWinner = winnerIdx === i;
-                return (
-                  <NumericCell
-                    primary={cfg.area ?? "—"}
-                    unit="sq ft"
-                    secondary={cfg.carpet ? `carpet ${cfg.carpet} sq ft` : undefined}
-                    isBest={isWinner}
-                    isSame={same}
-                    propertyId={p.id}
-                  />
-                );
-              }}
-
-            />
-          );
-        })}
-
-        {/* === Section: Spaces & Scale === */}
-        <SectionLabel title="Spaces & Scale" />
-        <MatrixRow
-          label="Super Built-up"
-          items={items}
-          gridTpl={gridTpl}
-          allSame={allSame(items.map((p) => p.superBuiltUpArea))}
-          render={(p, i) => (
-            <NumericCell
-              primary={p.superBuiltUpArea ?? "—"}
-              isBest={superWinner === i}
-              isSame={allSame(items.map((x) => x.superBuiltUpArea))}
-              propertyId={p.id}
-            />
-          )}
-        />
-        <MatrixRow
-          label="Carpet Area"
-          items={items}
-          gridTpl={gridTpl}
-          allSame={allSame(items.map((p) => p.carpetArea))}
-          render={(p, i) => (
-            <NumericCell
-              primary={p.carpetArea ?? "—"}
-              isBest={carpetWinner === i}
-              isSame={allSame(items.map((x) => x.carpetArea))}
-              propertyId={p.id}
-            />
-          )}
-        />
-
-
-        {/* === Section: Location & Timeline === */}
-        <SectionLabel title="Location & Timeline" />
-        <MatrixRow
-          label="Address"
-          items={items}
-          gridTpl={gridTpl}
-          allSame={locSame}
-          render={(p) => <PlainCell value={p.location} muted={locSame} />}
-        />
-        <MatrixRow
-          label="Possession"
-          items={items}
-          gridTpl={gridTpl}
-          allSame={possSame}
-          render={(p) => <PlainCell value={p.possession} muted={possSame} highlight={!possSame} />}
-        />
-        <MatrixRow
-          label="Project Status"
-          items={items}
-          gridTpl={gridTpl}
-          allSame={statSame}
-          render={(p) => <StatusCell value={p.status} muted={statSame} />}
-        />
-
-        {/* === Section: Distinctions === */}
-        <SectionLabel title="Distinctions" />
-        <MatrixRow
-          label="Highlights"
-          items={items}
-          gridTpl={gridTpl}
-          render={(p) =>
-            p.advantages?.length ? (
-              <ul className="space-y-2.5">
-                {p.advantages.slice(0, 5).map((a, idx) => (
-                  <li key={a} className="flex gap-3 text-[15px] text-ivory/90 leading-relaxed">
-                    <span className="text-champagne text-[11px] tracking-luxury pt-1.5 min-w-[22px]">
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                    <span>{a}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <span className="text-[14px] text-muted-foreground italic">—</span>
-            )
-          }
-        />
-        <MatrixRow
-          label="Amenities"
-          items={items}
-          gridTpl={gridTpl}
-          allSame
-          render={() => (
-            <PlainCell value="All luxurious amenities available" muted italic />
-          )}
-        />
-        <MatrixRow
-          label="Editor's Verdict"
-          items={items}
-          gridTpl={gridTpl}
-          render={(p) =>
-            p.expertNote ? (
-              <blockquote className="relative pl-7 italic text-[15px] leading-relaxed text-ivory/95">
-                <span className="absolute left-0 -top-2 font-display text-4xl text-champagne leading-none">"</span>
-                {p.expertNote}
-              </blockquote>
-            ) : (
-              <span className="text-[14px] text-muted-foreground italic">—</span>
-            )
-          }
-        />
-
-        {/* === Section: Gallery === */}
-        <SectionLabel title="Gallery" final />
-        <div className={`grid grid-cols-1 ${gridTpl}`}>
-          <div className="hidden md:flex items-center px-7 py-5 text-[13px] tracking-[0.32em] uppercase text-champagne border-r border-champagne/12">
-            Photo
-          </div>
-          {items.map((p, i) => (
-            <div
-              key={p.id}
-              id={`gallery-${p.id}`}
-              className={`p-3 scroll-mt-32 ${i > 0 ? "md:border-l md:border-champagne/12" : ""}`}
-            >
-              <div className="overflow-hidden rounded-2xl aspect-[16/10] ring-1 ring-champagne/10 transition-shadow [&.flash]:ring-2 [&.flash]:ring-champagne [&.flash]:shadow-[0_0_60px_-10px_rgba(200,164,93,0.7)]">
-                <PhotoSlideshow property={p} />
+              <div className="min-w-0">
+                <p className="font-display text-[14px] leading-tight text-foreground line-clamp-1">
+                  {p.name}
+                </p>
+                <p className="text-[10px] uppercase tracking-wide text-muted-foreground truncate">
+                  {p.developer}
+                </p>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
+      </div>
 
+      {/* Mobile pills */}
+      <div className="md:hidden flex flex-wrap gap-1.5 px-3 py-2.5 border-b border-border bg-muted/30">
+        {items.map((p, i) => (
+          <span key={p.id} className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-1 text-[11px]">
+            <span className="grid h-4 w-4 place-items-center rounded-full bg-foreground text-background text-[9px]">
+              {String.fromCharCode(65 + i)}
+            </span>
+            <span className="truncate max-w-[100px]">{p.name}</span>
+          </span>
+        ))}
+      </div>
+
+      <SectionLabel title="Identity" />
+      <Row label="Developer" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.developer} />} />
+
+      <SectionLabel title="Configurations" />
+      {CONFIG_KEYS.map((k) => {
+        const winnerIdx = configWinners[k];
+        return (
+          <Row
+            key={k}
+            label={k}
+            items={items}
+            gridTpl={gridTpl}
+            render={(p, i) => {
+              const cfg = p.configurations[k as ConfigKey];
+              if (!cfg) return <NotAvail />;
+              return (
+                <Numeric
+                  primary={cfg.area ?? DASH}
+                  unit="sq ft"
+                  secondary={cfg.carpet ? `carpet ${cfg.carpet}` : undefined}
+                  isBest={winnerIdx === i}
+                  propertyId={p.id}
+                />
+              );
+            }}
+          />
+        );
+      })}
+
+      <SectionLabel title="Area" />
+      <Row
+        label="Super Built-up"
+        items={items}
+        gridTpl={gridTpl}
+        render={(p, i) => <Numeric primary={p.superBuiltUpArea ?? DASH} isBest={superWinner === i} propertyId={p.id} />}
+      />
+      <Row
+        label="Carpet"
+        items={items}
+        gridTpl={gridTpl}
+        render={(p, i) => <Numeric primary={p.carpetArea ?? DASH} isBest={carpetWinner === i} propertyId={p.id} />}
+      />
+
+      <SectionLabel title="Location & Timeline" />
+      <Row label="Address" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.location} />} />
+      <Row label="Possession" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.possession} />} />
+      <Row label="Status" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.status} />} />
+
+      <SectionLabel title="Distinctions" />
+      <Row
+        label="Highlights"
+        items={items}
+        gridTpl={gridTpl}
+        render={(p) =>
+          p.advantages?.length ? (
+            <ul className="space-y-1.5">
+              {p.advantages.slice(0, 5).map((a, idx) => (
+                <li key={a} className="flex gap-2 text-[13px] text-foreground/85 leading-snug">
+                  <span className="text-muted-foreground text-[11px] pt-0.5 min-w-[16px]">
+                    {idx + 1}.
+                  </span>
+                  <span>{a}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Plain value={null} />
+          )
+        }
+      />
+      <Row
+        label="Amenities"
+        items={items}
+        gridTpl={gridTpl}
+        render={() => <Plain value="All luxurious amenities available" italic />}
+      />
+      <Row
+        label="Verdict"
+        items={items}
+        gridTpl={gridTpl}
+        render={(p) =>
+          p.expertNote ? (
+            <p className="text-[13px] leading-relaxed text-foreground/85 italic">"{p.expertNote}"</p>
+          ) : (
+            <Plain value={null} />
+          )
+        }
+      />
+
+      <SectionLabel title="Gallery" />
+      <div className={`grid grid-cols-1 ${gridTpl}`}>
+        <div className="hidden md:flex items-center px-4 py-3 text-[11px] uppercase tracking-[0.24em] text-muted-foreground border-r border-border">
+          Photo
         </div>
+        {items.map((p, i) => (
+          <div
+            key={p.id}
+            id={`gallery-${p.id}`}
+            className={`p-2.5 scroll-mt-32 ${i > 0 ? "md:border-l md:border-border" : ""}`}
+          >
+            <div className="overflow-hidden rounded-lg aspect-[16/10] ring-1 ring-border transition-shadow [&.flash]:ring-2 [&.flash]:ring-foreground [&.flash]:shadow-lg">
+              <PhotoSlideshow property={p} />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-/* ---------------- Matrix primitives ---------------- */
-
-function SectionLabel({ title, final }: { title: string; final?: boolean }) {
+/* ---------------- primitives ---------------- */
+function SectionLabel({ title }: { title: string }) {
   return (
-    <div
-      className={`flex items-center gap-3 px-6 sm:px-7 py-4 bg-gradient-to-r from-champagne/10 via-champagne/5 to-transparent border-y border-champagne/20 ${
-        final ? "" : ""
-      }`}
-    >
-      <span className="text-[13px] tracking-[0.34em] uppercase text-champagne font-medium">
+    <div className="px-4 py-2 bg-muted/40 border-y border-border">
+      <span className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground font-medium">
         {title}
       </span>
-      <span className="h-px flex-1 bg-champagne/20" />
     </div>
   );
 }
 
-function MatrixRow({
+function Row({
   label,
   items,
   gridTpl,
   render,
-  allSame,
-  noneAvailable,
 }: {
   label: string;
   items: Property[];
   gridTpl: string;
   render: (p: Property, i: number) => React.ReactNode;
-  allSame?: boolean;
-  noneAvailable?: boolean;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.45 }}
-      className={`grid grid-cols-1 ${gridTpl} border-b border-champagne/10 last:border-b-0 hover:bg-champagne/[0.02] transition-colors`}
-    >
-      <div className="flex items-center justify-between gap-2 px-6 sm:px-7 py-5 md:border-r md:border-champagne/12">
-        <span className="text-[14px] sm:text-[15px] tracking-luxury uppercase text-ivory/95 font-medium">
-          {label}
-        </span>
-        {allSame && !noneAvailable && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-ivory/5 border border-ivory/15 px-2.5 py-1 text-[10px] tracking-luxury text-muted-foreground">
-            <Equal className="h-2.5 w-2.5" /> same
-          </span>
-        )}
-        {!allSame && !noneAvailable && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-champagne/10 border border-champagne/30 px-2.5 py-1 text-[10px] tracking-luxury text-champagne">
-            <GitCompareArrows className="h-2.5 w-2.5" /> diff
-          </span>
-        )}
+    <div className={`grid grid-cols-1 ${gridTpl} border-b border-border last:border-b-0`}>
+      <div className="px-4 py-2.5 md:border-r md:border-border bg-muted/10">
+        <span className="text-[12px] text-muted-foreground">{label}</span>
       </div>
       {items.map((p, i) => (
-        <div key={p.id} className={`px-6 sm:px-7 py-5 ${i > 0 ? "md:border-l md:border-champagne/10" : ""}`}>
-          <div className="md:hidden mb-2 text-[11px] tracking-luxury uppercase text-champagne/80">
+        <div key={p.id} className={`px-4 py-2.5 ${i > 0 ? "md:border-l md:border-border" : ""}`}>
+          <div className="md:hidden mb-1 text-[10px] uppercase tracking-wide text-muted-foreground">
             {String.fromCharCode(65 + i)} · {p.name}
           </div>
           {render(p, i)}
         </div>
       ))}
-    </motion.div>
+    </div>
   );
 }
 
-function PlainCell({
-  value,
-  muted,
-  italic,
-  highlight,
-}: {
-  value: string | null | undefined;
-  muted?: boolean;
-  italic?: boolean;
-  highlight?: boolean;
-}) {
-  const text = value ?? "—";
-  if (highlight) {
-    return (
-      <span className="inline-flex items-center rounded-lg bg-champagne/10 ring-1 ring-champagne/35 px-3 py-1.5 text-[16px] text-ivory font-medium">
-        {text}
-      </span>
-    );
-  }
+function Plain({ value, italic }: { value: string | null | undefined; italic?: boolean }) {
   return (
-    <p className={`text-[16px] leading-relaxed ${muted ? "text-muted-foreground/80 italic" : "text-ivory"} ${italic ? "italic" : ""}`}>
-      {text}
+    <p className={`text-[14px] leading-snug text-foreground ${italic ? "italic text-foreground/75" : ""}`}>
+      {value ?? DASH}
     </p>
   );
 }
 
-function StatusCell({ value, muted }: { value: string | null | undefined; muted?: boolean }) {
+function NotAvail() {
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] tracking-luxury ${
-        muted
-          ? "bg-ivory/5 border border-ivory/15 text-muted-foreground"
-          : "bg-champagne/15 border border-champagne/40 text-champagne"
-      }`}
-    >
-      {value ?? "—"}
+    <span className="inline-flex items-center gap-1 text-[12px] text-muted-foreground italic">
+      <Minus className="h-3 w-3" /> Not available
     </span>
   );
 }
 
-function NumericCell({
+function Numeric({
   primary,
   unit,
   secondary,
   isBest,
-  isSame,
   propertyId,
 }: {
   primary: string;
   unit?: string;
   secondary?: string;
   isBest?: boolean;
-  isSame?: boolean;
   propertyId?: string;
 }) {
   const jumpToGallery = () => {
@@ -744,42 +433,23 @@ function NumericCell({
     const target = el.querySelector(":scope > div");
     if (target) {
       target.classList.add("flash");
-      window.setTimeout(() => target.classList.remove("flash"), 1600);
+      window.setTimeout(() => target.classList.remove("flash"), 1400);
     }
   };
   return (
-    <div
-      className={`relative inline-block rounded-xl px-4 py-3 ${
-        isBest
-          ? "bg-champagne/12 ring-1 ring-champagne/45 shadow-[0_0_30px_-10px_rgba(200,164,93,0.6)]"
-          : isSame
-          ? "bg-ivory/[0.03] ring-1 ring-ivory/10"
-          : ""
-      }`}
-    >
-      <p
-        className={`font-display leading-tight ${
-          isBest
-            ? "text-champagne text-[26px] sm:text-[28px]"
-            : isSame
-            ? "text-muted-foreground italic text-[22px]"
-            : "text-ivory text-[24px] sm:text-[26px]"
-        }`}
-      >
+    <div className="flex items-baseline gap-2">
+      <p className={`font-display leading-tight ${isBest ? "text-foreground text-[18px]" : "text-foreground/90 text-[16px]"}`}>
         {primary}
-        {unit && <span className="ml-1.5 text-[12px] text-muted-foreground tracking-luxury">{unit}</span>}
+        {unit && <span className="ml-1 text-[10px] text-muted-foreground tracking-wide">{unit}</span>}
       </p>
-      {secondary && (
-        <p className="mt-0.5 text-[12px] text-muted-foreground">{secondary}</p>
-      )}
-      <p className="mt-1 text-[10px] tracking-luxury text-champagne/70">(Approx.)</p>
+      {secondary && <span className="text-[11px] text-muted-foreground">· {secondary}</span>}
+      <span className="text-[9px] text-muted-foreground/70 uppercase tracking-wide">approx.</span>
       {isBest && (
         <button
           type="button"
           onClick={jumpToGallery}
           title="View gallery"
-          aria-label="Jump to gallery for this property"
-          className="absolute -top-2 -right-2 inline-flex items-center gap-1 rounded-full bg-champagne text-lux-black px-2 py-0.5 text-[10px] tracking-luxury font-medium shadow-md transition-transform hover:scale-105 hover:shadow-[0_0_20px_-2px_rgba(200,164,93,0.8)] focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne focus-visible:ring-offset-2 focus-visible:ring-offset-lux-black cursor-pointer"
+          className="ml-1 inline-flex items-center gap-1 rounded-full bg-foreground text-background px-1.5 py-0.5 text-[9px] tracking-wide font-medium hover:opacity-85 transition-opacity"
         >
           <Trophy className="h-2.5 w-2.5" /> Best
         </button>
@@ -787,40 +457,3 @@ function NumericCell({
     </div>
   );
 }
-
-
-function UnavailableCell() {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-lg bg-ivory/[0.03] border border-ivory/10 px-3 py-1.5 text-[13px] text-muted-foreground/70 italic">
-      <Minus className="h-3.5 w-3.5" /> Not Available
-    </span>
-  );
-}
-
-function LegendChip({
-  tone,
-  icon,
-  children,
-}: {
-  tone: "best" | "diff" | "same";
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  const styles =
-    tone === "best"
-      ? "bg-champagne text-lux-black border-champagne"
-      : tone === "diff"
-      ? "bg-champagne/10 text-champagne border-champagne/40"
-      : "bg-ivory/5 text-muted-foreground border-ivory/15";
-  return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] tracking-luxury ${styles}`}>
-      {icon}
-      {children}
-    </span>
-  );
-}
-
-
-
-
-
