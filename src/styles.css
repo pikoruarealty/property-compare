@@ -41,9 +41,9 @@
   --color-antique: var(--antique-gold);
   --color-muted-gold: var(--muted-gold);
 
-  --font-display: "Playfair Display", serif;
-  --font-sans: "Inter", sans-serif;
-  --font-body: "Manrope", sans-serif;
+  --font-display: "Fraunces", "Playfair Display", serif;
+  --font-sans: "Instrument Sans", "Inter", sans-serif;
+  --font-body: "Instrument Sans", "Manrope", sans-serif;
 }
 
 :root {
