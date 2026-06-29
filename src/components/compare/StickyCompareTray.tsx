@@ -9,6 +9,8 @@ import type { Property } from "@/types/property";
 interface Props {
   /** Ref to a section above the tray's active zone. Tray shows once this scrolls out of view. */
   watchRef: RefObject<HTMLElement | null>;
+  /** Optional ref — once this section enters the viewport, the tray hides. */
+  hideRef?: RefObject<HTMLElement | null>;
   /** Called when the user clicks Compare with >= MIN_COMPARE slots filled. */
   onCompare?: () => void;
 }
@@ -17,23 +19,41 @@ interface Props {
  * Floating, sticky comparison tray. Second visual representation of the
  * existing compare store — does not own any state of its own.
  */
-export function StickyCompareTray({ watchRef, onCompare }: Props) {
+export function StickyCompareTray({ watchRef, hideRef, onCompare }: Props) {
   const hydrated = useHydrated();
   const { selected: rawSelected, remove } = useCompareStore();
   const selected = hydrated ? rawSelected : [];
 
-  const [visible, setVisible] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
+  const [reachedHide, setReachedHide] = useState(false);
 
   useEffect(() => {
     const el = watchRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setVisible(!entry.isIntersecting),
+      ([entry]) => setPastHero(!entry.isIntersecting),
       { threshold: 0, rootMargin: "-68px 0px 0px 0px" }, // 68px = navbar height
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, [watchRef]);
+
+  useEffect(() => {
+    const el = hideRef?.current;
+    if (!el) {
+      setReachedHide(false);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setReachedHide(entry.isIntersecting),
+      { threshold: 0, rootMargin: "-68px 0px 0px 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hideRef]);
+
+  const visible = pastHero && !reachedHide;
+
 
   const items = selected
     .map((id) => getPropertyById(id))

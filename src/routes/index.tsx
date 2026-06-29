@@ -40,6 +40,7 @@ const CHAPTERS = [
 function Index() {
   const heroRef = useRef<HTMLElement | null>(null);
   const comparisonRef = useRef<HTMLDivElement | null>(null);
+  const collectionRef = useRef<HTMLElement | null>(null);
   const [activeChapter, setActiveChapter] = useState("hero");
   const { quizAnswers } = useOnboarding();
 
@@ -98,7 +99,7 @@ function Index() {
   return (
     <div className="min-h-screen pb-32">
       <SiteHeader />
-      <StickyCompareTray watchRef={heroRef} onCompare={() => scrollToId("suite")} />
+      <StickyCompareTray watchRef={heroRef} hideRef={collectionRef} onCompare={() => scrollToId("suite")} />
 
 
       {/* ============ HERO ============ */}
@@ -210,7 +211,7 @@ function Index() {
       </section>
 
       {/* ============ COLLECTION ============ */}
-      <section id="collection" className="relative scroll-mt-28 py-16 sm:py-24">
+      <section id="collection" ref={collectionRef} className="relative scroll-mt-28 py-16 sm:py-24">
         <div className="container-lux">
           <ChapterMark index={3} label="The Collection" />
 
