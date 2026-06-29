@@ -1,14 +1,38 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, ChevronDown, Sparkles, Minus, Trophy } from "lucide-react";
+import { Plus, X, ChevronDown, Sparkles, Minus, Trophy, Info } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import type { ConfigKey, Property } from "@/types/property";
 import { CONFIG_KEYS } from "@/types/property";
 import { toast } from "sonner";
 import { PhotoSlideshow } from "@/components/compare/PhotoSlideshow";
+
+const TERM_INFO: Record<string, { title: string; body: string }> = {
+  Developer: {
+    title: "Developer",
+    body: "The real-estate company or builder responsible for designing, constructing, and delivering the project. The developer's track record influences build quality, on-time possession, and after-sales service.",
+  },
+  "Super Built-up": {
+    title: "Super Built-up Area",
+    body: "The total area you are charged for. It includes your carpet area, the thickness of walls, plus a proportionate share of common spaces such as lobbies, staircases, lifts, and clubhouse. Typically 20–35% larger than carpet area.",
+  },
+  Carpet: {
+    title: "Carpet Area",
+    body: "The actual usable floor area inside your apartment — measured wall-to-wall, excluding the thickness of outer walls. This is the space you can physically lay a carpet on. RERA mandates carpet area disclosure.",
+  },
+  Possession: {
+    title: "Possession Date",
+    body: "The committed date by which the developer will hand over the keys to the unit, ready for fit-out or move-in. Dates may shift based on construction progress, approvals, and RERA timelines.",
+  },
+  Status: {
+    title: "Project Status",
+    body: "Indicates the current construction stage — for example Under Construction, Nearing Possession, or Ready to Move. Ready projects offer immediate occupancy; under-construction projects often offer better pricing and customisation.",
+  },
+};
 
 const DASH = "—";
 
