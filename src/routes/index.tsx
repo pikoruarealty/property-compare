@@ -258,14 +258,8 @@ function Index() {
   );
 }
 
-function ChapterMark({ label }: { index?: number; label: string }) {
-  return (
-    <div className="flex items-center gap-4">
-      <span className="h-px w-12 bg-champagne/50" />
-      <span className="text-[11px] tracking-luxury text-champagne">{label}</span>
-    </div>
-  );
-}
+
+
 
 
 function RowDivider({ n: _n }: { n: number }) {
