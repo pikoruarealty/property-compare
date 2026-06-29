@@ -171,12 +171,13 @@ export const getSessionProfile = createServerFn({ method: "GET" }).handler(async
 });
 
 export const saveQuizAnswers = createServerFn({ method: "POST" })
-  .inputValidator((data: { answers: QuizAnswersDTO }) => {
-    if (!data || !data.answers || typeof data.answers !== "object") {
+  .inputValidator((data: { answers: QuizAnswersDTO | null }) => {
+    if (!data || typeof data !== "object" || !("answers" in data)) {
       throw new Error("Invalid input");
     }
-    return { answers: data.answers };
+    return { answers: data.answers ?? null };
   })
+
   .handler(async ({ data }) => {
     const session = await useSession<{ profileId: string; phone: string }>(sessionConfig());
     const profileId = session.data?.profileId;
