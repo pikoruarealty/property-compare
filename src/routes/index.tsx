@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowDown, GitCompareArrows, LayoutList } from "lucide-react";
@@ -8,6 +8,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ComparisonBoard } from "@/components/compare/ComparisonBoard";
 import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
 import { PreferenceBanner } from "@/components/PreferenceBanner";
+import { useOnboarding } from "@/context/OnboardingContext";
+import type { Property } from "@/types/property";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,6 +40,36 @@ function Index() {
   const heroRef = useRef<HTMLElement | null>(null);
   const comparisonRef = useRef<HTMLDivElement | null>(null);
   const [activeChapter, setActiveChapter] = useState("hero");
+  const { quizAnswers } = useOnboarding();
+
+  const { matched, others } = useMemo(() => {
+    if (!quizAnswers) return { matched: [] as Property[], others: properties };
+    const types = (quizAnswers.propertyType ?? []).map((t) => t.toLowerCase());
+    const bhks = (quizAnswers.bhk ?? []).map((b) =>
+      b.replace(/\s*BHK$/i, "").trim(),
+    );
+    const score = (p: Property) => {
+      let s = 0;
+      const config = p.configuration?.toLowerCase() ?? "";
+      const cat = p.category.toLowerCase();
+      for (const t of types) {
+        if (cat === t) s += 2;
+        else if (config.includes(t)) s += 2;
+      }
+      for (const b of bhks) {
+        if (config.includes(`${b} bhk`) || config.includes(`${b},`)) s += 1;
+      }
+      return s;
+    };
+    const matched: Property[] = [];
+    const others: Property[] = [];
+    for (const p of properties) {
+      if (score(p) > 0) matched.push(p);
+      else others.push(p);
+    }
+    matched.sort((a, b) => score(b) - score(a));
+    return { matched, others };
+  }, [quizAnswers]);
 
   const scrollToId = (id: string) => {
     const el = document.getElementById(id);
@@ -201,21 +233,40 @@ function Index() {
           </div>
 
           <div className="mt-10 flex flex-col gap-6">
-            {properties.map((p, i) => (
+            {matched.length > 0 && (
+              <div className="mb-2 flex items-center gap-3">
+                <span className="text-[10px] tracking-luxury text-champagne">
+                  Matched to your preferences
+                </span>
+                <span className="h-px flex-1 bg-champagne/15" />
+                <span className="text-[10px] tracking-luxury text-champagne/60">
+                  {String(matched.length).padStart(2, "0")}
+                </span>
+              </div>
+            )}
+            {matched.map((p, i) => (
               <div key={p.id} className="group/row">
                 <PropertyListRow property={p} index={i} />
-                {i < properties.length - 1 && (
-                  <div className="my-1 flex items-center gap-4 px-2 opacity-60">
-                    <span className="h-px flex-1 bg-champagne/12" />
-                    <span className="text-[10px] tracking-luxury text-champagne/60">
-                      {String(i + 2).padStart(2, "0")}
-                    </span>
-                    <span className="h-px flex-1 bg-champagne/12" />
-                  </div>
-                )}
+                {i < matched.length - 1 && <RowDivider n={i + 2} />}
+              </div>
+            ))}
+
+            {matched.length > 0 && others.length > 0 && (
+              <div className="mt-6 mb-2 flex items-center gap-3">
+                <span className="text-[10px] tracking-luxury text-champagne/70">
+                  More from the collection
+                </span>
+                <span className="h-px flex-1 bg-champagne/15" />
+              </div>
+            )}
+            {others.map((p, i) => (
+              <div key={p.id} className="group/row">
+                <PropertyListRow property={p} index={matched.length + i} />
+                {i < others.length - 1 && <RowDivider n={matched.length + i + 2} />}
               </div>
             ))}
           </div>
+
         </div>
       </section>
     </div>
@@ -230,6 +281,18 @@ function ChapterMark({ index, label }: { index: number; label: string }) {
       </span>
       <span className="h-px w-12 bg-champagne/50" />
       <span className="text-[11px] tracking-luxury text-champagne">{label}</span>
+    </div>
+  );
+}
+
+function RowDivider({ n }: { n: number }) {
+  return (
+    <div className="my-1 flex items-center gap-4 px-2 opacity-60">
+      <span className="h-px flex-1 bg-champagne/12" />
+      <span className="text-[10px] tracking-luxury text-champagne/60">
+        {String(n).padStart(2, "0")}
+      </span>
+      <span className="h-px flex-1 bg-champagne/12" />
     </div>
   );
 }
