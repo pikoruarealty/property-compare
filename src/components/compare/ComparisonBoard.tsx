@@ -1,14 +1,38 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, ChevronDown, Sparkles, Minus, Trophy } from "lucide-react";
+import { Plus, X, ChevronDown, Sparkles, Minus, Trophy, Info } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import type { ConfigKey, Property } from "@/types/property";
 import { CONFIG_KEYS } from "@/types/property";
 import { toast } from "sonner";
 import { PhotoSlideshow } from "@/components/compare/PhotoSlideshow";
+
+const TERM_INFO: Record<string, { title: string; body: string }> = {
+  Developer: {
+    title: "Developer",
+    body: "The real-estate company or builder responsible for designing, constructing, and delivering the project. The developer's track record influences build quality, on-time possession, and after-sales service.",
+  },
+  "Super Built-up": {
+    title: "Super Built-up Area",
+    body: "The total area you are charged for. It includes your carpet area, the thickness of walls, plus a proportionate share of common spaces such as lobbies, staircases, lifts, and clubhouse. Typically 20–35% larger than carpet area.",
+  },
+  Carpet: {
+    title: "Carpet Area",
+    body: "The actual usable floor area inside your apartment — measured wall-to-wall, excluding the thickness of outer walls. This is the space you can physically lay a carpet on. RERA mandates carpet area disclosure.",
+  },
+  Possession: {
+    title: "Possession Date",
+    body: "The committed date by which the developer will hand over the keys to the unit, ready for fit-out or move-in. Dates may shift based on construction progress, approvals, and RERA timelines.",
+  },
+  Status: {
+    title: "Project Status",
+    body: "Indicates the current construction stage — for example Under Construction, Nearing Possession, or Ready to Move. Ready projects offer immediate occupancy; under-construction projects often offer better pricing and customisation.",
+  },
+};
 
 const DASH = "—";
 
@@ -379,10 +403,35 @@ function Row({
   gridTpl: string;
   render: (p: Property, i: number) => React.ReactNode;
 }) {
+  const info = TERM_INFO[label];
+  const [open, setOpen] = useState(false);
   return (
     <div className={`grid grid-cols-1 ${gridTpl} border-b border-border last:border-b-0`}>
-      <div className="px-4 py-2.5 md:border-r md:border-border bg-muted/10">
+      <div className="px-4 py-2.5 md:border-r md:border-border bg-muted/10 flex items-center gap-1.5">
         <span className="text-[12px] text-muted-foreground">{label}</span>
+        {info && (
+          <>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/80 hover:text-foreground transition-colors"
+              aria-label={`View more about ${label}`}
+            >
+              <Info className="h-3 w-3" />
+              <span className="hidden sm:inline">View more</span>
+            </button>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="font-display text-xl">{info.title}</DialogTitle>
+                  <DialogDescription className="pt-2 text-[14px] leading-relaxed text-foreground/80">
+                    {info.body}
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </>
+        )}
       </div>
       {items.map((p, i) => (
         <div key={p.id} className={`px-4 py-2.5 ${i > 0 ? "md:border-l md:border-border" : ""}`}>
