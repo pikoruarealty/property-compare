@@ -407,18 +407,18 @@ function Row({
   const [open, setOpen] = useState(false);
   return (
     <div className={`grid grid-cols-1 ${gridTpl} border-b border-border last:border-b-0`}>
-      <div className="px-4 py-2.5 md:border-r md:border-border bg-muted/10 flex items-center gap-1.5">
-        <span className="text-[12px] text-muted-foreground">{label}</span>
+      <div className="px-4 py-3 md:border-r md:border-border bg-muted/10 flex flex-col items-start gap-2">
+        <span className="font-display text-[14px] font-medium tracking-tight text-foreground">{label}</span>
         {info && (
           <>
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/80 hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1.5 rounded-full bg-foreground text-background px-2.5 py-1 text-[10px] font-medium tracking-[0.08em] uppercase hover:opacity-85 transition-opacity shadow-sm"
               aria-label={`View more about ${label}`}
             >
               <Info className="h-3 w-3" />
-              <span className="hidden sm:inline">View more</span>
+              View more
             </button>
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogContent className="sm:max-w-md">
