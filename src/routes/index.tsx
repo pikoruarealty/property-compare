@@ -211,7 +211,7 @@ function Index() {
       </section>
 
       {/* ============ COLLECTION ============ */}
-      <section id="collection" className="relative scroll-mt-28 py-16 sm:py-24">
+      <section id="collection" ref={collectionRef} className="relative scroll-mt-28 py-16 sm:py-24">
         <div className="container-lux">
           <ChapterMark index={3} label="The Collection" />
 
