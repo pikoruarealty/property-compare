@@ -233,21 +233,40 @@ function Index() {
           </div>
 
           <div className="mt-10 flex flex-col gap-6">
-            {properties.map((p, i) => (
+            {matched.length > 0 && (
+              <div className="mb-2 flex items-center gap-3">
+                <span className="text-[10px] tracking-luxury text-champagne">
+                  Matched to your preferences
+                </span>
+                <span className="h-px flex-1 bg-champagne/15" />
+                <span className="text-[10px] tracking-luxury text-champagne/60">
+                  {String(matched.length).padStart(2, "0")}
+                </span>
+              </div>
+            )}
+            {matched.map((p, i) => (
               <div key={p.id} className="group/row">
                 <PropertyListRow property={p} index={i} />
-                {i < properties.length - 1 && (
-                  <div className="my-1 flex items-center gap-4 px-2 opacity-60">
-                    <span className="h-px flex-1 bg-champagne/12" />
-                    <span className="text-[10px] tracking-luxury text-champagne/60">
-                      {String(i + 2).padStart(2, "0")}
-                    </span>
-                    <span className="h-px flex-1 bg-champagne/12" />
-                  </div>
-                )}
+                {i < matched.length - 1 && <RowDivider n={i + 2} />}
+              </div>
+            ))}
+
+            {matched.length > 0 && others.length > 0 && (
+              <div className="mt-6 mb-2 flex items-center gap-3">
+                <span className="text-[10px] tracking-luxury text-champagne/70">
+                  More from the collection
+                </span>
+                <span className="h-px flex-1 bg-champagne/15" />
+              </div>
+            )}
+            {others.map((p, i) => (
+              <div key={p.id} className="group/row">
+                <PropertyListRow property={p} index={matched.length + i} />
+                {i < others.length - 1 && <RowDivider n={matched.length + i + 2} />}
               </div>
             ))}
           </div>
+
         </div>
       </section>
     </div>
