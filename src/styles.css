@@ -340,3 +340,9 @@ html *::after {
   border-color: rgba(112, 76, 16, 0.22) !important;
 }
 
+
+/* Refine sidebar scrollbar */
+.pref-scroll::-webkit-scrollbar { width: 6px; }
+.pref-scroll::-webkit-scrollbar-thumb { background: rgba(200,164,93,0.25); border-radius: 999px; }
+.pref-scroll::-webkit-scrollbar-thumb:hover { background: rgba(200,164,93,0.45); }
+.pref-scroll { scrollbar-width: thin; scrollbar-color: rgba(200,164,93,0.25) transparent; overscroll-behavior: contain; }
