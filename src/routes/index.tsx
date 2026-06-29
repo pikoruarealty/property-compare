@@ -40,6 +40,36 @@ function Index() {
   const heroRef = useRef<HTMLElement | null>(null);
   const comparisonRef = useRef<HTMLDivElement | null>(null);
   const [activeChapter, setActiveChapter] = useState("hero");
+  const { quizAnswers } = useOnboarding();
+
+  const { matched, others } = useMemo(() => {
+    if (!quizAnswers) return { matched: [] as Property[], others: properties };
+    const types = (quizAnswers.propertyType ?? []).map((t) => t.toLowerCase());
+    const bhks = (quizAnswers.bhk ?? []).map((b) =>
+      b.replace(/\s*BHK$/i, "").trim(),
+    );
+    const score = (p: Property) => {
+      let s = 0;
+      const config = p.configuration?.toLowerCase() ?? "";
+      const cat = p.category.toLowerCase();
+      for (const t of types) {
+        if (cat === t) s += 2;
+        else if (config.includes(t)) s += 2;
+      }
+      for (const b of bhks) {
+        if (config.includes(`${b} bhk`) || config.includes(`${b},`)) s += 1;
+      }
+      return s;
+    };
+    const matched: Property[] = [];
+    const others: Property[] = [];
+    for (const p of properties) {
+      if (score(p) > 0) matched.push(p);
+      else others.push(p);
+    }
+    matched.sort((a, b) => score(b) - score(a));
+    return { matched, others };
+  }, [quizAnswers]);
 
   const scrollToId = (id: string) => {
     const el = document.getElementById(id);
