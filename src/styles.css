@@ -299,3 +299,12 @@ html, html * {
 .pref-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
 .pref-scroll::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
 .pref-scroll { scrollbar-width: thin; scrollbar-color: var(--border) transparent; overscroll-behavior: contain; }
+
+/* Global typography normalization — enforce upright type across the app */
+html, body, *, *::before, *::after {
+  font-style: normal !important;
+}
+
+@utility text-upright {
+  font-style: normal;
+}
