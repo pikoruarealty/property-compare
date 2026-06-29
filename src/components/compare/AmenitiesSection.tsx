@@ -7,7 +7,7 @@ export function AmenitiesSection({ properties }: { properties: Property[] }) {
   return (
     <Section
       id="amenities"
-      eyebrow="02 · Amenities"
+      eyebrow="Amenities"
       title="A vocabulary of indulgence"
       description="Every chip is a curated experience inside the residence."
     >

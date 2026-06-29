@@ -233,10 +233,8 @@ function Index() {
                       Matched to your preferences
                     </span>
                     <span className="h-px flex-1 bg-champagne/15" />
-                    <span className="text-[10px] tracking-luxury text-champagne/60">
-                      {String(matched.length).padStart(2, "0")}
-                    </span>
                   </div>
+
                   {matched.map((p, i) => (
                     <div key={p.id} className="group/row">
                       <PropertyListRow property={p} index={i} />
@@ -273,17 +271,14 @@ function ChapterMark({ label }: { index?: number; label: string }) {
 }
 
 
-function RowDivider({ n }: { n: number }) {
+function RowDivider({ n: _n }: { n: number }) {
   return (
     <div className="my-1 flex items-center gap-4 px-2 opacity-60">
-      <span className="h-px flex-1 bg-champagne/12" />
-      <span className="text-[10px] tracking-luxury text-champagne/60">
-        {String(n).padStart(2, "0")}
-      </span>
       <span className="h-px flex-1 bg-champagne/12" />
     </div>
   );
 }
+
 
 function MiniIndexRow({
   num,
