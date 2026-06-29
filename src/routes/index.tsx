@@ -99,7 +99,7 @@ function Index() {
   return (
     <div className="min-h-screen pb-32">
       <SiteHeader />
-      <StickyCompareTray watchRef={heroRef} onCompare={() => scrollToId("suite")} />
+      <StickyCompareTray watchRef={heroRef} hideRef={collectionRef} onCompare={() => scrollToId("suite")} />
 
 
       {/* ============ HERO ============ */}
