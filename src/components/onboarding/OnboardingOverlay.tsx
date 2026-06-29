@@ -80,7 +80,7 @@ export function OnboardingOverlay() {
               <div className="gemini-blob gemini-blob-2" />
               <div className="gemini-blob gemini-blob-3" />
             </div>
-            <div className="relative" style={{ zIndex: 1, display: "contents" }}>
+            
             {quizEditMode && phase === "quiz" && (
               <button
                 type="button"
