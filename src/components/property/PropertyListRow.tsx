@@ -63,10 +63,10 @@ export function PropertyListRow({ property, index = 0 }: Props) {
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.45, delay: Math.min(index, 6) * 0.04, ease: [0.22, 1, 0.36, 1] }}
         animate={{ opacity: hoverOpen ? 0.35 : 1 }}
-        className="group grid grid-cols-1 gap-5 overflow-hidden rounded-[28px] bg-card p-4 sm:grid-cols-[320px_minmax(0,1fr)_auto] sm:items-center sm:gap-8 sm:p-6"
+        className="group grid grid-cols-1 gap-5 overflow-hidden rounded-2xl bg-card p-4 shadow-[var(--shadow-glass)] sm:grid-cols-[300px_minmax(0,1fr)_auto] sm:items-center sm:gap-7 sm:p-5"
         style={{ border: "1px solid var(--glass-border)", contentVisibility: "auto", containIntrinsicSize: "240px", transition: "opacity 0.3s ease" }}
       >
-        <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] sm:aspect-[5/3]">
+        <div className="relative aspect-[16/10] overflow-hidden rounded-xl sm:aspect-[5/3]">
           <AnimatePresence initial={false} mode="sync">
             <motion.img
               key={slides[slideIdx]}
@@ -80,7 +80,7 @@ export function PropertyListRow({ property, index = 0 }: Props) {
               className="absolute inset-0 h-full w-full object-cover"
             />
           </AnimatePresence>
-          <span className="glass absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[10px] tracking-luxury text-champagne">
+          <span className="glass absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[10px] tracking-luxury text-foreground">
             {property.status}
           </span>
           <div className="absolute right-3 top-3 z-10">
@@ -100,23 +100,23 @@ export function PropertyListRow({ property, index = 0 }: Props) {
           )}
         </div>
 
-        <div className="min-w-0 sm:border-l sm:border-champagne/12 sm:pl-7">
+          <div className="min-w-0 sm:border-l sm:border-border sm:pl-7">
           <p className="text-[10px] tracking-luxury text-muted-foreground">{property.configuration}</p>
           <h3 className="mt-2 font-display text-[28px] leading-tight text-ivory sm:text-[32px]">
             {property.name}
           </h3>
-          <p className="mt-1 text-[11px] tracking-luxury text-champagne">{property.developer}</p>
+          <p className="mt-1 text-[11px] tracking-luxury text-muted-foreground">{property.developer}</p>
           <p className="mt-2 text-[14px] text-muted-foreground line-clamp-1">{property.tagline}</p>
 
-          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14px] text-ivory/85">
+          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[14px] text-foreground/85">
             <span className="inline-flex items-center gap-1.5">
-              <MapPin className="h-3.5 w-3.5 text-champagne" /> {property.location}
+              <MapPin className="h-3.5 w-3.5 text-foreground" /> {property.location}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Ruler className="h-3.5 w-3.5 text-champagne" /> {property.size}
+              <Ruler className="h-3.5 w-3.5 text-foreground" /> {property.size}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Calendar className="h-3.5 w-3.5 text-champagne" /> {property.possession}
+              <Calendar className="h-3.5 w-3.5 text-foreground" /> {property.possession}
             </span>
           </div>
         </div>

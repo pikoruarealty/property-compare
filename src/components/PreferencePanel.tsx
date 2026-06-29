@@ -66,25 +66,19 @@ export function PreferencePanel() {
     (current.budgetRange ? 1 : 0);
 
   return (
-    <aside
-      className="rounded-[20px] border p-5"
-      style={{
-        borderColor: "rgba(200,164,93,0.18)",
-        backgroundColor: "rgba(28,30,34,0.55)",
-      }}
-    >
+    <aside className="rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-glass)]">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-[10px] tracking-[0.22em] uppercase text-champagne/70">
+          <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground">
             Your preferences
           </p>
-          <h3 className="mt-1 font-display text-[20px] text-ivory">Refine</h3>
+          <h3 className="mt-1 font-display text-[20px] text-foreground">Refine</h3>
         </div>
         {totalSelected > 0 && (
           <button
             type="button"
             onClick={clearAll}
-            className="text-[11px] tracking-[0.18em] uppercase text-champagne/60 hover:text-champagne transition-colors"
+            className="text-[11px] tracking-[0.18em] uppercase text-muted-foreground transition-colors hover:text-foreground"
           >
             Clear all
           </button>
@@ -129,8 +123,8 @@ export function PreferencePanel() {
 
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mt-5 border-t border-champagne/12 pt-4">
-      <p className="text-[10px] tracking-[0.22em] uppercase text-champagne/60">
+    <div className="mt-5 border-t border-border pt-4">
+      <p className="text-[10px] tracking-[0.22em] uppercase text-muted-foreground">
         {title}
       </p>
       <div className="mt-3 flex flex-col gap-2">{children}</div>
@@ -148,20 +142,15 @@ function CheckRow({
   onChange: () => void;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-3 rounded-md px-2 py-1.5 transition-colors hover:bg-champagne/5">
+    <label className="flex cursor-pointer items-center gap-3 rounded-md px-2 py-1.5 transition-colors hover:bg-muted">
       <span
-        className="flex h-4 w-4 items-center justify-center rounded-[4px] border transition-colors"
-        style={{
-          borderColor: checked ? "#C8A45D" : "rgba(247,243,234,0.25)",
-          backgroundColor: checked ? "#C8A45D" : "transparent",
-        }}
+        className={`flex h-4 w-4 items-center justify-center rounded-[4px] border transition-colors ${
+          checked ? "border-foreground bg-foreground" : "border-border bg-transparent"
+        }`}
       >
-        {checked && <Check className="h-3 w-3 text-[#121416]" strokeWidth={3} />}
+        {checked && <Check className="h-3 w-3 text-background" strokeWidth={3} />}
       </span>
-      <span
-        className="text-[13px]"
-        style={{ color: checked ? "#F7F3EA" : "rgba(247,243,234,0.7)" }}
-      >
+      <span className={`text-[13px] ${checked ? "text-foreground" : "text-muted-foreground"}`}>
         {label}
       </span>
       <input
