@@ -114,7 +114,6 @@ function Index() {
           style={{ background: "var(--gradient-radial-gold)" }}
         />
         <div className="container-lux relative">
-          <ChapterMark index={1} label="Foreword" />
 
           <div className="mt-8 grid grid-cols-1 gap-10">
             <div>
@@ -189,7 +188,6 @@ function Index() {
         className="relative scroll-mt-28 py-12 sm:py-16"
       >
         <div className="container-lux">
-          <ChapterMark index={2} label="The Suite" />
         </div>
         <div className="mt-8">
           <ComparisonBoard />
@@ -199,7 +197,6 @@ function Index() {
       {/* ============ COLLECTION ============ */}
       <section id="collection" ref={collectionRef} className="relative scroll-mt-28 py-16 sm:py-24">
         <div className="container-lux">
-          <ChapterMark index={3} label="The Collection" />
 
           <div className="mt-8 flex flex-wrap items-end justify-between gap-6 border-b border-champagne/15 pb-6">
             <div>
@@ -261,14 +258,8 @@ function Index() {
   );
 }
 
-function ChapterMark({ label }: { index?: number; label: string }) {
-  return (
-    <div className="flex items-center gap-4">
-      <span className="h-px w-12 bg-champagne/50" />
-      <span className="text-[11px] tracking-luxury text-champagne">{label}</span>
-    </div>
-  );
-}
+
+
 
 
 function RowDivider({ n: _n }: { n: number }) {
