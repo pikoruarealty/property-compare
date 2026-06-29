@@ -234,8 +234,8 @@ function Index() {
             <PreferenceBanner />
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
-            <div className="lg:sticky lg:top-28 lg:self-start">
+          <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr] lg:items-start">
+            <div className="lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-2 pref-scroll">
               <PreferencePanel />
             </div>
 
