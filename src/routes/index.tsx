@@ -116,7 +116,7 @@ function Index() {
         <div className="container-lux relative">
           <ChapterMark index={1} label="Foreword" />
 
-          <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1.4fr_0.8fr] lg:gap-16">
+          <div className="mt-8 grid grid-cols-1 gap-10">
             <div>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -159,21 +159,6 @@ function Index() {
               </motion.div>
             </div>
 
-            {/* Right: mini-index */}
-            <motion.aside
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.3 }}
-              className="relative rounded-[24px] border border-champagne/20 bg-soft-black/40 p-6 backdrop-blur-md"
-            >
-              <p className="text-[10px] tracking-luxury text-champagne/80">Inside</p>
-              <h2 className="mt-2 font-display text-xl text-ivory">What this folio contains</h2>
-              <ul className="mt-5 divide-y divide-champagne/12">
-                <MiniIndexRow num="01" label="The Suite" sub="Side-by-side diff matrix" onClick={() => scrollToId("suite")} />
-                <MiniIndexRow num="02" label="The Collection" sub={`${properties.length} curated residences`} onClick={() => scrollToId("collection")} />
-                <MiniIndexRow num="03" label="Editorial Verdicts" sub="Author's notes per residence" onClick={() => scrollToId("collection")} />
-              </ul>
-            </motion.aside>
           </div>
 
           {/* scroll cue */}
