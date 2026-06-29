@@ -67,40 +67,6 @@ function Index() {
       <SiteHeader />
       <StickyCompareTray watchRef={heroRef} onCompare={() => scrollToId("suite")} />
 
-      {/* Side progress rail — desktop only */}
-      <aside className="fixed left-6 top-1/2 z-30 hidden -translate-y-1/2 lg:block">
-        <ul className="flex flex-col gap-5">
-          {CHAPTERS.map((c, i) => {
-            const active = activeChapter === c.id;
-            return (
-              <li key={c.id}>
-                <button
-                  onClick={() => scrollToId(c.id)}
-                  className="group flex items-center gap-3"
-                  aria-label={`Jump to ${c.label}`}
-                >
-                  <span
-                    className={`grid h-7 w-7 place-items-center rounded-full border text-[9px] tracking-luxury transition-all duration-500 ${
-                      active
-                        ? "border-champagne bg-champagne text-lux-black scale-110"
-                        : "border-champagne/30 text-champagne/60 group-hover:border-champagne group-hover:text-champagne"
-                    }`}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    className={`text-[10px] tracking-luxury transition-all duration-500 ${
-                      active ? "text-champagne opacity-100" : "text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
-                    }`}
-                  >
-                    {c.label}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </aside>
 
       {/* ============ HERO ============ */}
       <section
