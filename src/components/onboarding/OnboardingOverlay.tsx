@@ -67,7 +67,7 @@ export function OnboardingOverlay() {
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 12, opacity: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex w-full max-w-[520px] flex-col p-6 sm:my-10 sm:p-10"
+            className="relative flex w-full max-w-[520px] flex-col overflow-hidden p-6 sm:my-10 sm:p-10"
             style={{
               minHeight: "min(100dvh, 640px)",
               borderRadius: 24,
@@ -75,6 +75,12 @@ export function OnboardingOverlay() {
               backgroundColor: "#1C1E22",
             }}
           >
+            <div aria-hidden className="gemini-bg pointer-events-none absolute inset-0 overflow-hidden" style={{ borderRadius: 24, zIndex: 0 }}>
+              <div className="gemini-blob gemini-blob-1" />
+              <div className="gemini-blob gemini-blob-2" />
+              <div className="gemini-blob gemini-blob-3" />
+            </div>
+            
             {quizEditMode && phase === "quiz" && (
               <button
                 type="button"
@@ -90,14 +96,16 @@ export function OnboardingOverlay() {
                 <X className="h-4 w-4" />
               </button>
             )}
-            {phase === "auth" && <AuthFlow />}
-            {phase === "welcome" && <WelcomeCard />}
-            {phase === "quiz" && (
-              <PropertyQuiz
-                initialAnswers={quizEditMode ? quizAnswers ?? undefined : undefined}
-                editMode={quizEditMode}
-              />
-            )}
+            <div className="relative flex flex-1 flex-col" style={{ zIndex: 1 }}>
+              {phase === "auth" && <AuthFlow />}
+              {phase === "welcome" && <WelcomeCard />}
+              {phase === "quiz" && (
+                <PropertyQuiz
+                  initialAnswers={quizEditMode ? quizAnswers ?? undefined : undefined}
+                  editMode={quizEditMode}
+                />
+              )}
+            </div>
           </motion.div>
         </motion.div>
       )}
