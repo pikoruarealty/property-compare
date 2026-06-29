@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowDown, GitCompareArrows, LayoutList } from "lucide-react";
@@ -8,6 +8,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ComparisonBoard } from "@/components/compare/ComparisonBoard";
 import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
 import { PreferenceBanner } from "@/components/PreferenceBanner";
+import { useOnboarding } from "@/context/OnboardingContext";
+import type { Property } from "@/types/property";
 
 export const Route = createFileRoute("/")({
   head: () => ({
