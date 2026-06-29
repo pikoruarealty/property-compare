@@ -27,11 +27,13 @@ const BUDGET_RANGES = [
   "₹ 16 – 20 Cr",
   "₹ 20 Cr +",
 ];
+// Sub-ranges step in ~2 Cr bands. Properties round to the nearest band:
+// e.g. 2.5 Cr → "₹ 1 – 2 Cr" band, 2.6 Cr → "₹ 3 – 4 Cr" band.
 const SUB_RANGES: Record<string, string[]> = {
-  "₹ 1 – 5 Cr": ["₹ 1 – 2 Cr", "₹ 2 – 3 Cr", "₹ 3 – 4 Cr", "₹ 4 – 5 Cr"],
-  "₹ 6 – 10 Cr": ["₹ 6 – 7 Cr", "₹ 7 – 8 Cr", "₹ 8 – 9 Cr", "₹ 9 – 10 Cr"],
-  "₹ 11 – 15 Cr": ["₹ 11 – 12 Cr", "₹ 12 – 13 Cr", "₹ 13 – 14 Cr", "₹ 14 – 15 Cr"],
-  "₹ 16 – 20 Cr": ["₹ 16 – 17 Cr", "₹ 17 – 18 Cr", "₹ 18 – 19 Cr", "₹ 19 – 20 Cr"],
+  "₹ 1 – 5 Cr": ["₹ 1 – 2 Cr", "₹ 3 – 4 Cr", "₹ 5 Cr"],
+  "₹ 6 – 10 Cr": ["₹ 6 – 7 Cr", "₹ 8 – 9 Cr", "₹ 10 Cr"],
+  "₹ 11 – 15 Cr": ["₹ 11 – 12 Cr", "₹ 13 – 14 Cr", "₹ 15 Cr"],
+  "₹ 16 – 20 Cr": ["₹ 16 – 17 Cr", "₹ 18 – 19 Cr", "₹ 20 Cr"],
 };
 
 const transition = { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const };
