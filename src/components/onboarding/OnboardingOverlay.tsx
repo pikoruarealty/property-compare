@@ -76,9 +76,12 @@ export function OnboardingOverlay() {
             }}
           >
             <div aria-hidden className="gemini-bg pointer-events-none absolute inset-0 overflow-hidden" style={{ borderRadius: 24, zIndex: 0 }}>
+              <div className="gemini-conic" />
               <div className="gemini-blob gemini-blob-1" />
               <div className="gemini-blob gemini-blob-2" />
               <div className="gemini-blob gemini-blob-3" />
+              <div className="gemini-blob gemini-blob-4" />
+              <div className="gemini-grain" />
             </div>
             
             {quizEditMode && phase === "quiz" && (
