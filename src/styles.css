@@ -33,6 +33,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  /* Editorial token aliases — kept for backward compat with existing classes */
   --color-lux-black: var(--lux-black);
   --color-soft-black: var(--soft-black);
   --color-graphite: var(--graphite);
@@ -41,200 +42,191 @@
   --color-antique: var(--antique-gold);
   --color-muted-gold: var(--muted-gold);
 
-  --font-display: "Fraunces", "Playfair Display", serif;
-  --font-sans: "Instrument Sans", "Inter", sans-serif;
-  --font-body: "Instrument Sans", "Manrope", sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-sans: "DM Sans", "Inter", sans-serif;
+  --font-body: "DM Sans", "Inter", sans-serif;
 }
 
+/* =========================================================
+   PAPER & INK — EDITORIAL DESIGN SYSTEM
+   Dark = INK (newsprint negative)
+   Light = PAPER (premium magazine)
+   No gold, no champagne. Pure editorial contrast.
+   ========================================================= */
+
 :root {
-  --radius: 2rem;
+  --radius: 0.75rem;
 
-  /* Luxury palette */
-  --lux-black: #121416;
-  --soft-black: #1c1e22;
-  --graphite: #262a30;
-  --ivory: #f7f3ea;
-  --champagne-gold: #c8a45d;
-  --antique-gold: #9b7a36;
-  --muted-gold: #d8c28a;
+  /* Ink palette (dark theme defaults) */
+  --lux-black: #0d0d0d;        /* deep ink */
+  --soft-black: #161616;       /* card ink */
+  --graphite: #1f1f1f;          /* secondary ink */
+  --ivory: #f5f3ee;             /* paper */
+  /* Accent maps to paper-white in ink mode — keeps existing
+     "champagne" / gold-text classes readable without retro warmth. */
+  --champagne-gold: #f5f3ee;
+  --antique-gold: #e8e4dd;
+  --muted-gold: #c7c2b8;
 
-  --background: var(--lux-black);
-  --foreground: var(--ivory);
-  --card: var(--soft-black);
-  --card-foreground: var(--ivory);
-  --popover: var(--soft-black);
-  --popover-foreground: var(--ivory);
-  --primary: var(--champagne-gold);
-  --primary-foreground: var(--lux-black);
-  --secondary: var(--graphite);
-  --secondary-foreground: var(--ivory);
-  --muted: var(--graphite);
-  --muted-foreground: #a8a59c;
-  --accent: var(--muted-gold);
-  --accent-foreground: var(--lux-black);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: var(--ivory);
-  --border: rgba(200, 164, 93, 0.18);
-  --input: rgba(200, 164, 93, 0.22);
-  --ring: var(--champagne-gold);
+  --background: #0d0d0d;
+  --foreground: #f5f3ee;
+  --card: #161616;
+  --card-foreground: #f5f3ee;
+  --popover: #161616;
+  --popover-foreground: #f5f3ee;
+  --primary: #f5f3ee;
+  --primary-foreground: #0d0d0d;
+  --secondary: #1f1f1f;
+  --secondary-foreground: #f5f3ee;
+  --muted: #1a1a1a;
+  --muted-foreground: #a8a39a;
+  --accent: #f5f3ee;
+  --accent-foreground: #0d0d0d;
+  --destructive: oklch(0.6 0.2 25);
+  --destructive-foreground: #f5f3ee;
+  --border: rgba(245, 243, 238, 0.14);
+  --input: rgba(245, 243, 238, 0.18);
+  --ring: #f5f3ee;
 
-  --gradient-gold: linear-gradient(135deg, var(--champagne-gold) 0%, var(--muted-gold) 50%, var(--antique-gold) 100%);
-  --gradient-dark: linear-gradient(180deg, var(--lux-black) 0%, var(--soft-black) 100%);
-  --gradient-radial-gold: radial-gradient(circle at 30% 20%, rgba(200, 164, 93, 0.18), transparent 60%);
+  --gradient-gold: linear-gradient(135deg, #f5f3ee 0%, #d8d4cb 100%);
+  --gradient-dark: linear-gradient(180deg, #0d0d0d 0%, #161616 100%);
+  --gradient-radial-gold: radial-gradient(ellipse 60% 50% at 20% 0%, rgba(245,243,238,0.06), transparent 60%);
 
-  --shadow-gold: 0 20px 60px -20px rgba(200, 164, 93, 0.35);
-  --shadow-deep: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --shadow-gold: 0 18px 50px -22px rgba(0, 0, 0, 0.6);
+  --shadow-deep: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
 
-  --glass-bg: rgba(28, 30, 34, 0.55);
-  --glass-border: rgba(200, 164, 93, 0.22);
+  --glass-bg: rgba(22, 22, 22, 0.72);
+  --glass-border: rgba(245, 243, 238, 0.14);
 }
 
 .light {
-  /* Light luxury palette — warm porcelain + espresso ink + deep antique gold.
-     Inspired by Rolls-Royce ivory leather + Apple soft-light editorials.
-     Tuned for high text contrast (AA+) against creamy surfaces. */
-  /* Keep --lux-black DARK so image overlay gradients (from-lux-black) stay rich. */
-  --lux-black: #15100b;
-  --soft-black: #fffaf0;        /* warm ivory card surface */
-  --graphite: #f1e6cc;           /* cream secondary surface */
-  --ivory: #14100b;              /* near-black espresso ink — primary text */
+  /* Paper palette — premium magazine */
+  --lux-black: #0d0d0d;         /* keep dark for image overlays */
+  --soft-black: #ffffff;        /* card paper */
+  --graphite: #e8e4dd;          /* secondary paper */
+  --ivory: #0d0d0d;             /* ink text */
 
-  --champagne-gold: #704c10;     /* deeper for AA on cream */
-  --antique-gold: #4a3208;
-  --muted-gold: #9a7626;
+  --champagne-gold: #2d2d2d;    /* "gold" → ink in light mode */
+  --antique-gold: #0d0d0d;
+  --muted-gold: #4a4a4a;
 
-  --background: #f4ead2;         /* creamy canvas base */
-  --foreground: #14100b;
-  --card: #fffaf0;
-  --card-foreground: #14100b;
-  --popover: #fffaf0;
-  --popover-foreground: #14100b;
-  --primary: #4a3208;
-  --primary-foreground: #fffaf0;
-  --secondary: #ecdfbe;
-  --secondary-foreground: #14100b;
-  --muted: #e8dbb8;
-  --muted-foreground: #4d3d20;   /* deep bronze, AA on cream */
-  --accent: #704c10;
-  --accent-foreground: #fffaf0;
-  --border: rgba(74, 50, 8, 0.22);
-  --input: rgba(74, 50, 8, 0.3);
-  --ring: #704c10;
+  --background: #f5f3ee;
+  --foreground: #0d0d0d;
+  --card: #ffffff;
+  --card-foreground: #0d0d0d;
+  --popover: #ffffff;
+  --popover-foreground: #0d0d0d;
+  --primary: #0d0d0d;
+  --primary-foreground: #f5f3ee;
+  --secondary: #e8e4dd;
+  --secondary-foreground: #0d0d0d;
+  --muted: #ebe7df;
+  --muted-foreground: #5a5a5a;
+  --accent: #0d0d0d;
+  --accent-foreground: #f5f3ee;
+  --border: rgba(13, 13, 13, 0.14);
+  --input: rgba(13, 13, 13, 0.2);
+  --ring: #0d0d0d;
 
-  --gradient-gold: linear-gradient(135deg, #9a7626 0%, #704c10 55%, #3d2806 100%);
-  --gradient-dark: linear-gradient(180deg, #fbf2dc 0%, #f0e2c0 100%);
-  --gradient-radial-gold: radial-gradient(circle at 30% 20%, rgba(154, 118, 38, 0.20), transparent 60%);
+  --gradient-gold: linear-gradient(135deg, #0d0d0d 0%, #2d2d2d 100%);
+  --gradient-dark: linear-gradient(180deg, #f5f3ee 0%, #ebe7df 100%);
+  --gradient-radial-gold: radial-gradient(ellipse 70% 50% at 80% 0%, rgba(13,13,13,0.04), transparent 60%);
 
-  --shadow-gold: 0 28px 70px -26px rgba(74, 50, 8, 0.34);
-  --shadow-deep: 0 32px 80px -32px rgba(40, 26, 6, 0.28);
-  --shadow-glass: 0 16px 44px -10px rgba(74, 50, 8, 0.14);
+  --shadow-gold: 0 20px 50px -24px rgba(13, 13, 13, 0.18);
+  --shadow-deep: 0 32px 80px -32px rgba(13, 13, 13, 0.18);
+  --shadow-glass: 0 8px 28px -8px rgba(13, 13, 13, 0.1);
 
-  --glass-bg: rgba(255, 250, 240, 0.82);
-  --glass-border: rgba(74, 50, 8, 0.22);
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(13, 13, 13, 0.14);
 }
 
-/* Light-mode surface overrides — keep image overlay gradients dark,
-   but recolor full-surface usages of the dark palette to creamy porcelain. */
-.light .bg-lux-black,
-.light .bg-lux-black\/40,
-.light .bg-lux-black\/60,
-.light .bg-lux-black\/70 {
-  background-color: rgba(255, 250, 240, 0.86) !important;
-}
-.light .bg-soft-black,
-.light .bg-soft-black\/30,
-.light .bg-soft-black\/40,
-.light .bg-soft-black\/60,
-.light .bg-soft-black\/70,
-.light .bg-soft-black\/80,
-.light .bg-soft-black\/85 {
-  background-color: #fffaf0 !important;
-}
-.light .bg-graphite,
-.light .bg-graphite\/40,
-.light .bg-graphite\/60,
-.light .bg-graphite\/70 {
-  background-color: #f1e6cc !important;
-}
-/* Gradient-from variants on surface containers shouldn't fight the new palette */
-.light .from-soft-black\/80,
-.light .from-soft-black\/30,
-.light .from-soft-black,
-.light .via-lux-black\/55,
-.light .to-soft-black\/85 {
-  --tw-gradient-from: rgba(255, 250, 240, 0.94) !important;
-  --tw-gradient-via: rgba(252, 244, 224, 0.88) !important;
-  --tw-gradient-to: rgba(255, 250, 240, 0.94) !important;
-}
-.light .to-soft-black\/30,
-.light .to-soft-black {
-  --tw-gradient-to: rgba(255, 250, 240, 0) !important;
+/* ----------------- Compat overrides for legacy luxury classes ----------------- */
+/* Map all `lux-black` / `soft-black` / `graphite` surface utilities to current tokens. */
+.bg-lux-black { background-color: var(--background) !important; }
+.bg-lux-black\/40 { background-color: color-mix(in oklab, var(--background) 40%, transparent) !important; }
+.bg-lux-black\/60 { background-color: color-mix(in oklab, var(--background) 60%, transparent) !important; }
+.bg-lux-black\/70 { background-color: color-mix(in oklab, var(--background) 70%, transparent) !important; }
+
+.bg-soft-black,
+.bg-soft-black\/30,
+.bg-soft-black\/40,
+.bg-soft-black\/60,
+.bg-soft-black\/70,
+.bg-soft-black\/80,
+.bg-soft-black\/85 { background-color: var(--card) !important; }
+
+.bg-graphite { background-color: var(--secondary) !important; }
+.bg-graphite\/40 { background-color: color-mix(in oklab, var(--secondary) 40%, transparent) !important; }
+.bg-graphite\/60 { background-color: color-mix(in oklab, var(--secondary) 60%, transparent) !important; }
+.bg-graphite\/70 { background-color: color-mix(in oklab, var(--secondary) 70%, transparent) !important; }
+
+/* Text classes */
+.text-ivory { color: var(--foreground) !important; }
+.text-ivory\/95, .text-ivory\/90 { color: color-mix(in oklab, var(--foreground) 92%, transparent) !important; }
+.text-ivory\/85, .text-ivory\/80 { color: color-mix(in oklab, var(--foreground) 82%, transparent) !important; }
+.text-ivory\/70 { color: color-mix(in oklab, var(--foreground) 72%, transparent) !important; }
+.text-ivory\/60, .text-ivory\/50 { color: color-mix(in oklab, var(--foreground) 60%, transparent) !important; }
+
+.text-champagne,
+.text-champagne\/90,
+.text-champagne\/80,
+.text-champagne\/70,
+.text-champagne\/60 { color: var(--foreground) !important; }
+.text-champagne\/40 { color: color-mix(in oklab, var(--foreground) 50%, transparent) !important; }
+
+/* Backgrounds tied to gold */
+.bg-champagne { background-color: var(--foreground) !important; color: var(--background) !important; }
+.bg-champagne\/5 { background-color: color-mix(in oklab, var(--foreground) 5%, transparent) !important; }
+.bg-champagne\/10, .bg-champagne\/12 { background-color: color-mix(in oklab, var(--foreground) 10%, transparent) !important; }
+.bg-muted-gold { background-color: var(--muted-foreground) !important; }
+
+/* Borders tied to gold */
+.border-champagne\/12,
+.border-champagne\/15,
+.border-champagne\/18,
+.border-champagne\/20,
+.border-champagne\/22,
+.border-champagne\/25,
+.border-champagne\/30,
+.border-champagne\/40,
+.border-champagne\/50 { border-color: var(--border) !important; }
+.border-champagne { border-color: var(--foreground) !important; }
+.divide-champagne\/12 > :not([hidden]) ~ :not([hidden]) { border-color: var(--border) !important; }
+.ring-champagne\/35,
+.ring-champagne\/40,
+.ring-champagne\/45 { --tw-ring-color: color-mix(in oklab, var(--foreground) 45%, transparent) !important; }
+
+/* "From/to" gradient utilities collapse into the editorial palette */
+.from-soft-black\/30,
+.from-soft-black\/80,
+.from-soft-black,
+.via-lux-black\/55,
+.to-soft-black\/85,
+.to-soft-black\/30,
+.to-soft-black {
+  --tw-gradient-from: var(--card) !important;
+  --tw-gradient-via: var(--card) !important;
+  --tw-gradient-to: var(--card) !important;
 }
 
-/* Champagne text reads too pale on cream — deepen to antique gold in light mode */
-.light .text-champagne,
-.light .text-champagne\/90,
-.light .text-champagne\/80,
-.light .text-champagne\/70 {
-  color: #5a3d0a !important;
-}
-.light .gold-text {
-  background: linear-gradient(135deg, #6b4810 0%, #4a3208 55%, #2e1d04 100%) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
-}
-.light .text-ivory {
-  color: #14100b !important;
-}
-.light .text-ivory\/95,
-.light .text-ivory\/90 {
-  color: rgba(20, 16, 11, 0.94) !important;
-}
-.light .text-ivory\/85,
-.light .text-ivory\/80,
-.light .text-ivory\/70 {
-  color: rgba(20, 16, 11, 0.82) !important;
-}
-.light .text-ivory\/60,
-.light .text-ivory\/50 {
-  color: rgba(20, 16, 11, 0.65) !important;
-}
-.light .text-muted-foreground {
-  color: #4d3d20 !important;
-}
-.light .border-champagne\/12,
-.light .border-champagne\/15,
-.light .border-champagne\/20,
-.light .border-champagne\/25,
-.light .border-champagne\/30,
-.light .border-champagne\/40 {
-  border-color: rgba(112, 76, 16, 0.28) !important;
-}
-.light .bg-champagne\/5,
-.light .bg-champagne\/10,
-.light .bg-champagne\/12 {
-  background-color: rgba(154, 118, 38, 0.14) !important;
-}
-.light .ring-champagne\/45,
-.light .ring-champagne\/40,
-.light .ring-champagne\/35 {
-  --tw-ring-color: rgba(112, 76, 16, 0.55) !important;
+/* Override gold gradient text → solid ink/paper foreground */
+.gold-text {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: var(--foreground) !important;
 }
 
-
-
-
-/* Smooth theme transition */
-html,
-html * {
-  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.25s ease;
+/* Gold-border becomes a clean hairline */
+.gold-border {
+  border: 1px solid var(--foreground) !important;
+  background: transparent !important;
 }
-/* Don't transition transforms/opacity to keep motion crisp */
-html *::before,
-html *::after {
-  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.25s ease;
+
+/* Theme transitions */
+html, html * {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
 }
 
 @layer base {
@@ -249,74 +241,42 @@ html *::after {
     color: var(--color-foreground);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
-    background-image:
-      radial-gradient(ellipse at top, rgba(200, 164, 93, 0.08), transparent 50%),
-      radial-gradient(ellipse at bottom right, rgba(155, 122, 54, 0.06), transparent 50%);
-    background-attachment: fixed;
+    font-feature-settings: "ss01", "ss02";
   }
-  .light body {
-    background:
-      radial-gradient(ellipse 70% 40% at 20% 0%, rgba(255, 244, 214, 0.95), transparent 60%),
-      radial-gradient(ellipse 60% 50% at 100% 10%, rgba(244, 224, 176, 0.75), transparent 65%),
-      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(232, 204, 148, 0.55), transparent 65%),
-      linear-gradient(180deg, #fbf2dc 0%, #f4ead2 45%, #ede0bc 100%);
-    background-attachment: fixed;
-  }
-
-
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+    font-weight: 500;
   }
   ::selection {
-    background: var(--champagne-gold);
-    color: var(--lux-black);
+    background: var(--foreground);
+    color: var(--background);
   }
 }
 
 @utility glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-glass);
 }
 
 @utility glass-strong {
-  background: rgba(18, 20, 22, 0.75);
-  backdrop-filter: blur(32px) saturate(180%);
-  border: 1px solid rgba(200, 164, 93, 0.28);
-}
-.light .glass-strong {
-  background: rgba(255, 250, 240, 0.86);
-  border-color: rgba(96, 67, 18, 0.22);
-  box-shadow: 0 24px 60px -28px rgba(60, 40, 12, 0.22);
-}
-
-
-@utility gold-border {
-  border: 1px solid transparent;
-  background:
-    linear-gradient(var(--soft-black), var(--soft-black)) padding-box,
-    var(--gradient-gold) border-box;
-}
-
-@utility gold-text {
-  background: var(--gradient-gold);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  background: var(--glass-bg);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid var(--glass-border);
 }
 
 @utility hover-lift {
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
 }
 .hover-lift:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-deep), var(--shadow-gold);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-deep);
 }
 
 @utility tracking-luxury {
-  letter-spacing: 0.3em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
@@ -334,15 +294,8 @@ html *::after {
   }
 }
 
-/* Light-mode adjustments for new homepage shell */
-.light .border-champagne\/12,
-.light .divide-champagne\/12 > :not([hidden]) ~ :not([hidden]) {
-  border-color: rgba(112, 76, 16, 0.22) !important;
-}
-
-
-/* Refine sidebar scrollbar */
-.pref-scroll::-webkit-scrollbar { width: 6px; }
-.pref-scroll::-webkit-scrollbar-thumb { background: rgba(200,164,93,0.25); border-radius: 999px; }
-.pref-scroll::-webkit-scrollbar-thumb:hover { background: rgba(200,164,93,0.45); }
-.pref-scroll { scrollbar-width: thin; scrollbar-color: rgba(200,164,93,0.25) transparent; overscroll-behavior: contain; }
+/* Sidebar scrollbar */
+.pref-scroll::-webkit-scrollbar { width: 4px; }
+.pref-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+.pref-scroll::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+.pref-scroll { scrollbar-width: thin; scrollbar-color: var(--border) transparent; overscroll-behavior: contain; }
