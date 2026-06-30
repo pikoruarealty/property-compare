@@ -46,6 +46,7 @@ export function PropertyHoverCard({
   onToggleCompare,
   onPointerEnter,
   onPointerLeave,
+  onClose,
 }: Props) {
   const [box, setBox] = useState<{
     top: number;
