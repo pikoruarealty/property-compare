@@ -137,12 +137,14 @@ function SlotCard({
   onRemove,
   onPick,
   currentSelected,
+  pickable,
 }: {
   slot: Property | null;
   index: number;
   onRemove: (id: string) => void;
   onPick: (id: string) => void;
   currentSelected: string[];
+  pickable: Property[];
 }) {
   const [open, setOpen] = useState(false);
 
