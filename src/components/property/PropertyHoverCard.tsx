@@ -27,8 +27,9 @@ interface Props {
   onPointerLeave: () => void;
 }
 
-const EXPANDED_HEIGHT = 460;
+const EXPANDED_HEIGHT = 520;
 const EXTRA_WIDTH = 80; // px wider than row on each side combined
+const MIN_WIDTH = 820; // ensure popup is always large enough to show full info
 const EXTRA_LIFT = 12;
 
 export function PropertyHoverCard({
