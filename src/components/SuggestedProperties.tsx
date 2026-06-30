@@ -60,6 +60,21 @@ function buildBuckets(answers: QuizAnswers) {
       if (price > hi + 0.5) above.push(p);
       else if (price < lo - 0.5) below.push(p);
     }
+
+    // Fallback: if no preference-matching property is above budget, widen
+    // to ANY property priced above the user's budget so the section
+    // always has something to show.
+    if (above.length === 0) {
+      above = properties.filter((p) => {
+        if (inPrefs.includes(p)) return false;
+        const prices = (Object.values(p.configurations) as Array<{ price?: string } | undefined>)
+          .map((c) => parsePrice(c?.price))
+          .filter((n): n is number => n !== null);
+        if (prices.length === 0) return false;
+        return Math.min(...prices) > hi + 0.5;
+      });
+    }
+
     above.sort(
       (a, b) => (minRelevantPrice(a, answers) ?? 0) - (minRelevantPrice(b, answers) ?? 0),
     );
