@@ -10,6 +10,8 @@ import type { ConfigKey, Property } from "@/types/property";
 import { CONFIG_KEYS } from "@/types/property";
 import { toast } from "sonner";
 import { PhotoSlideshow } from "@/components/compare/PhotoSlideshow";
+import { useOnboarding } from "@/context/OnboardingContext";
+import { allowedConfigKeys, matchesPreferences } from "@/lib/preference-filter";
 
 const TERM_INFO: Record<string, { title: string; body: string }> = {
   Developer: {
@@ -38,11 +40,20 @@ const DASH = "—";
 
 export function ComparisonBoard() {
   const hydrated = useHydrated();
+  const { quizAnswers } = useOnboarding();
   const { selected: rawSelected, toggle, remove, clear } = useCompareStore();
   const selected = hydrated ? rawSelected : [];
   const items = useMemo(
     () => selected.map((id) => getPropertyById(id)).filter(Boolean) as Property[],
     [selected],
+  );
+  const visibleConfigKeys = useMemo<ConfigKey[]>(() => {
+    const allowed = allowedConfigKeys(quizAnswers);
+    return allowed.length > 0 ? allowed : CONFIG_KEYS;
+  }, [quizAnswers]);
+  const pickable = useMemo(
+    () => allProperties.filter((p) => matchesPreferences(p, quizAnswers)),
+    [quizAnswers],
   );
   const slots: (Property | null)[] = Array.from({ length: MAX_COMPARE }, (_, i) => items[i] ?? null);
   const ready = items.length >= MIN_COMPARE;
@@ -83,6 +94,7 @@ export function ComparisonBoard() {
                 if (!r.ok && r.reason) toast.error(r.reason);
               }}
               currentSelected={selected}
+              pickable={pickable}
             />
           ))}
         </div>
@@ -97,7 +109,7 @@ export function ComparisonBoard() {
               transition={{ duration: 0.3 }}
               className="mt-6"
             >
-              <ComparisonGrid items={items} />
+              <ComparisonGrid items={items} visibleConfigKeys={visibleConfigKeys} />
             </motion.div>
           ) : (
             <motion.div
@@ -125,12 +137,14 @@ function SlotCard({
   onRemove,
   onPick,
   currentSelected,
+  pickable,
 }: {
   slot: Property | null;
   index: number;
   onRemove: (id: string) => void;
   onPick: (id: string) => void;
   currentSelected: string[];
+  pickable: Property[];
 }) {
   const [open, setOpen] = useState(false);
 
@@ -164,7 +178,7 @@ function SlotCard({
     );
   }
 
-  const available = allProperties.filter((p) => !currentSelected.includes(p.id));
+  const available = pickable.filter((p) => !currentSelected.includes(p.id));
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -222,13 +236,13 @@ function bestIndex(values: (number | null)[]): number | null {
 }
 
 /* ---------------- grid ---------------- */
-function ComparisonGrid({ items }: { items: Property[] }) {
+function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visibleConfigKeys: ConfigKey[] }) {
   const cols = items.length;
   const gridTpl = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
 
   const configWinners: Record<string, number | null> = {};
-  CONFIG_KEYS.forEach((k) => {
-    configWinners[k] = bestIndex(items.map((p) => parseMaxNum(p.configurations[k as ConfigKey]?.area ?? null)));
+  visibleConfigKeys.forEach((k) => {
+    configWinners[k] = bestIndex(items.map((p) => parseMaxNum(p.configurations[k]?.area ?? null)));
   });
   const superWinner = bestIndex(items.map((p) => parseMaxNum(p.superBuiltUpArea)));
   const carpetWinner = bestIndex(items.map((p) => parseMaxNum(p.carpetArea)));
@@ -275,7 +289,7 @@ function ComparisonGrid({ items }: { items: Property[] }) {
       <Row label="Developer" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.developer} />} />
 
       <SectionLabel title="Configurations" />
-      {CONFIG_KEYS.map((k) => {
+      {visibleConfigKeys.map((k) => {
         const winnerIdx = configWinners[k];
         return (
           <Row

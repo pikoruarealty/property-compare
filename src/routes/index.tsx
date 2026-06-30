@@ -10,6 +10,7 @@ import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
 import { PreferenceBanner } from "@/components/PreferenceBanner";
 import { PreferencePanel } from "@/components/PreferencePanel";
 import { useOnboarding } from "@/context/OnboardingContext";
+import { matchesPreferences } from "@/lib/preference-filter";
 import type { Property } from "@/types/property";
 
 export const Route = createFileRoute("/")({
@@ -63,12 +64,8 @@ function Index() {
       }
       return s;
     };
-    const matched: Property[] = [];
-    const others: Property[] = [];
-    for (const p of properties) {
-      if (score(p) > 0) matched.push(p);
-      else others.push(p);
-    }
+    const matched = properties.filter((p) => matchesPreferences(p, quizAnswers));
+    const others = properties.filter((p) => !matched.includes(p));
     matched.sort((a, b) => score(b) - score(a));
     return { matched, others };
   }, [quizAnswers]);
