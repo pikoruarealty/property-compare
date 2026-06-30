@@ -289,7 +289,7 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
       <Row label="Developer" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.developer} />} />
 
       <SectionLabel title="Configurations" />
-      {CONFIG_KEYS.map((k) => {
+      {visibleConfigKeys.map((k) => {
         const winnerIdx = configWinners[k];
         return (
           <Row
