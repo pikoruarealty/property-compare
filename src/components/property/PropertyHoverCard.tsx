@@ -115,15 +115,16 @@ export function PropertyHoverCard({
             transformOrigin: `${box.originX}% ${box.originY}%`,
             willChange: "transform, opacity",
             borderRadius: 32,
-            background: "rgba(16,16,16,0.88)",
+            background: "var(--card)",
             backdropFilter: "blur(28px) saturate(140%)",
-            border: "1px solid rgba(255,255,255,0.09)",
-            boxShadow: "0 40px 100px -20px rgba(0,0,0,0.65)",
+            border: "1px solid var(--glass-border)",
+            boxShadow: "0 40px 100px -20px color-mix(in oklab, var(--foreground) 35%, transparent)",
             overflow: "hidden",
             display: "grid",
             gridTemplateColumns: "55% 45%",
             backfaceVisibility: "hidden",
             transform: "translateZ(0)",
+            color: "var(--foreground)",
           }}
         >
 
