@@ -178,7 +178,7 @@ function SlotCard({
     );
   }
 
-  const available = allProperties.filter((p) => !currentSelected.includes(p.id));
+  const available = pickable.filter((p) => !currentSelected.includes(p.id));
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
