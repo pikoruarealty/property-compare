@@ -132,8 +132,24 @@ export function SuggestedProperties() {
       };
     }
     const b = buildBuckets(quizAnswers);
-    // Final safety net: never let Suggested be empty.
+    // Final safety nets: none of the three marquees may be empty.
     if (b.suggested.length === 0) b.suggested = properties;
+    if (b.above.length === 0) {
+      const pricedAll = properties
+        .filter((p) => !b.suggested.includes(p))
+        .map((p) => ({ p, m: anyMinPrice(p) }))
+        .filter((x): x is { p: Property; m: number } => x.m !== null)
+        .sort((a, b) => b.m - a.m);
+      b.above = pricedAll.map((x) => x.p);
+    }
+    if (b.below.length === 0) {
+      const pricedAll = properties
+        .filter((p) => !b.suggested.includes(p))
+        .map((p) => ({ p, m: anyMinPrice(p) }))
+        .filter((x): x is { p: Property; m: number } => x.m !== null)
+        .sort((a, b) => a.m - b.m);
+      b.below = pricedAll.map((x) => x.p);
+    }
     return b;
   }, [quizAnswers]);
 
@@ -149,32 +165,28 @@ export function SuggestedProperties() {
         list={buckets.suggested}
         chipLabel={null}
       />
-      {buckets.above.length > 0 && (
-        <div className="mt-14">
-          <Marquee
-            anchorId="suggested-above-budget"
-            eyebrow="Stretch picks"
-            eyebrowIcon={<TrendingUp className="h-3 w-3" />}
-            title={<>More than <span className="gold-text">your budget</span></>}
-            subtitle="A glance just above your range, in case it's worth the stretch."
-            list={buckets.above}
-            chipLabel="Above budget"
-          />
-        </div>
-      )}
-      {buckets.below.length > 0 && (
-        <div className="mt-14">
-          <Marquee
-            anchorId="suggested-below-budget"
-            eyebrow="Smart value"
-            eyebrowIcon={<TrendingDown className="h-3 w-3" />}
-            title={<>Lower than <span className="gold-text">your budget</span></>}
-            subtitle="Comfortably under your range, same preferences."
-            list={buckets.below}
-            chipLabel="Below budget"
-          />
-        </div>
-      )}
+      <div className="mt-14">
+        <Marquee
+          anchorId="suggested-above-budget"
+          eyebrow="Stretch picks"
+          eyebrowIcon={<TrendingUp className="h-3 w-3" />}
+          title={<>More than <span className="gold-text">your budget</span></>}
+          subtitle="A glance just above your range, in case it's worth the stretch."
+          list={buckets.above}
+          chipLabel="Above budget"
+        />
+      </div>
+      <div className="mt-14">
+        <Marquee
+          anchorId="suggested-below-budget"
+          eyebrow="Smart value"
+          eyebrowIcon={<TrendingDown className="h-3 w-3" />}
+          title={<>Lower than <span className="gold-text">your budget</span></>}
+          subtitle="Comfortably under your range, same preferences."
+          list={buckets.below}
+          chipLabel="Below budget"
+        />
+      </div>
     </section>
   );
 }
