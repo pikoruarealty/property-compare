@@ -40,11 +40,20 @@ const DASH = "—";
 
 export function ComparisonBoard() {
   const hydrated = useHydrated();
+  const { quizAnswers } = useOnboarding();
   const { selected: rawSelected, toggle, remove, clear } = useCompareStore();
   const selected = hydrated ? rawSelected : [];
   const items = useMemo(
     () => selected.map((id) => getPropertyById(id)).filter(Boolean) as Property[],
     [selected],
+  );
+  const visibleConfigKeys = useMemo<ConfigKey[]>(() => {
+    const allowed = allowedConfigKeys(quizAnswers);
+    return allowed.length > 0 ? allowed : CONFIG_KEYS;
+  }, [quizAnswers]);
+  const pickable = useMemo(
+    () => allProperties.filter((p) => matchesPreferences(p, quizAnswers)),
+    [quizAnswers],
   );
   const slots: (Property | null)[] = Array.from({ length: MAX_COMPARE }, (_, i) => items[i] ?? null);
   const ready = items.length >= MIN_COMPARE;
