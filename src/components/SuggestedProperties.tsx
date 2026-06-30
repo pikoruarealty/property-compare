@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Sparkles, ArrowUpRight, TrendingUp, TrendingDown } from "lucide-react";
+import { toast } from "sonner";
 import { properties } from "@/data/properties";
 import { useOnboarding } from "@/context/OnboardingContext";
 import {
@@ -10,6 +11,9 @@ import {
 } from "@/lib/preference-filter";
 import type { Property, ConfigKey } from "@/types/property";
 import type { QuizAnswers } from "@/context/OnboardingContext";
+import { MAX_COMPARE, useCompareStore } from "@/stores/compare-store";
+import { useHydrated } from "@/hooks/use-hydrated";
+import { PropertyHoverCard } from "@/components/property/PropertyHoverCard";
 
 const parsePrice = (s: string | null | undefined): number | null => {
   if (!s) return null;
