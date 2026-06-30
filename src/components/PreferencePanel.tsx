@@ -10,7 +10,7 @@ const BUDGETS = [
   "₹ 6 – 10 Cr",
   "₹ 11 – 15 Cr",
   "₹ 16 – 20 Cr",
-  "₹ 20 Cr +",
+  "₹ 21 Cr +",
 ];
 
 export function PreferencePanel() {
