@@ -92,6 +92,15 @@ export function PropertyHoverCard({
     };
   }, [open, anchorRef]);
 
+  useEffect(() => {
+    if (!open || !onClose) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
   const go = (dir: 1 | -1) => {
     onSlideChange((slideIdx + dir + slides.length) % slides.length);
   };
