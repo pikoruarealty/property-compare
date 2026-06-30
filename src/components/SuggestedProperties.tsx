@@ -185,7 +185,6 @@ function Marquee({
               key={`${anchorId}-${p.id}-${i}`}
               property={p}
               chipLabel={chipLabel}
-              onClick={() => focusProperty(p.id)}
             />
           ))}
         </div>
