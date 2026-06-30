@@ -25,7 +25,7 @@ const BUDGET_RANGES = [
   "₹ 6 – 10 Cr",
   "₹ 11 – 15 Cr",
   "₹ 16 – 20 Cr",
-  "₹ 20 Cr +",
+  "₹ 21 Cr +",
 ];
 // Sub-ranges step in ~2 Cr bands. Properties round to the nearest band:
 // e.g. 2.5 Cr → "₹ 1 – 2 Cr" band, 2.6 Cr → "₹ 3 – 4 Cr" band.
