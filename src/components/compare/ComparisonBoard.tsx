@@ -47,14 +47,18 @@ export function ComparisonBoard() {
     () => selected.map((id) => getPropertyById(id)).filter(Boolean) as Property[],
     [selected],
   );
-  const visibleConfigKeys = useMemo<ConfigKey[]>(() => {
-    const allowed = allowedConfigKeys(quizAnswers);
-    return allowed.length > 0 ? allowed : CONFIG_KEYS;
-  }, [quizAnswers]);
-  const pickable = useMemo(
+  const filtered = useMemo(
     () => allProperties.filter((p) => matchesPreferences(p, quizAnswers)),
     [quizAnswers],
   );
+  // Fallback to the full catalogue when preferences yield zero matches so
+  // the picker is never empty — the user can still compare.
+  const noMatches = Boolean(quizAnswers) && filtered.length === 0;
+  const pickable = filtered.length > 0 ? filtered : allProperties;
+  const visibleConfigKeys = useMemo<ConfigKey[]>(() => {
+    const allowed = allowedConfigKeys(quizAnswers);
+    return allowed.length > 0 && !noMatches ? allowed : CONFIG_KEYS;
+  }, [quizAnswers, noMatches]);
   const slots: (Property | null)[] = Array.from({ length: MAX_COMPARE }, (_, i) => items[i] ?? null);
   const ready = items.length >= MIN_COMPARE;
 
@@ -80,6 +84,12 @@ export function ComparisonBoard() {
             </button>
           )}
         </div>
+
+        {noMatches && (
+          <div className="mb-4 rounded-lg border border-dashed border-border bg-muted/20 px-3 py-2 text-[12px] text-muted-foreground">
+            No residences match your current preferences — showing the full catalogue so you can still compare.
+          </div>
+        )}
 
         {/* Slot picker */}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
