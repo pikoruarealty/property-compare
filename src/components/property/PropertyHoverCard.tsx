@@ -62,7 +62,8 @@ export function PropertyHoverCard({
       const r = el.getBoundingClientRect();
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const width = Math.min(r.width + EXTRA_WIDTH, vw - 24);
+      const desired = Math.max(r.width + EXTRA_WIDTH, MIN_WIDTH);
+      const width = Math.min(desired, vw - 24);
       let left = r.left - (width - r.width) / 2;
       left = Math.min(Math.max(12, left), vw - width - 12);
       let top = r.top + r.height / 2 - EXPANDED_HEIGHT / 2 - EXTRA_LIFT;
