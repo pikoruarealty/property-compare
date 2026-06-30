@@ -204,58 +204,83 @@ export function PropertyHoverCard({
           </div>
 
           {/* RIGHT — Details */}
-          <div className="flex h-full flex-col justify-between p-8">
+          <div className="flex h-full flex-col p-9">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.35em] text-champagne/90">
-                {property.developer}
-              </p>
-              <h3 className="mt-3 font-display text-[34px] leading-tight text-ivory">
+              <div className="flex items-center gap-2">
+                <span className="h-px w-6 bg-champagne/70" />
+                <p className="text-[10px] font-semibold uppercase tracking-[0.36em] text-champagne">
+                  {property.developer}
+                </p>
+              </div>
+              <h3 className="mt-4 font-display text-[38px] font-medium leading-[1.02] tracking-[-0.02em] text-ivory">
                 {property.name}
               </h3>
-              <p className="mt-2 text-[11px] tracking-luxury text-ivory/55">
+              <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.28em] text-ivory/60">
                 {property.configuration}
               </p>
-              <p className="mt-5 text-sm leading-relaxed text-ivory/70 line-clamp-3">
+              <p className="mt-5 text-[14px] leading-relaxed text-ivory/75 line-clamp-3">
                 {property.tagline}
               </p>
             </div>
 
-            <div className="space-y-3 pt-6 text-sm text-ivory/85">
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-champagne" />
-                <span>{property.location}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Ruler className="h-4 w-4 text-champagne" />
-                <span>{property.size}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-champagne" />
-                <span>{property.possession}</span>
-              </div>
-            </div>
+            <div className="mt-auto">
+              <div
+                className="my-6 h-px w-full"
+                style={{ background: "linear-gradient(to right, transparent, var(--glass-border), transparent)" }}
+              />
 
-            <button
-              onClick={onToggleCompare}
-              disabled={atMax}
-              className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-xs tracking-luxury transition-all duration-300 ${
-                selectedFlag
-                  ? "bg-champagne text-lux-black shadow-[0_10px_30px_-10px_rgba(200,164,93,0.6)]"
-                  : atMax
-                    ? "cursor-not-allowed bg-graphite text-muted-foreground"
-                    : "gold-border text-champagne hover:bg-champagne hover:text-lux-black"
-              }`}
-            >
-              {selectedFlag ? (
-                <>
-                  <Check className="h-4 w-4" /> Added to Compare
-                </>
-              ) : (
-                <>
-                  <Plus className="h-4 w-4" /> Add to Compare
-                </>
-              )}
-            </button>
+              <dl className="grid grid-cols-1 gap-3 text-[13px]">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-champagne/10 ring-1 ring-champagne/25">
+                    <MapPin className="h-3.5 w-3.5 text-champagne" />
+                  </span>
+                  <div className="min-w-0">
+                    <dt className="text-[9px] font-semibold uppercase tracking-[0.28em] text-ivory/45">Location</dt>
+                    <dd className="truncate text-ivory/90">{property.location}</dd>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-champagne/10 ring-1 ring-champagne/25">
+                    <Ruler className="h-3.5 w-3.5 text-champagne" />
+                  </span>
+                  <div className="min-w-0">
+                    <dt className="text-[9px] font-semibold uppercase tracking-[0.28em] text-ivory/45">Size</dt>
+                    <dd className="truncate text-ivory/90">{property.size}</dd>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-champagne/10 ring-1 ring-champagne/25">
+                    <Calendar className="h-3.5 w-3.5 text-champagne" />
+                  </span>
+                  <div className="min-w-0">
+                    <dt className="text-[9px] font-semibold uppercase tracking-[0.28em] text-ivory/45">Possession</dt>
+                    <dd className="truncate text-ivory/90">{property.possession}</dd>
+                  </div>
+                </div>
+              </dl>
+
+              <button
+                onClick={onToggleCompare}
+                disabled={atMax}
+                className={`mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.28em] transition-all duration-300 ${
+                  selectedFlag
+                    ? "bg-champagne text-lux-black shadow-[0_14px_36px_-12px_rgba(200,164,93,0.7)]"
+                    : atMax
+                      ? "cursor-not-allowed bg-graphite text-muted-foreground"
+                      : "gold-border text-champagne hover:bg-champagne hover:text-lux-black"
+                }`}
+              >
+                {selectedFlag ? (
+                  <>
+                    <Check className="h-4 w-4" /> Added to Compare
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4" /> Add to Compare
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </motion.div>
       )}
