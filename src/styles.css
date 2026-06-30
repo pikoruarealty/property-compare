@@ -410,3 +410,58 @@ html, body, *, *::before, *::after {
 @media (prefers-reduced-motion: reduce) {
   .gemini-blob, .gemini-conic { animation: none; }
 }
+
+/* ============ Suggested Properties marquee ============ */
+.suggested-marquee {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.suggested-marquee-track {
+  display: flex;
+  gap: 1.25rem;
+  width: max-content;
+  padding: 4px 1rem;
+  animation: suggested-scroll var(--marquee-duration, 40s) linear infinite;
+  will-change: transform;
+}
+.suggested-marquee:hover .suggested-marquee-track,
+.suggested-marquee:focus-within .suggested-marquee-track {
+  animation-play-state: paused;
+}
+.suggested-card {
+  width: 280px;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+}
+.suggested-card:hover {
+  border-color: rgba(200,164,93,0.55);
+  box-shadow: 0 24px 50px -22px rgba(0,0,0,0.55), 0 0 0 1px rgba(200,164,93,0.25);
+}
+.suggested-fade-left,
+.suggested-fade-right {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 64px;
+  pointer-events: none;
+}
+@keyframes suggested-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Flash when a row is focused from a suggestion click */
+@keyframes row-flash-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(200,164,93,0.55); background-color: rgba(200,164,93,0.06); }
+  60%  { box-shadow: 0 0 0 14px rgba(200,164,93,0);  background-color: rgba(200,164,93,0.10); }
+  100% { box-shadow: 0 0 0 0 rgba(200,164,93,0);     background-color: transparent; }
+}
+.row-flash {
+  border-radius: 24px;
+  animation: row-flash-pulse 2s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .suggested-marquee-track { animation: none; }
+  .row-flash { animation: none; }
+}
