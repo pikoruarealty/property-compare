@@ -56,7 +56,6 @@ function buildBuckets(answers: QuizAnswers) {
       if (price > hi + 0.5) above.push(p);
       else if (price < lo - 0.5) below.push(p);
     }
-    // Sort: above ascending (closest first), below descending (closest first).
     above.sort(
       (a, b) => (minRelevantPrice(a, answers) ?? 0) - (minRelevantPrice(b, answers) ?? 0),
     );
@@ -65,7 +64,14 @@ function buildBuckets(answers: QuizAnswers) {
     );
   }
 
-  return { suggested: inPrefs, above, below };
+  // Fallback so the Suggested marquee never disappears: if nothing matches in
+  // budget, surface preference matches regardless of price.
+  let suggested = inPrefs;
+  if (suggested.length === 0) {
+    suggested = properties.filter((p) => matchesNonBudget(p, answers));
+  }
+
+  return { suggested, above, below };
 }
 
 const focusProperty = (id: string) => {
