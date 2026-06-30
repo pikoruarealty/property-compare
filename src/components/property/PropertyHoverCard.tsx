@@ -143,7 +143,7 @@ export function PropertyHoverCard({
               />
             </AnimatePresence>
 
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[rgba(16,16,16,0.45)]" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 40%, color-mix(in oklab, var(--card) 70%, transparent))" }} />
 
             <span className="glass absolute left-4 top-4 z-10 rounded-full px-3 py-1 text-[10px] tracking-luxury text-champagne">
               {property.status}
