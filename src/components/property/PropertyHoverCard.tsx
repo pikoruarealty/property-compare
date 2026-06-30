@@ -9,6 +9,7 @@ import {
   MapPin,
   Plus,
   Ruler,
+  X,
 } from "lucide-react";
 import type { Property } from "@/types/property";
 import { FavoriteButton } from "@/components/property/FavoriteButton";
