@@ -331,6 +331,7 @@ function SuggestionCard({
         onToggleCompare={handleToggle}
         onPointerEnter={() => {}}
         onPointerLeave={() => {}}
+        onClose={() => setOpen(false)}
       />
     </>
   );
