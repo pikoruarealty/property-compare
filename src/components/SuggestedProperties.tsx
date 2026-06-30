@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Sparkles, ArrowUpRight } from "lucide-react";
+import { MapPin, Sparkles, ArrowUpRight, TrendingUp, TrendingDown } from "lucide-react";
 import { properties } from "@/data/properties";
 import { useOnboarding } from "@/context/OnboardingContext";
 import {
@@ -8,7 +8,7 @@ import {
   parseBudget,
   allowedConfigKeys,
 } from "@/lib/preference-filter";
-import type { Property } from "@/types/property";
+import type { Property, ConfigKey } from "@/types/property";
 import type { QuizAnswers } from "@/context/OnboardingContext";
 
 const parsePrice = (s: string | null | undefined): number | null => {
@@ -17,130 +17,189 @@ const parsePrice = (s: string | null | undefined): number | null => {
   return m ? parseFloat(m[0]) : null;
 };
 
-/** Build the list of suggestions strictly from preferences, with a graceful
- *  fallback to the next budget band when there's almost nothing matching. */
-function buildSuggestions(answers: QuizAnswers): Property[] {
-  const matched = properties.filter((p) => matchesPreferences(p, answers));
+/** Lowest price (in Cr) among the user's preferred configs, else any config. */
+function minRelevantPrice(p: Property, answers: QuizAnswers): number | null {
+  const wanted = allowedConfigKeys(answers);
+  const keys = (wanted.length > 0
+    ? wanted.filter((k) => p.configurations[k])
+    : (Object.keys(p.configurations) as ConfigKey[])) as ConfigKey[];
+  let min: number | null = null;
+  for (const k of keys) {
+    const price = parsePrice(p.configurations[k]?.price);
+    if (price === null) continue;
+    if (min === null || price < min) min = price;
+  }
+  return min;
+}
 
-  // Find the user's budget band and the *next* one (±2 Cr upward).
+/** Same as matchesPreferences but budget-agnostic. */
+function matchesNonBudget(p: Property, answers: QuizAnswers): boolean {
+  const stripped: QuizAnswers = { ...answers, budgetRange: "", budgetSub: "" };
+  return matchesPreferences(p, stripped);
+}
+
+function buildBuckets(answers: QuizAnswers) {
+  const inPrefs = properties.filter((p) => matchesPreferences(p, answers));
+
   const band = parseBudget(answers.budgetSub || answers.budgetRange);
-  const wantedKeys = allowedConfigKeys(answers);
+  let above: Property[] = [];
+  let below: Property[] = [];
 
-  let nextBand: Property[] = [];
-  if (band && isFinite(band[1])) {
-    const nextLo = band[1];
-    const nextHi = band[1] + 4; // one band up
-    nextBand = properties.filter((p) => {
-      if (matched.includes(p)) return false;
-      // Same category / BHK preference still applies, only budget shifts.
-      const stepAnswers: QuizAnswers = {
-        ...answers,
-        budgetRange: "",
-        budgetSub: "",
-      };
-      if (!matchesPreferences(p, stepAnswers)) return false;
-      const candidateKeys =
-        wantedKeys.length > 0
-          ? wantedKeys.filter((k) => p.configurations[k])
-          : (Object.keys(p.configurations) as Array<keyof typeof p.configurations>);
-      return candidateKeys.some((k) => {
-        const price = parsePrice(p.configurations[k]?.price);
-        if (price === null) return false;
-        return price >= nextLo - 0.5 && price <= nextHi + 0.5;
-      });
-    });
+  if (band) {
+    const [lo, hi] = band;
+    const candidates = properties.filter(
+      (p) => !inPrefs.includes(p) && matchesNonBudget(p, answers),
+    );
+    for (const p of candidates) {
+      const price = minRelevantPrice(p, answers);
+      if (price === null) continue;
+      if (price > hi + 0.5) above.push(p);
+      else if (price < lo - 0.5) below.push(p);
+    }
+    // Sort: above ascending (closest first), below descending (closest first).
+    above.sort(
+      (a, b) => (minRelevantPrice(a, answers) ?? 0) - (minRelevantPrice(b, answers) ?? 0),
+    );
+    below.sort(
+      (a, b) => (minRelevantPrice(b, answers) ?? 0) - (minRelevantPrice(a, answers) ?? 0),
+    );
   }
 
-  const merged = [...matched, ...nextBand];
-  // Deduplicate, keep first occurrence.
-  const seen = new Set<string>();
-  return merged.filter((p) => (seen.has(p.id) ? false : (seen.add(p.id), true)));
+  return { suggested: inPrefs, above, below };
 }
+
+const focusProperty = (id: string) => {
+  const el = document.getElementById(`property-row-${id}`);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  el.classList.remove("row-flash", "row-focus");
+  void (el as HTMLElement).offsetWidth;
+  el.classList.add("row-flash", "row-focus");
+  window.setTimeout(() => el.classList.remove("row-flash"), 2400);
+  window.setTimeout(() => el.classList.remove("row-focus"), 3200);
+};
 
 export function SuggestedProperties() {
   const { quizAnswers } = useOnboarding();
 
-  const list = useMemo(() => {
-    if (!quizAnswers) return [];
-    return buildSuggestions(quizAnswers);
+  const buckets = useMemo(() => {
+    if (!quizAnswers) return { suggested: [], above: [], below: [] };
+    return buildBuckets(quizAnswers);
   }, [quizAnswers]);
 
-  if (!quizAnswers || list.length === 0) return null;
-
-  // Duplicate for seamless marquee loop.
-  const loop = [...list, ...list];
-
-  const focusProperty = (id: string) => {
-    const el = document.getElementById(`property-row-${id}`);
-    if (!el) return;
-    // Centre the row in the viewport for a clean "open" feel.
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    // Remove any prior flash so re-clicks always re-trigger animation.
-    el.classList.remove("row-flash", "row-focus");
-    // Force reflow so the animation restarts even on rapid re-clicks.
-    void (el as HTMLElement).offsetWidth;
-    el.classList.add("row-flash", "row-focus");
-    window.setTimeout(() => {
-      el.classList.remove("row-flash");
-    }, 2400);
-    window.setTimeout(() => {
-      el.classList.remove("row-focus");
-    }, 3200);
-  };
-
-  // Animation duration scales with item count for a steady speed.
-  const duration = Math.max(24, list.length * 6);
+  if (!quizAnswers) return null;
+  if (
+    buckets.suggested.length === 0 &&
+    buckets.above.length === 0 &&
+    buckets.below.length === 0
+  )
+    return null;
 
   return (
-    <section
-      id="suggested"
-      className="relative scroll-mt-28 border-y border-champagne/10 py-12 sm:py-16"
-    >
+    <section id="suggested" className="relative scroll-mt-28 border-y border-champagne/10 py-12 sm:py-16">
+      <Marquee
+        anchorId="suggested-in-budget"
+        eyebrow="For you"
+        eyebrowIcon={<Sparkles className="h-3 w-3" />}
+        title={<>Suggested <span className="gold-text">properties</span></>}
+        subtitle="In your budget and matched to your preferences."
+        list={buckets.suggested}
+        chipLabel={null}
+      />
+      {buckets.above.length > 0 && (
+        <div className="mt-14">
+          <Marquee
+            anchorId="suggested-above-budget"
+            eyebrow="Stretch picks"
+            eyebrowIcon={<TrendingUp className="h-3 w-3" />}
+            title={<>More than <span className="gold-text">your budget</span></>}
+            subtitle="A glance just above your range, in case it's worth the stretch."
+            list={buckets.above}
+            chipLabel="Above budget"
+          />
+        </div>
+      )}
+      {buckets.below.length > 0 && (
+        <div className="mt-14">
+          <Marquee
+            anchorId="suggested-below-budget"
+            eyebrow="Smart value"
+            eyebrowIcon={<TrendingDown className="h-3 w-3" />}
+            title={<>Lower than <span className="gold-text">your budget</span></>}
+            subtitle="Comfortably under your range, same preferences."
+            list={buckets.below}
+            chipLabel="Below budget"
+          />
+        </div>
+      )}
+    </section>
+  );
+}
+
+function Marquee({
+  anchorId,
+  eyebrow,
+  eyebrowIcon,
+  title,
+  subtitle,
+  list,
+  chipLabel,
+}: {
+  anchorId: string;
+  eyebrow: string;
+  eyebrowIcon: React.ReactNode;
+  title: React.ReactNode;
+  subtitle: string;
+  list: Property[];
+  chipLabel: string | null;
+}) {
+  if (list.length === 0) return null;
+  const loop = [...list, ...list];
+  const duration = Math.max(24, list.length * 6);
+  return (
+    <div id={anchorId} className="scroll-mt-28">
       <div className="container-lux">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-champagne/30 px-3 py-1 text-[10px] tracking-luxury text-champagne">
-              <Sparkles className="h-3 w-3" /> For you
+              {eyebrowIcon} {eyebrow}
             </span>
-            <h2 className="mt-3 font-display text-[30px] leading-tight text-ivory sm:text-[40px]">
-              Suggested <span className="gold-text">properties</span>
+            <h2 className="mt-3 font-display text-[28px] leading-tight text-ivory sm:text-[36px]">
+              {title}
             </h2>
-            <p className="mt-1.5 text-[13px] text-muted-foreground">
-              Curated from your preferences, with a glance at the next budget band.
-            </p>
+            <p className="mt-1.5 text-[13px] text-muted-foreground">{subtitle}</p>
           </div>
           <span className="text-[10px] tracking-luxury text-muted-foreground">
-            {list.length} matches · hover to pause
+            {list.length} {list.length === 1 ? "match" : "matches"} · hover to pause
           </span>
         </div>
       </div>
-
       <div
-        className="suggested-marquee mt-8 group"
+        className="suggested-marquee mt-7 group"
         style={{ ["--marquee-duration" as string]: `${duration}s` }}
       >
         <div className="suggested-marquee-track">
           {loop.map((p, i) => (
             <SuggestionCard
-              key={`${p.id}-${i}`}
+              key={`${anchorId}-${p.id}-${i}`}
               property={p}
+              chipLabel={chipLabel}
               onClick={() => focusProperty(p.id)}
             />
           ))}
         </div>
-        {/* edge fades */}
-        <div className="suggested-fade-left" />
-        <div className="suggested-fade-right" />
       </div>
-    </section>
+    </div>
   );
 }
 
 function SuggestionCard({
   property,
+  chipLabel,
   onClick,
 }: {
   property: Property;
+  chipLabel: string | null;
   onClick: () => void;
 }) {
   return (
@@ -164,7 +223,6 @@ function SuggestionCard({
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover/card:scale-105"
         />
-        {/* subtle vignette so the status chip stays readable, lighter touch */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
@@ -183,6 +241,18 @@ function SuggestionCard({
         >
           {property.status}
         </span>
+        {chipLabel && (
+          <span
+            className="absolute bottom-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury"
+            style={{
+              background: "var(--foreground)",
+              color: "var(--background)",
+              boxShadow: "0 2px 8px -2px rgba(0,0,0,0.25)",
+            }}
+          >
+            {chipLabel}
+          </span>
+        )}
         <span
           className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-semibold tracking-luxury opacity-0 transition-opacity group-hover/card:opacity-100"
           style={{ background: "var(--foreground)", color: "var(--background)" }}
