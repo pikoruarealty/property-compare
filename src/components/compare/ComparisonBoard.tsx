@@ -47,14 +47,18 @@ export function ComparisonBoard() {
     () => selected.map((id) => getPropertyById(id)).filter(Boolean) as Property[],
     [selected],
   );
-  const visibleConfigKeys = useMemo<ConfigKey[]>(() => {
-    const allowed = allowedConfigKeys(quizAnswers);
-    return allowed.length > 0 ? allowed : CONFIG_KEYS;
-  }, [quizAnswers]);
-  const pickable = useMemo(
+  const filtered = useMemo(
     () => allProperties.filter((p) => matchesPreferences(p, quizAnswers)),
     [quizAnswers],
   );
+  // Fallback to the full catalogue when preferences yield zero matches so
+  // the picker is never empty — the user can still compare.
+  const noMatches = Boolean(quizAnswers) && filtered.length === 0;
+  const pickable = filtered.length > 0 ? filtered : allProperties;
+  const visibleConfigKeys = useMemo<ConfigKey[]>(() => {
+    const allowed = allowedConfigKeys(quizAnswers);
+    return allowed.length > 0 && !noMatches ? allowed : CONFIG_KEYS;
+  }, [quizAnswers, noMatches]);
   const slots: (Property | null)[] = Array.from({ length: MAX_COMPARE }, (_, i) => items[i] ?? null);
   const ready = items.length >= MIN_COMPARE;
 
