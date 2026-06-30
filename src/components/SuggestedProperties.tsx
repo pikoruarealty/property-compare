@@ -138,9 +138,15 @@ function SuggestionCard({
     <motion.button
       type="button"
       onClick={onClick}
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      className="suggested-card group/card relative shrink-0 overflow-hidden rounded-2xl border border-champagne/15 bg-card text-left"
+      className="suggested-card group/card relative shrink-0 overflow-hidden rounded-2xl text-left"
+      style={{
+        background: "var(--card)",
+        border: "1px solid var(--glass-border)",
+        boxShadow:
+          "0 1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent) inset, 0 18px 40px -24px color-mix(in oklab, var(--foreground) 28%, transparent), 0 4px 12px -6px color-mix(in oklab, var(--foreground) 14%, transparent)",
+      }}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden">
         <img
@@ -149,23 +155,41 @@ function SuggestionCard({
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover/card:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-lux-black/85 via-lux-black/20 to-transparent" />
-        <span className="absolute top-3 left-3 rounded-full border border-champagne/30 bg-lux-black/40 px-2.5 py-1 text-[9px] tracking-luxury text-champagne backdrop-blur-md">
+        {/* subtle vignette so the status chip stays readable, lighter touch */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, color-mix(in oklab, #000 28%, transparent) 0%, transparent 38%)",
+          }}
+        />
+        <span
+          className="absolute top-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury backdrop-blur-md"
+          style={{
+            background: "rgba(255,255,255,0.92)",
+            color: "#0a0a0a",
+            border: "1px solid rgba(8,8,8,0.08)",
+            boxShadow: "0 2px 8px -2px rgba(0,0,0,0.18)",
+          }}
+        >
           {property.status}
         </span>
-        <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-champagne/95 px-2 py-1 text-[9px] tracking-luxury text-lux-black opacity-0 transition-opacity group-hover/card:opacity-100">
+        <span
+          className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-semibold tracking-luxury opacity-0 transition-opacity group-hover/card:opacity-100"
+          style={{ background: "var(--foreground)", color: "var(--background)" }}
+        >
           View <ArrowUpRight className="h-2.5 w-2.5" />
         </span>
       </div>
       <div className="p-4">
-        <p className="text-[9px] tracking-luxury text-champagne/80">
+        <p className="text-[9px] font-semibold tracking-luxury text-muted-foreground">
           {property.developer}
         </p>
-        <h3 className="mt-1 truncate font-display text-[18px] text-ivory">
+        <h3 className="mt-1 truncate font-display text-[18px] font-medium text-foreground">
           {property.name}
         </h3>
-        <p className="mt-1 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-          <MapPin className="h-3 w-3 text-champagne" /> {property.location}
+        <p className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+          <MapPin className="h-3 w-3" /> {property.location}
         </p>
       </div>
     </motion.button>
