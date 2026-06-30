@@ -141,6 +141,20 @@ export function PropertyHoverCard({
             color: "var(--foreground)",
           }}
         >
+          {onClose && (
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="absolute right-4 top-4 z-30 flex h-9 w-9 items-center justify-center rounded-full bg-lux-black/70 text-ivory backdrop-blur-md transition hover:bg-champagne hover:text-lux-black"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+
 
           {/* LEFT — Image carousel */}
           <div className="media-frame relative h-full overflow-hidden">
