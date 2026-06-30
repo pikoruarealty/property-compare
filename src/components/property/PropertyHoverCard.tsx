@@ -268,6 +268,17 @@ export function useHoverIntent(delay = 220) {
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const clearTimers = () => {
+    if (openTimer.current) {
+      clearTimeout(openTimer.current);
+      openTimer.current = null;
+    }
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
   const enter = () => {
     if (closeTimer.current) {
       clearTimeout(closeTimer.current);
@@ -292,13 +303,27 @@ export function useHoverIntent(delay = 220) {
     }, 140);
   };
 
-  useEffect(
-    () => () => {
-      if (openTimer.current) clearTimeout(openTimer.current);
-      if (closeTimer.current) clearTimeout(closeTimer.current);
-    },
-    [],
-  );
+  const closeNow = () => {
+    clearTimers();
+    setOpen(false);
+  };
 
-  return { open, enter, leave };
+  useEffect(() => () => clearTimers(), []);
+
+  // Close the hover card on any scroll/wheel/touchmove so it doesn't
+  // float over the list while the user is browsing.
+  useEffect(() => {
+    if (!open) return;
+    const handler = () => closeNow();
+    window.addEventListener("scroll", handler, { passive: true, capture: true });
+    window.addEventListener("wheel", handler, { passive: true });
+    window.addEventListener("touchmove", handler, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handler, true);
+      window.removeEventListener("wheel", handler);
+      window.removeEventListener("touchmove", handler);
+    };
+  }, [open]);
+
+  return { open, enter, leave, close: closeNow };
 }
