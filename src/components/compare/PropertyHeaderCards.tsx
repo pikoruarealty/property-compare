@@ -28,19 +28,20 @@ export function PropertyHeaderCards({ properties }: PropertyHeaderCardsProps) {
                 className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-soft-black via-soft-black/30 to-transparent" />
-              <div className="absolute bottom-3 left-3 right-3">
-                <span className="glass rounded-full px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.32em] text-champagne">
+              <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3">
+                <span className="glass rounded-full px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.24em] text-champagne sm:px-3 sm:text-[9px] sm:tracking-[0.32em]">
                   {p.status}
                 </span>
               </div>
             </div>
-            <div className="p-4">
-              <h3 className="truncate font-display text-[18px] font-medium leading-tight tracking-[-0.01em] text-ivory sm:text-[22px]">
+            <div className="p-3 sm:p-4">
+              <h3 className="truncate font-display text-[14px] font-medium leading-tight tracking-[-0.01em] text-ivory sm:text-[22px]">
                 {p.name}
               </h3>
-              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-medium text-muted-foreground">
-                <span className="inline-flex items-center gap-1.5">
-                  <Ruler className="h-3 w-3 text-champagne" /> {p.size}
+              <div className="mt-1.5 flex flex-col gap-1 text-[10px] font-medium text-muted-foreground sm:mt-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-1 sm:text-[11px]">
+                <span className="inline-flex min-w-0 items-center gap-1.5">
+                  <Ruler className="h-3 w-3 shrink-0 text-champagne" />
+                  <span className="truncate">{p.size}</span>
                 </span>
                 <span className="inline-flex min-w-0 items-center gap-1.5">
                   <MapPin className="h-3 w-3 shrink-0 text-champagne" />
