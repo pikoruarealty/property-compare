@@ -89,17 +89,16 @@ export function SuggestedProperties() {
   const { quizAnswers } = useOnboarding();
 
   const buckets = useMemo(() => {
-    if (!quizAnswers) return { suggested: [], above: [], below: [] };
-    return buildBuckets(quizAnswers);
+    if (!quizAnswers) {
+      // No quiz yet — still show a Suggested marquee with the full catalogue.
+      return { suggested: properties, above: [] as Property[], below: [] as Property[] };
+    }
+    const b = buildBuckets(quizAnswers);
+    // Final safety net: never let Suggested be empty.
+    if (b.suggested.length === 0) b.suggested = properties;
+    return b;
   }, [quizAnswers]);
 
-  if (!quizAnswers) return null;
-  if (
-    buckets.suggested.length === 0 &&
-    buckets.above.length === 0 &&
-    buckets.below.length === 0
-  )
-    return null;
 
   return (
     <section id="suggested" className="relative scroll-mt-28 border-y border-champagne/10 py-12 sm:py-16">
