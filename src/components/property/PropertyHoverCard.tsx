@@ -26,6 +26,7 @@ interface Props {
   onToggleCompare: () => void;
   onPointerEnter: () => void;
   onPointerLeave: () => void;
+  onClose?: () => void;
 }
 
 const EXPANDED_HEIGHT = 520;
