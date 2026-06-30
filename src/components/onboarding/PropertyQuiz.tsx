@@ -80,7 +80,7 @@ export function PropertyQuiz({
   };
 
   const showBudgetComplete =
-    budgetRange === "₹ 20 Cr +" || (budgetRange && budgetSub);
+    budgetRange === "₹ 21 Cr +" || (budgetRange && budgetSub);
 
   return (
     <div className="flex h-full flex-col">
