@@ -42,6 +42,13 @@ function matchesNonBudget(p: Property, answers: QuizAnswers): boolean {
   return matchesPreferences(p, stripped);
 }
 
+function anyMinPrice(p: Property): number | null {
+  const prices = (Object.values(p.configurations) as Array<{ price?: string } | undefined>)
+    .map((c) => parsePrice(c?.price))
+    .filter((n): n is number => n !== null);
+  return prices.length ? Math.min(...prices) : null;
+}
+
 function buildBuckets(answers: QuizAnswers) {
   const inPrefs = properties.filter((p) => matchesPreferences(p, answers));
 
@@ -61,30 +68,41 @@ function buildBuckets(answers: QuizAnswers) {
       else if (price < lo - 0.5) below.push(p);
     }
 
-    // Fallback: if no preference-matching property is above budget, widen
-    // to ANY property priced above the user's budget so the section
-    // always has something to show.
+    // Fallbacks: widen to ANY property above/below the user's budget so each
+    // section always has something to show.
     if (above.length === 0) {
       above = properties.filter((p) => {
         if (inPrefs.includes(p)) return false;
-        const prices = (Object.values(p.configurations) as Array<{ price?: string } | undefined>)
-          .map((c) => parsePrice(c?.price))
-          .filter((n): n is number => n !== null);
-        if (prices.length === 0) return false;
-        return Math.min(...prices) > hi + 0.5;
+        const m = anyMinPrice(p);
+        return m !== null && m > hi + 0.5;
       });
     }
-
-    above.sort(
-      (a, b) => (minRelevantPrice(a, answers) ?? 0) - (minRelevantPrice(b, answers) ?? 0),
-    );
-    below.sort(
-      (a, b) => (minRelevantPrice(b, answers) ?? 0) - (minRelevantPrice(a, answers) ?? 0),
-    );
+    if (below.length === 0) {
+      below = properties.filter((p) => {
+        if (inPrefs.includes(p)) return false;
+        const m = anyMinPrice(p);
+        return m !== null && m < lo - 0.5;
+      });
+    }
+  } else {
+    // No budget chosen — split the catalogue around the median price so both
+    // marquees still appear with relevant comparisons.
+    const priced = properties
+      .filter((p) => !inPrefs.includes(p))
+      .map((p) => ({ p, m: anyMinPrice(p) }))
+      .filter((x): x is { p: Property; m: number } => x.m !== null)
+      .sort((a, b) => a.m - b.m);
+    if (priced.length) {
+      const median = priced[Math.floor(priced.length / 2)].m;
+      above = priced.filter((x) => x.m >= median).map((x) => x.p);
+      below = priced.filter((x) => x.m < median).map((x) => x.p);
+    }
   }
 
-  // Fallback so the Suggested marquee never disappears: if nothing matches in
-  // budget, surface preference matches regardless of price.
+  above.sort((a, b) => (anyMinPrice(a) ?? 0) - (anyMinPrice(b) ?? 0));
+  below.sort((a, b) => (anyMinPrice(b) ?? 0) - (anyMinPrice(a) ?? 0));
+
+  // Fallback so the Suggested marquee never disappears.
   let suggested = inPrefs;
   if (suggested.length === 0) {
     suggested = properties.filter((p) => matchesNonBudget(p, answers));
@@ -101,8 +119,17 @@ export function SuggestedProperties() {
 
   const buckets = useMemo(() => {
     if (!quizAnswers) {
-      // No quiz yet — still show a Suggested marquee with the full catalogue.
-      return { suggested: properties, above: [] as Property[], below: [] as Property[] };
+      // No quiz yet — Suggested = full catalogue; split rest by median price.
+      const priced = properties
+        .map((p) => ({ p, m: anyMinPrice(p) }))
+        .filter((x): x is { p: Property; m: number } => x.m !== null)
+        .sort((a, b) => a.m - b.m);
+      const median = priced.length ? priced[Math.floor(priced.length / 2)].m : 0;
+      return {
+        suggested: properties,
+        above: priced.filter((x) => x.m >= median).map((x) => x.p),
+        below: priced.filter((x) => x.m < median).map((x) => x.p),
+      };
     }
     const b = buildBuckets(quizAnswers);
     // Final safety net: never let Suggested be empty.
