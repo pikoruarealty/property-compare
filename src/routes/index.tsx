@@ -10,6 +10,7 @@ import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
 import { PreferenceBanner } from "@/components/PreferenceBanner";
 import { PreferencePanel } from "@/components/PreferencePanel";
 import { useOnboarding } from "@/context/OnboardingContext";
+import { matchesPreferences } from "@/lib/preference-filter";
 import type { Property } from "@/types/property";
 
 export const Route = createFileRoute("/")({
