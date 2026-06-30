@@ -85,6 +85,12 @@ export function ComparisonBoard() {
           )}
         </div>
 
+        {noMatches && (
+          <div className="mb-4 rounded-lg border border-dashed border-border bg-muted/20 px-3 py-2 text-[12px] text-muted-foreground">
+            No residences match your current preferences — showing the full catalogue so you can still compare.
+          </div>
+        )}
+
         {/* Slot picker */}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {slots.map((slot, idx) => (
