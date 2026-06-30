@@ -9,6 +9,7 @@ import { ComparisonBoard } from "@/components/compare/ComparisonBoard";
 import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
 import { PreferenceBanner } from "@/components/PreferenceBanner";
 import { PreferencePanel } from "@/components/PreferencePanel";
+import { SuggestedProperties } from "@/components/SuggestedProperties";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { matchesPreferences } from "@/lib/preference-filter";
 import type { Property } from "@/types/property";
@@ -178,6 +179,9 @@ function Index() {
         </div>
       </section>
 
+      {/* ============ SUGGESTED (prefs-driven marquee) ============ */}
+      <SuggestedProperties />
+
       {/* ============ COMPARISON SUITE ============ */}
       <section
         id="suite"
@@ -230,7 +234,7 @@ function Index() {
                   </div>
 
                   {matched.map((p, i) => (
-                    <div key={p.id} className="group/row">
+                    <div key={p.id} id={`property-row-${p.id}`} className="group/row scroll-mt-32">
                       <PropertyListRow property={p} index={i} />
                       {i < matched.length - 1 && <RowDivider n={i + 2} />}
                     </div>
@@ -238,7 +242,7 @@ function Index() {
                 </>
               ) : (
                 others.map((p, i) => (
-                  <div key={p.id} className="group/row">
+                  <div key={p.id} id={`property-row-${p.id}`} className="group/row scroll-mt-32">
                     <PropertyListRow property={p} index={i} />
                     {i < others.length - 1 && <RowDivider n={i + 2} />}
                   </div>
