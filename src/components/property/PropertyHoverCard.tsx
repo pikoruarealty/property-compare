@@ -129,7 +129,7 @@ export function PropertyHoverCard({
         >
 
           {/* LEFT — Image carousel */}
-          <div className="relative h-full overflow-hidden">
+          <div className="media-frame relative h-full overflow-hidden">
             <AnimatePresence initial={false} mode="sync">
               <motion.img
                 key={slides[slideIdx]}
