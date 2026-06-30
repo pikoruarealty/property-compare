@@ -10,6 +10,8 @@ import type { ConfigKey, Property } from "@/types/property";
 import { CONFIG_KEYS } from "@/types/property";
 import { toast } from "sonner";
 import { PhotoSlideshow } from "@/components/compare/PhotoSlideshow";
+import { useOnboarding } from "@/context/OnboardingContext";
+import { allowedConfigKeys, matchesPreferences } from "@/lib/preference-filter";
 
 const TERM_INFO: Record<string, { title: string; body: string }> = {
   Developer: {
