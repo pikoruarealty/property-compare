@@ -66,7 +66,7 @@ export function PropertyListRow({ property, index = 0 }: Props) {
         className="group grid grid-cols-1 gap-5 overflow-hidden rounded-2xl bg-card p-4 shadow-[var(--shadow-glass)] sm:grid-cols-[300px_minmax(0,1fr)_auto] sm:items-center sm:gap-7 sm:p-5"
         style={{ border: "1px solid var(--glass-border)", contentVisibility: "auto", containIntrinsicSize: "240px", transition: "opacity 0.3s ease" }}
       >
-        <div className="relative aspect-[16/10] overflow-hidden rounded-xl sm:aspect-[5/3]">
+        <div className="media-frame relative aspect-[16/10] overflow-hidden rounded-xl sm:aspect-[5/3]">
           <AnimatePresence initial={false} mode="sync">
             <motion.img
               key={slides[slideIdx]}
