@@ -94,6 +94,7 @@ export function ComparisonBoard() {
                 if (!r.ok && r.reason) toast.error(r.reason);
               }}
               currentSelected={selected}
+              pickable={pickable}
             />
           ))}
         </div>
@@ -108,7 +109,7 @@ export function ComparisonBoard() {
               transition={{ duration: 0.3 }}
               className="mt-6"
             >
-              <ComparisonGrid items={items} />
+              <ComparisonGrid items={items} visibleConfigKeys={visibleConfigKeys} />
             </motion.div>
           ) : (
             <motion.div
