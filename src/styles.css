@@ -477,9 +477,8 @@ html, body, *, *::before, *::after {
   position: relative;
   overflow: hidden;
   width: 100%;
-  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
+
 .suggested-marquee-track {
   display: flex;
   gap: 1.25rem;
