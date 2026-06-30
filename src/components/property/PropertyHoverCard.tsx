@@ -115,15 +115,16 @@ export function PropertyHoverCard({
             transformOrigin: `${box.originX}% ${box.originY}%`,
             willChange: "transform, opacity",
             borderRadius: 32,
-            background: "rgba(16,16,16,0.88)",
+            background: "var(--card)",
             backdropFilter: "blur(28px) saturate(140%)",
-            border: "1px solid rgba(255,255,255,0.09)",
-            boxShadow: "0 40px 100px -20px rgba(0,0,0,0.65)",
+            border: "1px solid var(--glass-border)",
+            boxShadow: "0 40px 100px -20px color-mix(in oklab, var(--foreground) 35%, transparent)",
             overflow: "hidden",
             display: "grid",
             gridTemplateColumns: "55% 45%",
             backfaceVisibility: "hidden",
             transform: "translateZ(0)",
+            color: "var(--foreground)",
           }}
         >
 
@@ -142,7 +143,7 @@ export function PropertyHoverCard({
               />
             </AnimatePresence>
 
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[rgba(16,16,16,0.45)]" />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 40%, color-mix(in oklab, var(--card) 70%, transparent))" }} />
 
             <span className="glass absolute left-4 top-4 z-10 rounded-full px-3 py-1 text-[10px] tracking-luxury text-champagne">
               {property.status}
