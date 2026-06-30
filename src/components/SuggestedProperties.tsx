@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Sparkles, ArrowUpRight, TrendingUp, TrendingDown } from "lucide-react";
+import { toast } from "sonner";
 import { properties } from "@/data/properties";
 import { useOnboarding } from "@/context/OnboardingContext";
 import {
@@ -10,6 +11,9 @@ import {
 } from "@/lib/preference-filter";
 import type { Property, ConfigKey } from "@/types/property";
 import type { QuizAnswers } from "@/context/OnboardingContext";
+import { MAX_COMPARE, useCompareStore } from "@/stores/compare-store";
+import { useHydrated } from "@/hooks/use-hydrated";
+import { PropertyHoverCard } from "@/components/property/PropertyHoverCard";
 
 const parsePrice = (s: string | null | undefined): number | null => {
   if (!s) return null;
@@ -74,16 +78,8 @@ function buildBuckets(answers: QuizAnswers) {
   return { suggested, above, below };
 }
 
-const focusProperty = (id: string) => {
-  const el = document.getElementById(`property-row-${id}`);
-  if (!el) return;
-  el.scrollIntoView({ behavior: "smooth", block: "center" });
-  el.classList.remove("row-flash", "row-focus");
-  void (el as HTMLElement).offsetWidth;
-  el.classList.add("row-flash", "row-focus");
-  window.setTimeout(() => el.classList.remove("row-flash"), 2400);
-  window.setTimeout(() => el.classList.remove("row-focus"), 3200);
-};
+
+
 
 export function SuggestedProperties() {
   const { quizAnswers } = useOnboarding();
@@ -189,7 +185,6 @@ function Marquee({
               key={`${anchorId}-${p.id}-${i}`}
               property={p}
               chipLabel={chipLabel}
-              onClick={() => focusProperty(p.id)}
             />
           ))}
         </div>
@@ -201,81 +196,143 @@ function Marquee({
 function SuggestionCard({
   property,
   chipLabel,
-  onClick,
 }: {
   property: Property;
   chipLabel: string | null;
-  onClick: () => void;
 }) {
+  const hydrated = useHydrated();
+  const { isSelected, toggle, selected } = useCompareStore();
+  const selectedFlag = hydrated && isSelected(property.id);
+  const atMax = hydrated && selected.length >= MAX_COMPARE && !selectedFlag;
+
+  const handleToggle = () => {
+    const result = toggle(property.id);
+    if (!result.ok && result.reason) toast.error(result.reason);
+    else if (!selectedFlag) toast.success(`${property.name} added to compare`);
+  };
+
+  const slides = useMemo(() => {
+    const g = property.gallery ?? ({} as Record<string, string>);
+    const list = [
+      property.image,
+      g.livingRoom,
+      g.masterBedroom,
+      g.pool,
+      g.clubhouse,
+    ].filter((src): src is string => Boolean(src));
+    return Array.from(new Set(list));
+  }, [property]);
+
+  const [slideIdx, setSlideIdx] = useState(0);
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef<HTMLButtonElement>(null);
+
+  // Close on any window scroll/wheel/touch so it doesn't drift over content.
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    window.addEventListener("scroll", close, { passive: true, capture: true });
+    window.addEventListener("wheel", close, { passive: true });
+    window.addEventListener("touchmove", close, { passive: true });
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("wheel", close);
+      window.removeEventListener("touchmove", close);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   return (
-    <motion.button
-      type="button"
-      onClick={onClick}
-      whileHover={{ y: -6 }}
-      transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      className="suggested-card group/card relative shrink-0 overflow-hidden rounded-2xl text-left"
-      style={{
-        background: "var(--card)",
-        border: "1px solid var(--glass-border)",
-        boxShadow:
-          "0 1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent) inset, 0 18px 40px -24px color-mix(in oklab, var(--foreground) 28%, transparent), 0 4px 12px -6px color-mix(in oklab, var(--foreground) 14%, transparent)",
-      }}
-    >
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
-        <img
-          src={property.image}
-          alt={property.name}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover/card:scale-105"
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to top, color-mix(in oklab, #000 28%, transparent) 0%, transparent 38%)",
-          }}
-        />
-        <span
-          className="absolute top-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury backdrop-blur-md"
-          style={{
-            background: "rgba(255,255,255,0.92)",
-            color: "#0a0a0a",
-            border: "1px solid rgba(8,8,8,0.08)",
-            boxShadow: "0 2px 8px -2px rgba(0,0,0,0.18)",
-          }}
-        >
-          {property.status}
-        </span>
-        {chipLabel && (
-          <span
-            className="absolute bottom-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury"
+    <>
+      <motion.button
+        ref={anchorRef}
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        whileHover={{ y: -6 }}
+        transition={{ type: "spring", stiffness: 300, damping: 22 }}
+        className="suggested-card group/card relative shrink-0 overflow-hidden rounded-2xl text-left"
+        style={{
+          background: "var(--card)",
+          border: "1px solid var(--glass-border)",
+          boxShadow:
+            "0 1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent) inset, 0 18px 40px -24px color-mix(in oklab, var(--foreground) 28%, transparent), 0 4px 12px -6px color-mix(in oklab, var(--foreground) 14%, transparent)",
+        }}
+      >
+        <div className="relative aspect-[4/3] w-full overflow-hidden">
+          <img
+            src={property.image}
+            alt={property.name}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover/card:scale-105"
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
             style={{
-              background: "var(--foreground)",
-              color: "var(--background)",
-              boxShadow: "0 2px 8px -2px rgba(0,0,0,0.25)",
+              background:
+                "linear-gradient(to top, color-mix(in oklab, #000 28%, transparent) 0%, transparent 38%)",
+            }}
+          />
+          <span
+            className="absolute top-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury backdrop-blur-md"
+            style={{
+              background: "rgba(255,255,255,0.92)",
+              color: "#0a0a0a",
+              border: "1px solid rgba(8,8,8,0.08)",
+              boxShadow: "0 2px 8px -2px rgba(0,0,0,0.18)",
             }}
           >
-            {chipLabel}
+            {property.status}
           </span>
-        )}
-        <span
-          className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-semibold tracking-luxury opacity-0 transition-opacity group-hover/card:opacity-100"
-          style={{ background: "var(--foreground)", color: "var(--background)" }}
-        >
-          View <ArrowUpRight className="h-2.5 w-2.5" />
-        </span>
-      </div>
-      <div className="p-4">
-        <p className="text-[9px] font-semibold tracking-luxury text-muted-foreground">
-          {property.developer}
-        </p>
-        <h3 className="mt-1 truncate font-display text-[18px] font-medium text-foreground">
-          {property.name}
-        </h3>
-        <p className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-          <MapPin className="h-3 w-3" /> {property.location}
-        </p>
-      </div>
-    </motion.button>
+          {chipLabel && (
+            <span
+              className="absolute bottom-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury"
+              style={{
+                background: "var(--foreground)",
+                color: "var(--background)",
+                boxShadow: "0 2px 8px -2px rgba(0,0,0,0.25)",
+              }}
+            >
+              {chipLabel}
+            </span>
+          )}
+          <span
+            className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[9px] font-semibold tracking-luxury opacity-0 transition-opacity group-hover/card:opacity-100"
+            style={{ background: "var(--foreground)", color: "var(--background)" }}
+          >
+            View <ArrowUpRight className="h-2.5 w-2.5" />
+          </span>
+        </div>
+        <div className="p-4">
+          <p className="text-[9px] font-semibold tracking-luxury text-muted-foreground">
+            {property.developer}
+          </p>
+          <h3 className="mt-1 truncate font-display text-[18px] font-medium text-foreground">
+            {property.name}
+          </h3>
+          <p className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+            <MapPin className="h-3 w-3" /> {property.location}
+          </p>
+        </div>
+      </motion.button>
+
+      <PropertyHoverCard
+        property={property}
+        anchorRef={anchorRef}
+        open={open}
+        slides={slides}
+        slideIdx={slideIdx}
+        onSlideChange={setSlideIdx}
+        selectedFlag={selectedFlag}
+        atMax={atMax}
+        onToggleCompare={handleToggle}
+        onPointerEnter={() => {}}
+        onPointerLeave={() => {}}
+      />
+    </>
   );
 }
+
