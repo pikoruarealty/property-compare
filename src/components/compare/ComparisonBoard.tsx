@@ -236,13 +236,13 @@ function bestIndex(values: (number | null)[]): number | null {
 }
 
 /* ---------------- grid ---------------- */
-function ComparisonGrid({ items }: { items: Property[] }) {
+function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visibleConfigKeys: ConfigKey[] }) {
   const cols = items.length;
   const gridTpl = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
 
   const configWinners: Record<string, number | null> = {};
-  CONFIG_KEYS.forEach((k) => {
-    configWinners[k] = bestIndex(items.map((p) => parseMaxNum(p.configurations[k as ConfigKey]?.area ?? null)));
+  visibleConfigKeys.forEach((k) => {
+    configWinners[k] = bestIndex(items.map((p) => parseMaxNum(p.configurations[k]?.area ?? null)));
   });
   const superWinner = bestIndex(items.map((p) => parseMaxNum(p.superBuiltUpArea)));
   const carpetWinner = bestIndex(items.map((p) => parseMaxNum(p.carpetArea)));
