@@ -73,10 +73,19 @@ export function SuggestedProperties() {
   const focusProperty = (id: string) => {
     const el = document.getElementById(`property-row-${id}`);
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 110;
-    window.scrollTo({ top, behavior: "smooth" });
-    el.classList.add("row-flash");
-    window.setTimeout(() => el.classList.remove("row-flash"), 2200);
+    // Centre the row in the viewport for a clean "open" feel.
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Remove any prior flash so re-clicks always re-trigger animation.
+    el.classList.remove("row-flash", "row-focus");
+    // Force reflow so the animation restarts even on rapid re-clicks.
+    void (el as HTMLElement).offsetWidth;
+    el.classList.add("row-flash", "row-focus");
+    window.setTimeout(() => {
+      el.classList.remove("row-flash");
+    }, 2400);
+    window.setTimeout(() => {
+      el.classList.remove("row-focus");
+    }, 3200);
   };
 
   // Animation duration scales with item count for a steady speed.
