@@ -119,8 +119,17 @@ export function SuggestedProperties() {
 
   const buckets = useMemo(() => {
     if (!quizAnswers) {
-      // No quiz yet — still show a Suggested marquee with the full catalogue.
-      return { suggested: properties, above: [] as Property[], below: [] as Property[] };
+      // No quiz yet — Suggested = full catalogue; split rest by median price.
+      const priced = properties
+        .map((p) => ({ p, m: anyMinPrice(p) }))
+        .filter((x): x is { p: Property; m: number } => x.m !== null)
+        .sort((a, b) => a.m - b.m);
+      const median = priced.length ? priced[Math.floor(priced.length / 2)].m : 0;
+      return {
+        suggested: properties,
+        above: priced.filter((x) => x.m >= median).map((x) => x.p),
+        below: priced.filter((x) => x.m < median).map((x) => x.p),
+      };
     }
     const b = buildBuckets(quizAnswers);
     // Final safety net: never let Suggested be empty.
