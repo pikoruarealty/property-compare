@@ -78,16 +78,8 @@ function buildBuckets(answers: QuizAnswers) {
   return { suggested, above, below };
 }
 
-const focusProperty = (id: string) => {
-  const el = document.getElementById(`property-row-${id}`);
-  if (!el) return;
-  el.scrollIntoView({ behavior: "smooth", block: "center" });
-  el.classList.remove("row-flash", "row-focus");
-  void (el as HTMLElement).offsetWidth;
-  el.classList.add("row-flash", "row-focus");
-  window.setTimeout(() => el.classList.remove("row-flash"), 2400);
-  window.setTimeout(() => el.classList.remove("row-focus"), 3200);
-};
+
+
 
 export function SuggestedProperties() {
   const { quizAnswers } = useOnboarding();
