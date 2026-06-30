@@ -179,9 +179,6 @@ function Index() {
         </div>
       </section>
 
-      {/* ============ SUGGESTED (prefs-driven marquee) ============ */}
-      <SuggestedProperties />
-
       {/* ============ COMPARISON SUITE ============ */}
       <section
         id="suite"
@@ -194,6 +191,9 @@ function Index() {
           <ComparisonBoard />
         </div>
       </section>
+
+      {/* ============ SUGGESTED (prefs-driven marquee) ============ */}
+      <SuggestedProperties />
 
       {/* ============ COLLECTION ============ */}
       <section id="collection" ref={collectionRef} className="relative scroll-mt-28 py-16 sm:py-24">
