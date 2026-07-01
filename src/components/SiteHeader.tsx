@@ -46,6 +46,17 @@ export function SiteHeader() {
             Advisory
           </a>
 
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Contact on WhatsApp"
+            className="inline-flex items-center gap-1.5 rounded-full border border-champagne/40 bg-champagne/10 px-3 py-1.5 text-[11px] tracking-luxury text-ivory transition hover:border-champagne hover:bg-champagne/20 hover:text-champagne"
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
+            Contact
+          </a>
+
           <Link
             to="/favorites"
             aria-label="Saved residences"
