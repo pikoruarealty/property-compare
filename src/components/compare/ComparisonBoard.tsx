@@ -28,7 +28,7 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
   },
   Possession: {
     title: "Possession Date",
-    body: "The committed date by which the developer will hand over the keys to the unit, ready for fit-out or move-in. Dates may shift based on construction progress, approvals, and RERA timelines.",
+    body: "The expected date when the developer will hand over the property to the buyer. This is when the home is ready for you to move in or start interior work.",
   },
   Status: {
     title: "Project Status",
