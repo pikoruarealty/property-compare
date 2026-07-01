@@ -511,22 +511,12 @@ function Numeric({
   };
   return (
     <div className="flex items-baseline gap-2">
-      <p className={`font-display leading-tight ${isBest ? "text-foreground text-[18px]" : "text-foreground/90 text-[16px]"}`}>
+      <p className="font-display leading-tight text-foreground/90 text-[16px]">
         {primary}
         {unit && <span className="ml-1 text-[10px] text-muted-foreground tracking-wide">{unit}</span>}
       </p>
       {secondary && <span className="text-[11px] text-muted-foreground">· {secondary}</span>}
       <span className="text-[9px] text-muted-foreground/70 uppercase tracking-wide">approx.</span>
-      {isBest && (
-        <button
-          type="button"
-          onClick={jumpToGallery}
-          title="View gallery"
-          className="ml-1 inline-flex items-center gap-1 rounded-full bg-foreground text-background px-1.5 py-0.5 text-[9px] tracking-wide font-medium hover:opacity-85 transition-opacity"
-        >
-          <Trophy className="h-2.5 w-2.5" /> Best
-        </button>
-      )}
     </div>
   );
 }
