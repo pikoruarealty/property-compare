@@ -24,7 +24,7 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
   },
   Carpet: {
     title: "Carpet Area",
-    body: "The actual usable floor area inside your apartment — measured wall-to-wall, excluding the thickness of outer walls. This is the space you can physically lay a carpet on. RERA mandates carpet area disclosure.",
+    body: "The actual usable space inside your home that you can live in and furnish. It excludes the thickness of the walls and is the area officially defined under RERA.",
   },
   Possession: {
     title: "Possession Date",
