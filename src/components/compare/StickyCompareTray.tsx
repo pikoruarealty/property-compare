@@ -159,7 +159,7 @@ function SlotPill({
       <div className="min-w-0 flex-1">
         <p className="truncate font-display text-[15px] leading-tight">{slot.name}</p>
         <p className="truncate text-[10px] uppercase tracking-luxury text-muted-foreground">
-          {slot.developer}
+          &nbsp;
         </p>
       </div>
       <button
