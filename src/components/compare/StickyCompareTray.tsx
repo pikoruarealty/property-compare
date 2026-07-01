@@ -74,7 +74,7 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare }: Props) {
           animate={{ y: 0 }}
           exit={{ y: "-100%" }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed left-0 right-0 z-50 border-b border-[#C8A45D]/20 bg-[#121416]/95 backdrop-blur-xl"
+          className="fixed left-0 right-0 z-50 border-b border-[color-mix(in_oklab,var(--brand)_30%,transparent)] bg-[var(--glass-bg)] backdrop-blur-xl"
           style={{ top: 68 }}
         >
           <div className="mx-auto max-w-7xl px-6 py-4">
@@ -90,8 +90,8 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare }: Props) {
                 className={[
                   "whitespace-nowrap rounded-full border px-5 py-2 text-[11px] uppercase tracking-luxury transition",
                   ready
-                    ? "border-[#C8A45D] text-[#C8A45D] hover:bg-[#C8A45D]/10"
-                    : "cursor-not-allowed border-[#C8A45D]/30 text-[#C8A45D]/40 opacity-50",
+                    ? "border-[var(--brand)] text-[var(--brand)] hover:bg-[color-mix(in_oklab,var(--brand)_12%,transparent)]"
+                    : "cursor-not-allowed border-[color-mix(in_oklab,var(--brand)_35%,transparent)] text-[color-mix(in_oklab,var(--brand)_45%,transparent)] opacity-50",
                 ].join(" ")}
               >
                 Compare
@@ -136,10 +136,10 @@ function SlotPill({
   if (!slot) {
     return (
       <div
-        className={`${base} border-dashed border-[#C8A45D]/40 text-ivory/50`}
+        className={`${base} border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)] text-ivory/50`}
         aria-label="Empty comparison slot"
       >
-        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-dashed border-[#C8A45D]/40">
+        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)]">
           <Plus className="h-4 w-4" strokeWidth={1.5} />
         </div>
         <span className="truncate text-[12px] uppercase tracking-luxury">Add a property</span>
@@ -149,7 +149,7 @@ function SlotPill({
 
   return (
     <div
-      className={`${base} group border-[#C8A45D]/60 bg-soft-black/60 text-ivory transition hover:border-[#C8A45D]`}
+      className={`${base} group border-[color-mix(in_oklab,var(--brand)_60%,transparent)] bg-soft-black/60 text-ivory transition hover:border-[var(--brand)]`}
     >
       <img
         src={slot.image}
