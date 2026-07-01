@@ -84,10 +84,8 @@ export function PropertyHoverCard({
       setBox({ top, left, width, originX, originY, initialScale });
     };
     compute();
-    window.addEventListener("scroll", compute, true);
     window.addEventListener("resize", compute);
     return () => {
-      window.removeEventListener("scroll", compute, true);
       window.removeEventListener("resize", compute);
     };
   }, [open, anchorRef]);
@@ -111,8 +109,11 @@ export function PropertyHoverCard({
     <AnimatePresence>
       {open && box && (
         <motion.div
+          onWheel={(e) => e.preventDefault()}
+          onTouchMove={(e) => e.preventDefault()}
           onPointerEnter={onPointerEnter}
           onPointerLeave={onPointerLeave}
+          onClick={(e) => e.stopPropagation()}
           initial={{ opacity: 0, scale: box.initialScale }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: box.initialScale }}
@@ -189,7 +190,9 @@ export function PropertyHoverCard({
                 <button
                   type="button"
                   aria-label="Previous image"
+                  onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     go(-1);
                   }}
@@ -200,7 +203,9 @@ export function PropertyHoverCard({
                 <button
                   type="button"
                   aria-label="Next image"
+                  onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     go(1);
                   }}
@@ -215,7 +220,9 @@ export function PropertyHoverCard({
                       key={i}
                       type="button"
                       aria-label={`Go to image ${i + 1}`}
+                      onPointerDown={(e) => e.stopPropagation()}
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         onSlideChange(i);
                       }}

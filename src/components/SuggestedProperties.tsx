@@ -290,20 +290,37 @@ function SuggestionCard({
     const prevBodyPos = body.style.position;
     const prevBodyTop = body.style.top;
     const prevBodyWidth = body.style.width;
+    const prevBodyOverflow = body.style.overflow;
+    const prevBodyOverscroll = body.style.overscrollBehavior;
+    const prevBodyTouchAction = body.style.touchAction;
+    const prevHtmlOverflow = documentElement.style.overflow;
+    const prevHtmlOverscroll = documentElement.style.overscrollBehavior;
     const prevHtmlScrollBehavior = documentElement.style.scrollBehavior;
+    body.classList.add("suggested-popup-open");
     documentElement.style.scrollBehavior = "auto";
+    documentElement.style.overflow = "hidden";
+    documentElement.style.overscrollBehavior = "none";
     body.style.position = "fixed";
     body.style.top = `-${scrollY}px`;
     body.style.width = "100%";
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "none";
+    body.style.touchAction = "none";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => {
       window.removeEventListener("keydown", onKey);
+      body.classList.remove("suggested-popup-open");
       body.style.position = prevBodyPos;
       body.style.top = prevBodyTop;
       body.style.width = prevBodyWidth;
+      body.style.overflow = prevBodyOverflow;
+      body.style.overscrollBehavior = prevBodyOverscroll;
+      body.style.touchAction = prevBodyTouchAction;
+      documentElement.style.overflow = prevHtmlOverflow;
+      documentElement.style.overscrollBehavior = prevHtmlOverscroll;
       window.scrollTo(0, scrollY);
       documentElement.style.scrollBehavior = prevHtmlScrollBehavior;
     };
