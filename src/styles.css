@@ -353,6 +353,20 @@ html, html * {
 .media-frame > img,
 .media-frame > .media-img {
   transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  filter: saturate(1.06) contrast(1.04);
+}
+
+/* HD image quality — applied globally to any <img> in the app */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 .group:hover .media-frame,
 .media-frame:hover {
