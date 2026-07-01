@@ -20,7 +20,7 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
   },
   "Super Built-up": {
     title: "Super Built-up Area",
-    body: "The total area you are charged for. It includes your carpet area, the thickness of walls, plus a proportionate share of common spaces such as lobbies, staircases, lifts, and clubhouse. Typically 20–35% larger than carpet area.",
+    body: "The total area you pay for, including the carpet area, walls, and your share of common spaces like lobbies, lifts, staircases, and amenities.",
   },
   Carpet: {
     title: "Carpet Area",
