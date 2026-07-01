@@ -38,6 +38,13 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
 
 const DASH = "—";
 
+const ROOM_FIELDS: { key: "livingArea" | "kitchen" | "masterBedroom1" | "masterBedroom2"; label: string }[] = [
+  { key: "livingArea", label: "Living Area" },
+  { key: "kitchen", label: "Kitchen" },
+  { key: "masterBedroom1", label: "Master Bedroom 1" },
+  { key: "masterBedroom2", label: "Master Bedroom 2" },
+];
+
 export function ComparisonBoard() {
   const hydrated = useHydrated();
   const { quizAnswers } = useOnboarding();
