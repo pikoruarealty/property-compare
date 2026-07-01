@@ -1,5 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, Moon, Sun } from "lucide-react";
+import { Heart, MessageCircle, Moon, Sun } from "lucide-react";
+
+const WHATSAPP_NUMBER = "919999999999"; // country code + number, no + or spaces
+const WHATSAPP_MESSAGE = "Hi PIKORUA, I'd like to know more about your luxury residences.";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useFavoritesStore } from "@/stores/favorites-store";
 import { useHydrated } from "@/hooks/use-hydrated";
@@ -40,6 +44,17 @@ export function SiteHeader() {
           </a>
           <a href="#" className="text-[11px] tracking-luxury text-ivory/70 hover:text-champagne">
             Advisory
+          </a>
+
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Contact on WhatsApp"
+            className="inline-flex items-center gap-1.5 rounded-full border border-champagne/40 bg-champagne/10 px-3 py-1.5 text-[11px] tracking-luxury text-ivory transition hover:border-champagne hover:bg-champagne/20 hover:text-champagne"
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
+            Contact
           </a>
 
           <Link
