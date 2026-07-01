@@ -1,17 +1,38 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 type Theme = "dark" | "light";
-type Ctx = { theme: Theme; toggle: () => void; setTheme: (t: Theme) => void };
+export type Palette = "warm-sand" | "sage" | "emerald" | "ocean";
+
+type Ctx = {
+  theme: Theme;
+  toggle: () => void;
+  setTheme: (t: Theme) => void;
+  palette: Palette;
+  setPalette: (p: Palette) => void;
+};
 
 const ThemeCtx = createContext<Ctx | null>(null);
 const STORAGE_KEY = "pikorua-theme";
+const PALETTE_KEY = "pikorua-palette";
+
+export const PALETTES: { id: Palette; label: string; swatch: string }[] = [
+  { id: "warm-sand", label: "Warm Sand", swatch: "#b8894a" },
+  { id: "sage", label: "Sage", swatch: "#7d9b76" },
+  { id: "emerald", label: "Emerald", swatch: "#0d7a5f" },
+  { id: "ocean", label: "Ocean", swatch: "#2d8a9e" },
+];
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark");
+  const [palette, setPaletteState] = useState<Palette>("warm-sand");
 
   useEffect(() => {
-    const stored = (typeof window !== "undefined" && localStorage.getItem(STORAGE_KEY)) as Theme | null;
-    if (stored === "light" || stored === "dark") setThemeState(stored);
+    const storedTheme = (typeof window !== "undefined" && localStorage.getItem(STORAGE_KEY)) as Theme | null;
+    if (storedTheme === "light" || storedTheme === "dark") setThemeState(storedTheme);
+    const storedPalette = (typeof window !== "undefined" && localStorage.getItem(PALETTE_KEY)) as Palette | null;
+    if (storedPalette && ["warm-sand", "sage", "emerald", "ocean"].includes(storedPalette)) {
+      setPaletteState(storedPalette);
+    }
   }, []);
 
   useEffect(() => {
@@ -23,10 +44,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     } catch {}
   }, [theme]);
 
+  useEffect(() => {
+    document.documentElement.setAttribute("data-palette", palette);
+    try {
+      localStorage.setItem(PALETTE_KEY, palette);
+    } catch {}
+  }, [palette]);
+
   const setTheme = (t: Theme) => setThemeState(t);
   const toggle = () => setThemeState((t) => (t === "dark" ? "light" : "dark"));
+  const setPalette = (p: Palette) => setPaletteState(p);
 
-  return <ThemeCtx.Provider value={{ theme, toggle, setTheme }}>{children}</ThemeCtx.Provider>;
+  return (
+    <ThemeCtx.Provider value={{ theme, toggle, setTheme, palette, setPalette }}>
+      {children}
+    </ThemeCtx.Provider>
+  );
 }
 
 export function useTheme() {
