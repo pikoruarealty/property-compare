@@ -16,7 +16,7 @@ import { allowedConfigKeys, matchesPreferences, parseBudget } from "@/lib/prefer
 const TERM_INFO: Record<string, { title: string; body: string }> = {
   Developer: {
     title: "Developer",
-    body: "The real-estate company or builder responsible for designing, constructing, and delivering the project. The developer's track record influences build quality, on-time possession, and after-sales service.",
+    body: "The real estate company that develops and builds the project. A trusted developer often reflects better construction quality, timely delivery, and long-term reliability.",
   },
   "Super Built-up": {
     title: "Super Built-up Area",
