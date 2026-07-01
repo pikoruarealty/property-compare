@@ -187,30 +187,30 @@
 .text-champagne\/90,
 .text-champagne\/80,
 .text-champagne\/70,
-.text-champagne\/60 { color: var(--foreground) !important; }
-.text-champagne\/40 { color: color-mix(in oklab, var(--foreground) 50%, transparent) !important; }
+.text-champagne\/60 { color: var(--brand) !important; }
+.text-champagne\/40 { color: color-mix(in oklab, var(--brand) 55%, transparent) !important; }
 
 /* Backgrounds tied to gold */
-.bg-champagne { background-color: var(--foreground) !important; color: var(--background) !important; }
-.bg-champagne\/5 { background-color: color-mix(in oklab, var(--foreground) 5%, transparent) !important; }
-.bg-champagne\/10, .bg-champagne\/12 { background-color: color-mix(in oklab, var(--foreground) 10%, transparent) !important; }
-.bg-muted-gold { background-color: var(--muted-foreground) !important; }
+.bg-champagne { background-color: var(--brand) !important; color: var(--brand-ink) !important; }
+.bg-champagne\/5 { background-color: color-mix(in oklab, var(--brand) 8%, transparent) !important; }
+.bg-champagne\/10, .bg-champagne\/12 { background-color: color-mix(in oklab, var(--brand) 14%, transparent) !important; }
+.bg-muted-gold { background-color: color-mix(in oklab, var(--brand) 65%, var(--muted)) !important; }
 
 /* Borders tied to gold */
-.border-champagne\/12,
+.border-champagne\/12 { border-color: color-mix(in oklab, var(--brand) 18%, transparent) !important; }
 .border-champagne\/15,
 .border-champagne\/18,
 .border-champagne\/20,
-.border-champagne\/22,
+.border-champagne\/22 { border-color: color-mix(in oklab, var(--brand) 26%, transparent) !important; }
 .border-champagne\/25,
 .border-champagne\/30,
-.border-champagne\/40,
-.border-champagne\/50 { border-color: var(--border) !important; }
-.border-champagne { border-color: var(--foreground) !important; }
-.divide-champagne\/12 > :not([hidden]) ~ :not([hidden]) { border-color: var(--border) !important; }
-.ring-champagne\/35,
+.border-champagne\/40 { border-color: color-mix(in oklab, var(--brand) 40%, transparent) !important; }
+.border-champagne\/50 { border-color: color-mix(in oklab, var(--brand) 55%, transparent) !important; }
+.border-champagne { border-color: var(--brand) !important; }
+.divide-champagne\/12 > :not([hidden]) ~ :not([hidden]) { border-color: color-mix(in oklab, var(--brand) 18%, transparent) !important; }
+.ring-champagne\/35 { --tw-ring-color: color-mix(in oklab, var(--brand) 40%, transparent) !important; }
 .ring-champagne\/40,
-.ring-champagne\/45 { --tw-ring-color: color-mix(in oklab, var(--foreground) 45%, transparent) !important; }
+.ring-champagne\/45 { --tw-ring-color: color-mix(in oklab, var(--brand) 55%, transparent) !important; }
 
 /* "From/to" gradient utilities collapse into the editorial palette */
 .from-soft-black\/30,
@@ -225,17 +225,18 @@
   --tw-gradient-to: var(--card) !important;
 }
 
-/* Override gold gradient text → solid ink/paper foreground */
+/* Gold gradient text → active brand accent */
 .gold-text {
-  background: none !important;
-  -webkit-background-clip: unset !important;
-  background-clip: unset !important;
-  color: var(--foreground) !important;
+  background: linear-gradient(120deg, var(--brand), var(--brand-soft)) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
 }
 
-/* Gold-border becomes a clean hairline */
+/* Gold-border becomes a brand hairline */
 .gold-border {
-  border: 1px solid var(--foreground) !important;
+  border: 1px solid color-mix(in oklab, var(--brand) 45%, transparent) !important;
   background: transparent !important;
 }
 
