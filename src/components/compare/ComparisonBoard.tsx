@@ -11,7 +11,7 @@ import { CONFIG_KEYS } from "@/types/property";
 import { toast } from "sonner";
 import { PhotoSlideshow } from "@/components/compare/PhotoSlideshow";
 import { useOnboarding } from "@/context/OnboardingContext";
-import { allowedConfigKeys, matchesPreferences } from "@/lib/preference-filter";
+import { allowedConfigKeys, matchesPreferences, parseBudget } from "@/lib/preference-filter";
 
 const TERM_INFO: Record<string, { title: string; body: string }> = {
   Developer: {
@@ -57,8 +57,27 @@ export function ComparisonBoard() {
   const pickable = filtered.length > 0 ? filtered : allProperties;
   const visibleConfigKeys = useMemo<ConfigKey[]>(() => {
     const allowed = allowedConfigKeys(quizAnswers);
-    return allowed.length > 0 && !noMatches ? allowed : CONFIG_KEYS;
-  }, [quizAnswers, noMatches]);
+    if (allowed.length === 0 || noMatches) return CONFIG_KEYS;
+    // Start with the user's picked configs, then add any other configs the
+    // selected properties offer whose price still fits the quiz budget.
+    const set = new Set<ConfigKey>(allowed);
+    const budget = parseBudget(quizAnswers?.budgetSub || quizAnswers?.budgetRange);
+    for (const p of items) {
+      for (const k of CONFIG_KEYS) {
+        if (set.has(k)) continue;
+        const cfg = p.configurations[k];
+        if (!cfg) continue;
+        if (!budget) { set.add(k); continue; }
+        const [lo, hi] = budget;
+        const priceStr = cfg.price ?? "";
+        const m = priceStr.match(/[\d.]+/);
+        const price = m ? parseFloat(m[0]) : null;
+        // Unknown price → include; known price → include only if inside range.
+        if (price === null || (price >= lo - 0.5 && price <= hi + 0.5)) set.add(k);
+      }
+    }
+    return CONFIG_KEYS.filter((k) => set.has(k));
+  }, [quizAnswers, noMatches, items]);
   const slots: (Property | null)[] = Array.from({ length: MAX_COMPARE }, (_, i) => items[i] ?? null);
   const ready = items.length >= MIN_COMPARE;
 
