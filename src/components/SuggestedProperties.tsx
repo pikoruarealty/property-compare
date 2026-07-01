@@ -281,22 +281,31 @@ function SuggestionCard({
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
-  // Close on any window scroll/wheel/touch so it doesn't drift over content.
+  // While the card is open, lock page scroll so the view stays put.
+  // The card is dismissed only via the X button or Escape.
   useEffect(() => {
     if (!open) return;
-    const close = () => setOpen(false);
-    window.addEventListener("scroll", close, { passive: true, capture: true });
-    window.addEventListener("wheel", close, { passive: true });
-    window.addEventListener("touchmove", close, { passive: true });
+    const { body, documentElement } = document;
+    const scrollY = window.scrollY;
+    const prevBodyPos = body.style.position;
+    const prevBodyTop = body.style.top;
+    const prevBodyWidth = body.style.width;
+    const prevHtmlScrollBehavior = documentElement.style.scrollBehavior;
+    documentElement.style.scrollBehavior = "auto";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => {
-      window.removeEventListener("scroll", close, true);
-      window.removeEventListener("wheel", close);
-      window.removeEventListener("touchmove", close);
       window.removeEventListener("keydown", onKey);
+      body.style.position = prevBodyPos;
+      body.style.top = prevBodyTop;
+      body.style.width = prevBodyWidth;
+      window.scrollTo(0, scrollY);
+      documentElement.style.scrollBehavior = prevHtmlScrollBehavior;
     };
   }, [open]);
 
