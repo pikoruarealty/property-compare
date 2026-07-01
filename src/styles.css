@@ -548,3 +548,260 @@ body.suggested-popup-open .suggested-marquee-track {
   .suggested-marquee-track { animation: none; }
   .row-flash { animation: none; }
 }
+
+/* =========================================================
+   PALETTE SYSTEM
+   Four selectable palettes via [data-palette] on <html>.
+   Each palette defines a --brand (accent) plus light/dark
+   backgrounds, cards and borders. Compat rules re-route
+   the legacy "champagne"/"gold" utility classes to --brand
+   so accent colors carry through the whole app.
+   Default palette = warm-sand.
+   ========================================================= */
+
+:root {
+  --brand: #b8894a;
+  --brand-soft: #d9b985;
+  --brand-ink: #4a3218;
+}
+
+/* ---------- Warm Sand & Clay (default) ---------- */
+:root[data-palette="warm-sand"],
+:root:not([data-palette]) {
+  --brand: #b8894a;
+  --brand-soft: #d9b985;
+  --brand-ink: #4a3218;
+}
+.dark[data-palette="warm-sand"],
+.dark:not([data-palette]) {
+  --background: #17110a;
+  --foreground: #f6ecdb;
+  --card: #221810;
+  --card-foreground: #f6ecdb;
+  --popover: #221810;
+  --popover-foreground: #f6ecdb;
+  --secondary: #2b1f14;
+  --muted: #1e150d;
+  --muted-foreground: #c9b699;
+  --border: rgba(217, 185, 133, 0.18);
+  --input: rgba(217, 185, 133, 0.22);
+  --ring: #d9b985;
+  --glass-bg: rgba(34, 24, 16, 0.82);
+  --glass-border: rgba(217, 185, 133, 0.18);
+}
+.light[data-palette="warm-sand"],
+.light:not([data-palette]) {
+  --background: #faf7f2;
+  --foreground: #2c1f10;
+  --card: #ffffff;
+  --card-foreground: #2c1f10;
+  --popover: #ffffff;
+  --popover-foreground: #2c1f10;
+  --secondary: #efe6d6;
+  --muted: #f2ead9;
+  --muted-foreground: #6b533a;
+  --border: rgba(74, 50, 24, 0.14);
+  --input: rgba(74, 50, 24, 0.22);
+  --ring: #b8894a;
+  --glass-bg: rgba(255, 252, 245, 0.92);
+  --glass-border: rgba(74, 50, 24, 0.14);
+}
+
+/* ---------- Sage & Cream ---------- */
+[data-palette="sage"] {
+  --brand: #7d9b76;
+  --brand-soft: #a8c0a0;
+  --brand-ink: #2a3a2a;
+}
+.dark[data-palette="sage"] {
+  --background: #101610;
+  --foreground: #ecf3e8;
+  --card: #182018;
+  --card-foreground: #ecf3e8;
+  --popover: #182018;
+  --popover-foreground: #ecf3e8;
+  --secondary: #1e2a1e;
+  --muted: #16201a;
+  --muted-foreground: #b8c9b0;
+  --border: rgba(168, 192, 160, 0.18);
+  --input: rgba(168, 192, 160, 0.22);
+  --ring: #a8c0a0;
+  --glass-bg: rgba(24, 32, 24, 0.82);
+  --glass-border: rgba(168, 192, 160, 0.18);
+}
+.light[data-palette="sage"] {
+  --background: #f5f0e8;
+  --foreground: #1e2a1e;
+  --card: #ffffff;
+  --card-foreground: #1e2a1e;
+  --popover: #ffffff;
+  --popover-foreground: #1e2a1e;
+  --secondary: #dce5d4;
+  --muted: #e6ecdc;
+  --muted-foreground: #4a5f48;
+  --border: rgba(42, 58, 42, 0.14);
+  --input: rgba(42, 58, 42, 0.22);
+  --ring: #7d9b76;
+  --glass-bg: rgba(253, 251, 246, 0.92);
+  --glass-border: rgba(42, 58, 42, 0.14);
+}
+
+/* ---------- Emerald Prestige ---------- */
+[data-palette="emerald"] {
+  --brand: #c9a84c;
+  --brand-soft: #e6d18a;
+  --brand-ink: #064e3b;
+}
+.dark[data-palette="emerald"] {
+  --background: #0a1611;
+  --foreground: #f5f0e0;
+  --card: #0f2018;
+  --card-foreground: #f5f0e0;
+  --popover: #0f2018;
+  --popover-foreground: #f5f0e0;
+  --secondary: #113028;
+  --muted: #0e1c17;
+  --muted-foreground: #c9c2a5;
+  --border: rgba(201, 168, 76, 0.22);
+  --input: rgba(201, 168, 76, 0.26);
+  --ring: #c9a84c;
+  --glass-bg: rgba(15, 32, 24, 0.82);
+  --glass-border: rgba(201, 168, 76, 0.22);
+}
+.light[data-palette="emerald"] {
+  --background: #f7f3e6;
+  --foreground: #064e3b;
+  --card: #ffffff;
+  --card-foreground: #064e3b;
+  --popover: #ffffff;
+  --popover-foreground: #064e3b;
+  --secondary: #e8ecd8;
+  --muted: #eee7cf;
+  --muted-foreground: #3a5c4a;
+  --border: rgba(6, 78, 59, 0.16);
+  --input: rgba(6, 78, 59, 0.24);
+  --ring: #0d7a5f;
+  --glass-bg: rgba(255, 253, 244, 0.92);
+  --glass-border: rgba(6, 78, 59, 0.14);
+}
+
+/* ---------- Ocean & Champagne ---------- */
+[data-palette="ocean"] {
+  --brand: #2d8a9e;
+  --brand-soft: #7cc0ce;
+  --brand-ink: #0c2340;
+}
+.dark[data-palette="ocean"] {
+  --background: #0a141a;
+  --foreground: #eaf3f7;
+  --card: #12212b;
+  --card-foreground: #eaf3f7;
+  --popover: #12212b;
+  --popover-foreground: #eaf3f7;
+  --secondary: #17303c;
+  --muted: #101e26;
+  --muted-foreground: #a9c4cf;
+  --border: rgba(124, 192, 206, 0.20);
+  --input: rgba(124, 192, 206, 0.24);
+  --ring: #7cc0ce;
+  --glass-bg: rgba(18, 33, 43, 0.82);
+  --glass-border: rgba(124, 192, 206, 0.20);
+}
+.light[data-palette="ocean"] {
+  --background: #f4f7fa;
+  --foreground: #0c2340;
+  --card: #ffffff;
+  --card-foreground: #0c2340;
+  --popover: #ffffff;
+  --popover-foreground: #0c2340;
+  --secondary: #dfeaf2;
+  --muted: #e6eef5;
+  --muted-foreground: #3f5773;
+  --border: rgba(12, 35, 64, 0.14);
+  --input: rgba(12, 35, 64, 0.22);
+  --ring: #2d8a9e;
+  --glass-bg: rgba(252, 253, 255, 0.92);
+  --glass-border: rgba(12, 35, 64, 0.14);
+}
+
+/* ---------- Body backgrounds with soft gradients per palette ---------- */
+.light[data-palette="warm-sand"] body,
+.light:not([data-palette]) body {
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(184, 137, 74, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(217, 185, 133, 0.14), transparent 55%),
+    #faf7f2;
+}
+.light[data-palette="sage"] body {
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(125, 155, 118, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(168, 192, 160, 0.16), transparent 55%),
+    #f5f0e8;
+}
+.light[data-palette="emerald"] body {
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(13, 122, 95, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.16), transparent 55%),
+    #f7f3e6;
+}
+.light[data-palette="ocean"] body {
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(45, 138, 158, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.14), transparent 55%),
+    #f4f7fa;
+}
+.dark body {
+  background:
+    radial-gradient(1000px 600px at 10% -10%, color-mix(in oklab, var(--brand) 12%, transparent), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, color-mix(in oklab, var(--brand-soft) 8%, transparent), transparent 55%),
+    var(--background);
+}
+
+/* ---------- Re-route legacy accent utilities to --brand ---------- */
+.text-champagne,
+.text-champagne\/90,
+.text-champagne\/80,
+.text-champagne\/70,
+.text-champagne\/60 { color: var(--brand) !important; }
+.text-champagne\/40 { color: color-mix(in oklab, var(--brand) 55%, transparent) !important; }
+
+.bg-champagne { background-color: var(--brand) !important; color: var(--brand-ink) !important; }
+.bg-champagne\/5 { background-color: color-mix(in oklab, var(--brand) 8%, transparent) !important; }
+.bg-champagne\/10, .bg-champagne\/12 { background-color: color-mix(in oklab, var(--brand) 14%, transparent) !important; }
+.bg-muted-gold { background-color: var(--brand-soft) !important; }
+
+.border-champagne\/12,
+.border-champagne\/15,
+.border-champagne\/18,
+.border-champagne\/20,
+.border-champagne\/22,
+.border-champagne\/25 { border-color: color-mix(in oklab, var(--brand) 28%, transparent) !important; }
+.border-champagne\/30,
+.border-champagne\/40,
+.border-champagne\/50 { border-color: color-mix(in oklab, var(--brand) 45%, transparent) !important; }
+.border-champagne { border-color: var(--brand) !important; }
+.divide-champagne\/12 > :not([hidden]) ~ :not([hidden]) { border-color: color-mix(in oklab, var(--brand) 24%, transparent) !important; }
+.ring-champagne\/35,
+.ring-champagne\/40,
+.ring-champagne\/45 { --tw-ring-color: color-mix(in oklab, var(--brand) 45%, transparent) !important; }
+
+.gold-text {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+.gold-border {
+  border: 1px solid color-mix(in oklab, var(--brand) 55%, transparent) !important;
+  background: color-mix(in oklab, var(--brand) 6%, transparent) !important;
+}
+
+/* Restore gradient utilities so surfaces use current card tokens, not flat card */
+.from-soft-black\/30, .from-soft-black\/80, .from-soft-black,
+.via-lux-black\/55,
+.to-soft-black\/85, .to-soft-black\/30, .to-soft-black {
+  --tw-gradient-from: var(--card) !important;
+  --tw-gradient-via: color-mix(in oklab, var(--card) 85%, var(--brand) 15%) !important;
+  --tw-gradient-to: var(--card) !important;
+}
+
