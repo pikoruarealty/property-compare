@@ -343,7 +343,29 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
         );
       })}
 
-      <SectionLabel title="Area" />
+      <SectionLabel title="Room Dimensions" />
+      {visibleConfigKeys.map((k) => (
+        <div key={`rooms-${k}`}>
+          <div className="px-4 py-1.5 bg-muted/20 border-b border-border">
+            <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{k}</span>
+          </div>
+          {ROOM_FIELDS.map(({ key, label }) => (
+            <Row
+              key={`${k}-${key}`}
+              label={label}
+              items={items}
+              gridTpl={gridTpl}
+              render={(p) => {
+                const cfg = p.configurations[k];
+                const val = cfg ? (cfg[key] ?? null) : null;
+                if (!cfg) return <NotAvail />;
+                return <Plain value={val} />;
+              }}
+            />
+          ))}
+        </div>
+      ))}
+
       <Row
         label="Super Built-up"
         items={items}
