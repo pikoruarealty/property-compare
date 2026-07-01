@@ -32,7 +32,7 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
   },
   Status: {
     title: "Project Status",
-    body: "Indicates the current construction stage — for example Under Construction, Nearing Possession, or Ready to Move. Ready projects offer immediate occupancy; under-construction projects often offer better pricing and customisation.",
+    body: "Shows the current stage of the project, such as Under Construction, Nearing Possession, or Ready to Move. It helps buyers understand when the property will be available.",
   },
 };
 
