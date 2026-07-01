@@ -38,12 +38,32 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
 
 const DASH = "—";
 
-const ROOM_FIELDS: { key: "livingArea" | "kitchen" | "masterBedroom1" | "masterBedroom2"; label: string }[] = [
-  { key: "livingArea", label: "Living Area" },
-  { key: "kitchen", label: "Kitchen" },
-  { key: "masterBedroom1", label: "Master Bedroom 1" },
-  { key: "masterBedroom2", label: "Master Bedroom 2" },
-];
+type RoomKey = "livingArea" | "kitchen" | "bedroom1" | "bedroom2" | "bedroom3" | "bedroom4" | "bedroom5";
+
+function roomFieldsFor(k: ConfigKey): { key: RoomKey; label: string }[] {
+  const bedroomCount: Record<ConfigKey, number> = {
+    "4 BHK": 4,
+    "5 BHK": 5,
+    Penthouse: 5,
+    Duplex: 4,
+  };
+  const n = bedroomCount[k] ?? 4;
+  const bedroomKeys: RoomKey[] = ["bedroom1", "bedroom2", "bedroom3", "bedroom4", "bedroom5"];
+  const bedrooms = bedroomKeys.slice(0, n).map((key, i) => ({
+    key,
+    label:
+      i === 0
+        ? "Master Bedroom 1"
+        : i === 1
+          ? "Master Bedroom 2"
+          : `Bedroom ${i + 1}${n >= 4 && i === n - 1 ? " (Kids)" : ""}`,
+  }));
+  return [
+    { key: "livingArea", label: "Living Area" },
+    { key: "kitchen", label: "Kitchen" },
+    ...bedrooms,
+  ];
+}
 
 export function ComparisonBoard() {
   const hydrated = useHydrated();
@@ -356,7 +376,7 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
           <div className="px-4 py-1.5 bg-muted/20 border-b border-border">
             <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{k}</span>
           </div>
-          {ROOM_FIELDS.map(({ key, label }) => (
+          {roomFieldsFor(k).map(({ key, label }) => (
             <Row
               key={`${k}-${key}`}
               label={label}

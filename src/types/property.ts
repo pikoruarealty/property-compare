@@ -14,10 +14,13 @@ export interface ConfigDetail {
   carpet: string | null; // carpet sqft
   price: string | null;  // price in Cr
   rate: string | null;   // basic rate per sqft
-  livingArea?: string | null;      // living area size (e.g. "18'0 × 20'0" or "360 sq ft")
-  kitchen?: string | null;         // kitchen size
-  masterBedroom1?: string | null;  // master bedroom 1 size
-  masterBedroom2?: string | null;  // master bedroom 2 size
+  livingArea?: string | null;
+  kitchen?: string | null;
+  bedroom1?: string | null; // Master Bedroom 1
+  bedroom2?: string | null; // Master Bedroom 2
+  bedroom3?: string | null;
+  bedroom4?: string | null;
+  bedroom5?: string | null;
 }
 
 export type PropertyConfigurations = Partial<Record<ConfigKey, ConfigDetail>>;
