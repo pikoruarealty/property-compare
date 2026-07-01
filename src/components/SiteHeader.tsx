@@ -1,5 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, Moon, Sun } from "lucide-react";
+import { Heart, MessageCircle, Moon, Sun } from "lucide-react";
+
+const WHATSAPP_NUMBER = "919999999999"; // country code + number, no + or spaces
+const WHATSAPP_MESSAGE = "Hi PIKORUA, I'd like to know more about your luxury residences.";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useFavoritesStore } from "@/stores/favorites-store";
 import { useHydrated } from "@/hooks/use-hydrated";
