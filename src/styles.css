@@ -42,8 +42,9 @@
   --color-antique: var(--antique-gold);
   --color-muted-gold: var(--muted-gold);
 
-  --font-display: "Space Grotesk", "Inter", sans-serif;
-  --font-sans: "DM Sans", "Inter", sans-serif;
+  --font-display: "DM Serif Display", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Fira Sans", "Inter", sans-serif;
+  --font-body: "Fira Sans", "Inter", sans-serif;
   --font-body: "DM Sans", "Inter", sans-serif;
 }
 
