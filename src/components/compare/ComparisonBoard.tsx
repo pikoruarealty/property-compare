@@ -38,6 +38,13 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
 
 const DASH = "—";
 
+const ROOM_FIELDS: { key: "livingArea" | "kitchen" | "masterBedroom1" | "masterBedroom2"; label: string }[] = [
+  { key: "livingArea", label: "Living Area" },
+  { key: "kitchen", label: "Kitchen" },
+  { key: "masterBedroom1", label: "Master Bedroom 1" },
+  { key: "masterBedroom2", label: "Master Bedroom 2" },
+];
+
 export function ComparisonBoard() {
   const hydrated = useHydrated();
   const { quizAnswers } = useOnboarding();
@@ -343,7 +350,29 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
         );
       })}
 
-      <SectionLabel title="Area" />
+      <SectionLabel title="Room Dimensions" />
+      {visibleConfigKeys.map((k) => (
+        <div key={`rooms-${k}`}>
+          <div className="px-4 py-1.5 bg-muted/20 border-b border-border">
+            <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{k}</span>
+          </div>
+          {ROOM_FIELDS.map(({ key, label }) => (
+            <Row
+              key={`${k}-${key}`}
+              label={label}
+              items={items}
+              gridTpl={gridTpl}
+              render={(p) => {
+                const cfg = p.configurations[k];
+                const val = cfg ? (cfg[key] ?? null) : null;
+                if (!cfg) return <NotAvail />;
+                return <Plain value={val} />;
+              }}
+            />
+          ))}
+        </div>
+      ))}
+
       <Row
         label="Super Built-up"
         items={items}
