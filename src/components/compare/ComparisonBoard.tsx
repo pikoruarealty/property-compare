@@ -376,7 +376,7 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
           <div className="px-4 py-1.5 bg-muted/20 border-b border-border">
             <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{k}</span>
           </div>
-          {ROOM_FIELDS.map(({ key, label }) => (
+          {roomFieldsFor(k).map(({ key, label }) => (
             <Row
               key={`${k}-${key}`}
               label={label}
