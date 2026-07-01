@@ -164,12 +164,16 @@ export function PropertyHoverCard({
                 key={slides[slideIdx]}
                 src={slides[slideIdx]}
                 alt={property.name}
+                decoding="async"
+                fetchPriority="high"
                 initial={{ opacity: 0, scale: 1.05 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.02 }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 h-full w-full object-cover"
+                style={{ imageRendering: "auto", willChange: "transform, opacity" }}
               />
+
             </AnimatePresence>
 
             
