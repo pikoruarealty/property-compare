@@ -55,6 +55,22 @@ export function SiteHeader() {
               </span>
             )}
           </Link>
+          <div className="flex items-center gap-1.5 rounded-full border border-champagne/25 bg-champagne/5 px-2 py-1">
+            {PALETTES.map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => setPalette(p.id)}
+                aria-label={`Palette: ${p.label}`}
+                title={p.label}
+                className={`h-3.5 w-3.5 rounded-full transition-transform ${hydrated && palette === p.id ? "scale-110 ring-2 ring-offset-2 ring-offset-transparent" : "opacity-70 hover:opacity-100"}`}
+                style={{
+                  background: p.swatch,
+                  boxShadow: hydrated && palette === p.id ? `0 0 0 1.5px ${p.swatch}` : "none",
+                }}
+              />
+            ))}
+          </div>
           <button
             type="button"
             onClick={toggle}
