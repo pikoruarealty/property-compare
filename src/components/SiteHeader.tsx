@@ -24,7 +24,7 @@ export function SiteHeader() {
     : null;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-[var(--glass-border)] bg-lux-black/60 backdrop-blur-2xl">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-[var(--glass-border)] bg-lux-black/85 backdrop-blur-md [transform:translateZ(0)]">
       <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-3">
           <span className="grid h-9 w-9 place-items-center rounded-full gold-border">
