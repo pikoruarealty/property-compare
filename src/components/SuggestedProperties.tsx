@@ -165,29 +165,6 @@ export function SuggestedProperties() {
         list={buckets.suggested}
         chipLabel={null}
       />
-      <div className="mt-14">
-        <Marquee
-          anchorId="suggested-above-budget"
-          eyebrow="Stretch picks"
-          eyebrowIcon={<TrendingUp className="h-3 w-3" />}
-          title={<>More than <span className="gold-text">your budget</span></>}
-          subtitle="A glance just above your range, in case it's worth the stretch."
-          list={buckets.above}
-          chipLabel="Above budget"
-        />
-      </div>
-      <div className="mt-14">
-        <Marquee
-          anchorId="suggested-below-budget"
-          eyebrow="Smart value"
-          eyebrowIcon={<TrendingDown className="h-3 w-3" />}
-          title={<>Lower than <span className="gold-text">your budget</span></>}
-          subtitle="Comfortably under your range, same preferences."
-          list={buckets.below}
-          chipLabel="Below budget"
-        />
-      </div>
-    </section>
   );
 }
 
