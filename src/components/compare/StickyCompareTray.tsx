@@ -103,11 +103,7 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
             </div>
 
             <div
-              className={`grid gap-3 sm:gap-4 ${
-                items.length >= 3
-                  ? "md:grid-cols-[200px_1fr_1fr_1fr]"
-                  : "md:grid-cols-[200px_1fr_1fr]"
-              } grid-cols-${MAX_COMPARE}`}
+              className={`grid gap-3 sm:gap-4 grid-cols-${MAX_COMPARE} md:grid-cols-[200px_repeat(${MAX_COMPARE},minmax(0,1fr))]`}
             >
               <div className="hidden md:block text-[10px] uppercase tracking-luxury text-muted-foreground self-center">
                 Properties
