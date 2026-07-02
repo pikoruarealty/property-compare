@@ -247,9 +247,19 @@ html, html * {
 @layer base {
   * {
     border-color: var(--color-border);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-synthesis-weight: none;
+    font-synthesis-style: none;
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     background: var(--color-background);
@@ -259,8 +269,16 @@ html, html * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "ss01", "ss02", "cv11";
+    font-feature-settings: "ss01", "ss02", "cv11", "kern", "liga", "clig", "calt";
+    font-kerning: normal;
+    font-variant-ligatures: common-ligatures contextual;
+    font-optical-sizing: auto;
     letter-spacing: -0.005em;
+  }
+  input, textarea, select, button {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: inherit;
   }
   h1, h2, h3, h4, h5, h6, .font-display {
     font-weight: 700 !important;
