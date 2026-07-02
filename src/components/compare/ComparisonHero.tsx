@@ -28,13 +28,13 @@ export function ComparisonHero({ properties }: ComparisonHeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mt-6 flex max-w-5xl flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-display text-[32px] font-medium leading-[1] tracking-[-0.025em] text-ivory sm:mt-8 sm:gap-x-5 sm:text-[68px] sm:leading-[0.98] md:text-[84px]"
+          className="mx-auto mt-6 flex max-w-5xl flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-display text-[40px] font-extrabold leading-[0.98] tracking-[-0.04em] text-ivory sm:mt-8 sm:gap-x-6 sm:text-[84px] sm:leading-[0.94] md:text-[104px]"
         >
           {properties.map((p, i) => (
-            <span key={p.id} className="inline-flex items-baseline gap-x-3 sm:gap-x-5">
+            <span key={p.id} className="inline-flex items-baseline gap-x-3 sm:gap-x-6">
               <span className="gold-text">{p.name}</span>
               {i < properties.length - 1 && (
-                <span className="text-[0.5em] font-light tracking-[0.18em] text-muted-foreground sm:text-[0.55em] sm:tracking-[0.2em]">
+                <span className="text-[0.42em] font-semibold uppercase tracking-[0.28em] text-muted-foreground sm:text-[0.48em] sm:tracking-[0.32em]">
                   vs
                 </span>
               )}
@@ -46,7 +46,7 @@ export function ComparisonHero({ properties }: ComparisonHeroProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="mx-auto mt-7 max-w-xl text-[14px] leading-relaxed text-muted-foreground sm:mt-10 sm:text-[17px]"
+          className="mx-auto mt-7 max-w-xl text-[15px] font-medium leading-relaxed text-muted-foreground sm:mt-10 sm:text-[18px]"
         >
           A side-by-side study of design, scale and quiet privilege — curated by Pikorua's
           private-client advisory.
