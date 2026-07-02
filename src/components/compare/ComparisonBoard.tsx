@@ -360,7 +360,6 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
                 <Numeric
                   primary={cfg.area ?? DASH}
                   unit="sq ft"
-                  secondary={cfg.carpet ? `carpet ${cfg.carpet}` : undefined}
                   isBest={winnerIdx === i}
                   propertyId={p.id}
                 />
