@@ -32,7 +32,7 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
   },
   Status: {
     title: "Project Status",
-    body: "Shows the current stage of the project, such as Under Construction, Nearing Possession, or Ready to Move. It helps buyers understand when the property will be available.",
+    body: "Project Status shows the current stage of the property's construction, such as Under Construction, Nearing Possession, or Ready to Move.",
   },
 };
 
