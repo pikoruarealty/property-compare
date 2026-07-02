@@ -524,11 +524,14 @@ html, body, *, *::before, *::after {
 
 .suggested-marquee-track {
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   width: max-content;
   padding: 4px 1rem;
   animation: suggested-scroll var(--marquee-duration, 40s) linear infinite;
   will-change: transform;
+}
+@media (min-width: 640px) {
+  .suggested-marquee-track { gap: 1.25rem; padding: 4px 1.5rem; }
 }
 .suggested-marquee:hover .suggested-marquee-track,
 .suggested-marquee:focus-within .suggested-marquee-track {
@@ -538,9 +541,11 @@ body.suggested-popup-open .suggested-marquee-track {
   animation-play-state: paused !important;
 }
 .suggested-card {
-  width: 280px;
+  width: 240px;
   transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
 }
+@media (min-width: 640px) { .suggested-card { width: 260px; } }
+@media (min-width: 1024px) { .suggested-card { width: 280px; } }
 .suggested-card:hover {
   border-color: rgba(200,164,93,0.55);
   box-shadow: 0 24px 50px -22px rgba(0,0,0,0.55), 0 0 0 1px rgba(200,164,93,0.25);
