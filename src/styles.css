@@ -255,9 +255,19 @@ html, html * {
     background: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-body);
+    font-weight: 500;
     -webkit-font-smoothing: antialiased;
-    font-feature-settings: "ss01", "ss02";
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "ss02", "cv11";
+    letter-spacing: -0.005em;
   }
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+  }
+  h1 { font-weight: 800 !important; }
+  strong, b { font-weight: 700; }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
