@@ -115,6 +115,7 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
                   key={i}
                   slot={slot}
                   onRemove={() => slot && remove(slot.id)}
+                  onAdd={onAdd}
                 />
               ))}
             </div>
