@@ -81,7 +81,7 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
           className="fixed left-0 right-0 z-50 border-b border-[color-mix(in_oklab,var(--brand)_30%,transparent)] bg-[var(--glass-bg)] backdrop-blur-xl"
           style={{ top: 68 }}
         >
-          <div className="mx-auto max-w-7xl px-6 py-4">
+          <div className="container-lux py-4">
             <div className="flex items-center justify-between gap-4 mb-3">
               <p className="whitespace-nowrap text-[10px] uppercase tracking-luxury text-champagne">
                 Comparison Suite · {items.length} / {MAX_COMPARE}
@@ -104,9 +104,9 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
 
             <div
               className={`grid gap-3 sm:gap-4 ${
-                items.length === 2
-                  ? "md:grid-cols-[220px_1fr_1fr]"
-                  : "md:grid-cols-[220px_1fr_1fr_1fr]"
+                items.length >= 3
+                  ? "md:grid-cols-[200px_1fr_1fr_1fr]"
+                  : "md:grid-cols-[200px_1fr_1fr]"
               } grid-cols-${MAX_COMPARE}`}
             >
               <div className="hidden md:block text-[10px] uppercase tracking-luxury text-muted-foreground self-center">
