@@ -35,7 +35,7 @@ export function PropertyHeaderCards({ properties }: PropertyHeaderCardsProps) {
               </div>
             </div>
             <div className="p-3 sm:p-4">
-              <h3 className="truncate font-display text-[14px] font-medium leading-tight tracking-[-0.01em] text-ivory sm:text-[22px]">
+              <h3 className="truncate font-display text-[16px] font-bold leading-tight tracking-[-0.02em] text-ivory sm:text-[26px]">
                 {p.name}
               </h3>
               <div className="mt-1.5 flex flex-col gap-1 text-[10px] font-medium text-muted-foreground sm:mt-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-1 sm:text-[11px]">
