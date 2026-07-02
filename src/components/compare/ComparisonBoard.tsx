@@ -24,7 +24,7 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
   },
   Carpet: {
     title: "Carpet Area",
-    body: "The actual usable space inside your home that you can live in and furnish. It excludes the thickness of the walls and is the area officially defined under RERA.",
+    body: "Carpet Area is the actual usable space inside your home—the area where you can walk, place furniture, and live. It does not include the thickness of walls or common areas like corridors, lifts, or staircases.",
   },
   Possession: {
     title: "Possession Date",
