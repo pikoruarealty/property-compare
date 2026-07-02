@@ -13,6 +13,8 @@ interface Props {
   hideRef?: RefObject<HTMLElement | null>;
   /** Called when the user clicks Compare with >= MIN_COMPARE slots filled. */
   onCompare?: () => void;
+  /** Called when the user clicks an empty "Add a property" slot. */
+  onAdd?: () => void;
 }
 
 /**
