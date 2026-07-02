@@ -74,7 +74,9 @@ export function PropertyListRow({ property, index = 0 }: Props) {
               key={slides[slideIdx]}
               src={slides[slideIdx]}
               alt={property.name}
-              loading="lazy"
+              loading={index < 2 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "auto"}
+              decoding="async"
               initial={{ opacity: 0, scale: 1.04 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.02 }}
