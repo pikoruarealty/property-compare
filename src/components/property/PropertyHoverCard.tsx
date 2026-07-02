@@ -57,6 +57,8 @@ export function PropertyHoverCard({
     originY: number;
     initialScale: number;
   } | null>(null);
+  useImagePrewarm(open ? slides : []);
+
 
   useLayoutEffect(() => {
     if (!open || !anchorRef.current) return;
