@@ -165,6 +165,7 @@ export function SuggestedProperties() {
         list={buckets.suggested}
         chipLabel={null}
       />
+    </section>
   );
 }
 
