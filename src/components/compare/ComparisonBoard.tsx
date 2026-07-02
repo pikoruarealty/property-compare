@@ -20,7 +20,7 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
   },
   "Super Built-up": {
     title: "Super Built-up Area",
-    body: "The total area you pay for, including the carpet area, walls, and your share of common spaces like lobbies, lifts, staircases, and amenities.",
+    body: "Super Built-up Area is the total area of a property, including the carpet area plus the proportionate share of common spaces such as lobbies, staircases, lifts, and amenities.",
   },
   Carpet: {
     title: "Carpet Area",
