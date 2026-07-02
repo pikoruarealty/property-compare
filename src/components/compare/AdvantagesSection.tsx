@@ -23,8 +23,8 @@ export function AdvantagesSection({ properties }: { properties: Property[] }) {
             transition={{ duration: 0.6, delay: i * 0.08 }}
             className="gold-border rounded-[32px] p-6"
           >
-            <p className="text-[10px] tracking-luxury text-champagne">Defining strengths</p>
-            <h3 className="mt-2 font-display text-xl text-ivory">{p.name}</h3>
+            <p className="text-[10px] font-bold uppercase tracking-luxury text-champagne">Defining strengths</p>
+            <h3 className="mt-3 font-display text-2xl font-bold tracking-[-0.02em] text-ivory sm:text-[28px]">{p.name}</h3>
             <ul className="mt-5 space-y-4">
               {p.advantages.map((adv, idx) => (
                 <li key={idx} className="flex gap-3">

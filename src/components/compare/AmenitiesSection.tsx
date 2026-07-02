@@ -24,7 +24,7 @@ export function AmenitiesSection({ properties }: { properties: Property[] }) {
             transition={{ duration: 0.6, delay: i * 0.08 }}
             className="glass rounded-[32px] p-6"
           >
-            <h3 className="font-display text-xl text-ivory">{p.name}</h3>
+            <h3 className="font-display text-2xl font-bold tracking-[-0.02em] text-ivory sm:text-[28px]">{p.name}</h3>
             <div className="mt-5 flex flex-wrap gap-2">
               {p.amenities.map((a) => (
                 <span

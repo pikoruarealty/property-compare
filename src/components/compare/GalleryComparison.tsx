@@ -21,7 +21,7 @@ export function GalleryComparison({ properties }: { properties: Property[] }) {
         {CATEGORIES.map((cat, cIdx) => (
           <div key={cat.key}>
             <div className="mb-5 flex items-center gap-4">
-              <p className="font-display text-xl text-ivory sm:text-2xl">{cat.label}</p>
+              <p className="font-display text-xl font-bold tracking-[-0.015em] text-ivory sm:text-2xl">{cat.label}</p>
               <div className="h-px flex-1 bg-gradient-to-r from-champagne/40 to-transparent" />
             </div>
             <div
