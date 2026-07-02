@@ -15,6 +15,7 @@ export function PhotoSlideshow({ property }: { property: Property }) {
 
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+  useImagePrewarm(slides);
 
   useEffect(() => {
     if (slides.length <= 1 || paused) return;
