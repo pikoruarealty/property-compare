@@ -393,6 +393,7 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
         </div>
       ))}
 
+      <SectionLabel title="Total Area" />
       <Row
         label="Super Built-up"
         items={items}
