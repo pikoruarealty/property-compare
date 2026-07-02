@@ -37,7 +37,8 @@ export function PhotoSlideshow({ property }: { property: Property }) {
             key={slides[idx]}
             src={slides[idx]}
             alt={property.name}
-            loading="lazy"
+            loading="eager"
+            decoding="async"
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
