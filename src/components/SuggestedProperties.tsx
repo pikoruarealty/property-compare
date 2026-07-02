@@ -259,6 +259,8 @@ function SuggestionCard({
   const [slideIdx, setSlideIdx] = useState(0);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
+  // Prewarm cover + gallery so the hover card opens with images already decoded.
+  useImagePrewarm(open ? slides : [property.image]);
 
   // While the card is open, lock page scroll so the view stays put.
   // The card is dismissed only via the X button or Escape.
