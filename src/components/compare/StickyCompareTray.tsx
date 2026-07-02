@@ -21,7 +21,7 @@ interface Props {
  * Floating, sticky comparison tray. Second visual representation of the
  * existing compare store — does not own any state of its own.
  */
-export function StickyCompareTray({ watchRef, hideRef, onCompare }: Props) {
+export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props) {
   const hydrated = useHydrated();
   const { selected: rawSelected, remove } = useCompareStore();
   const selected = hydrated ? rawSelected : [];
