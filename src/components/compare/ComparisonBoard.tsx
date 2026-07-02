@@ -28,7 +28,7 @@ const TERM_INFO: Record<string, { title: string; body: string }> = {
   },
   Possession: {
     title: "Possession Date",
-    body: "The expected date when the developer will hand over the property to the buyer. This is when the home is ready for you to move in or start interior work.",
+    body: "Possession is the date when the developer hands over the property to the buyer, allowing them to move in or start interior work.",
   },
   Status: {
     title: "Project Status",
