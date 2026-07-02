@@ -1,9 +1,11 @@
-import { useEffect, useState, type RefObject } from "react";
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X } from "lucide-react";
+import { Check, Plus, X } from "lucide-react";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
-import { getPropertyById } from "@/data/properties";
+import { getPropertyById, properties as ALL_PROPERTIES } from "@/data/properties";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { useOnboarding } from "@/context/OnboardingContext";
+import { matchesPreferences } from "@/lib/preference-filter";
 import type { Property } from "@/types/property";
 
 interface Props {
