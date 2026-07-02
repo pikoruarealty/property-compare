@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import type { Property } from "@/types/property";
 import { FavoriteButton } from "@/components/property/FavoriteButton";
+import { useImagePrewarm } from "@/hooks/use-image-prewarm";
 
 interface Props {
   property: Property;
