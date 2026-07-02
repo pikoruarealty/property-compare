@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Sparkles, ArrowUpRight, TrendingUp, TrendingDown } from "lucide-react";
+import { MapPin, Sparkles, ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import { properties } from "@/data/properties";
 import { useOnboarding } from "@/context/OnboardingContext";
