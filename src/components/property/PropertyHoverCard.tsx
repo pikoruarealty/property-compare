@@ -67,11 +67,10 @@ export function PropertyHoverCard({
       const vh = window.innerHeight;
       const desired = Math.max(r.width + EXTRA_WIDTH, MIN_WIDTH);
       const width = Math.min(desired, vw - 24);
-      let left = r.left - (width - r.width) / 2;
-      left = Math.min(Math.max(12, left), vw - width - 12);
-      let top = r.top + r.height / 2 - EXPANDED_HEIGHT / 2 - EXTRA_LIFT;
-      top = Math.min(Math.max(12, top), vh - EXPANDED_HEIGHT - 12);
-      // anchor scale origin to the row's centre so the card grows out of it
+      // Always center the card horizontally and vertically in the viewport.
+      const left = Math.max(12, (vw - width) / 2);
+      const top = Math.max(12, (vh - EXPANDED_HEIGHT) / 2);
+      // Scale origin points from the anchor toward the centered card.
       const anchorCx = r.left + r.width / 2;
       const anchorCy = r.top + r.height / 2;
       const originX = Math.min(100, Math.max(0, ((anchorCx - left) / width) * 100));
