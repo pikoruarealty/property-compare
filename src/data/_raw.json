@@ -108,7 +108,13 @@
         "area": "3700",
         "carpet": "1702",
         "price": "4cr+",
-        "rate": "9000"
+        "rate": "9000",
+        "livingArea": "460 sq ft (27'6\" × 16'9\")",
+        "kitchen": "139 sq ft (15'6\" × 9'0\")",
+        "bedroom1": "216 sq ft (18'0\" × 12'0\")",
+        "bedroom2": "216 sq ft (18'0\" × 12'0\")",
+        "bedroom3": "161 sq ft (14'0\" × 11'6\")",
+        "bedroom4": "126 sq ft (11'0\" × 11'6\")"
       },
       "5 BHK": null,
       "Penthouse": {
