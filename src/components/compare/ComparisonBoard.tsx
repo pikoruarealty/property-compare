@@ -399,12 +399,6 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
         gridTpl={gridTpl}
         render={(p, i) => <Numeric primary={p.superBuiltUpArea ?? DASH} isBest={superWinner === i} propertyId={p.id} />}
       />
-      <Row
-        label="Carpet"
-        items={items}
-        gridTpl={gridTpl}
-        render={(p, i) => <Numeric primary={p.carpetArea ?? DASH} isBest={carpetWinner === i} propertyId={p.id} />}
-      />
 
       <SectionLabel title="Location & Timeline" />
       <Row label="Address" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.location} />} />
