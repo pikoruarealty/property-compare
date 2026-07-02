@@ -38,7 +38,9 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
           <img
             src={property.image}
             alt={property.name}
-            loading="lazy"
+            loading={index < 3 ? "eager" : "lazy"}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            decoding="async"
             width={1280}
             height={896}
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
