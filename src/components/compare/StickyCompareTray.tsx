@@ -102,7 +102,7 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
               </button>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:grid-cols-[200px_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 md:grid-cols-[200px_1fr_1fr_1fr]">
               <div className="hidden md:block text-[10px] uppercase tracking-luxury text-muted-foreground self-center">
                 Properties
               </div>
