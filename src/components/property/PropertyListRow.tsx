@@ -44,6 +44,7 @@ export function PropertyListRow({ property, index = 0 }: Props) {
   const [slideIdx, setSlideIdx] = useState(0);
   const articleRef = useRef<HTMLElement>(null);
   const { open: hoverOpen, enter, leave } = useHoverIntent(220);
+  useImagePrewarm(slides);
 
   useEffect(() => {
     if (slides.length <= 1 || hoverOpen) return;
