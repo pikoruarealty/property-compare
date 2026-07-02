@@ -328,6 +328,7 @@ function SuggestionCard({
             src={property.image}
             alt={property.name}
             loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover/card:scale-105"
           />
           <div
