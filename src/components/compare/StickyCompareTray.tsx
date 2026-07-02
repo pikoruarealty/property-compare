@@ -129,24 +129,28 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
 function SlotPill({
   slot,
   onRemove,
+  onAdd,
 }: {
   slot: Property | null;
   onRemove: () => void;
+  onAdd?: () => void;
 }) {
   const base =
     "flex h-14 w-full items-center gap-3 rounded-2xl border px-3 text-sm";
 
   if (!slot) {
     return (
-      <div
-        className={`${base} border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)] text-ivory/50`}
-        aria-label="Empty comparison slot"
+      <button
+        type="button"
+        onClick={onAdd}
+        className={`${base} border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)] text-ivory/60 hover:text-ivory hover:border-[var(--brand)] hover:bg-[color-mix(in_oklab,var(--brand)_8%,transparent)] transition cursor-pointer text-left`}
+        aria-label="Add a property to comparison"
       >
         <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)]">
           <Plus className="h-4 w-4" strokeWidth={1.5} />
         </div>
         <span className="truncate text-[12px] uppercase tracking-luxury">Add a property</span>
-      </div>
+      </button>
     );
   }
 
