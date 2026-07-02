@@ -360,7 +360,6 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
                 <Numeric
                   primary={cfg.area ?? DASH}
                   unit="sq ft"
-                  secondary={cfg.carpet ? `carpet ${cfg.carpet}` : undefined}
                   isBest={winnerIdx === i}
                   propertyId={p.id}
                 />
@@ -399,12 +398,6 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
         items={items}
         gridTpl={gridTpl}
         render={(p, i) => <Numeric primary={p.superBuiltUpArea ?? DASH} isBest={superWinner === i} propertyId={p.id} />}
-      />
-      <Row
-        label="Carpet"
-        items={items}
-        gridTpl={gridTpl}
-        render={(p, i) => <Numeric primary={p.carpetArea ?? DASH} isBest={carpetWinner === i} propertyId={p.id} />}
       />
 
       <SectionLabel title="Location & Timeline" />
