@@ -78,8 +78,9 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
           animate={{ y: 0 }}
           exit={{ y: "-100%" }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed left-0 right-0 z-50 border-b border-[color-mix(in_oklab,var(--brand)_30%,transparent)] bg-[var(--glass-bg)] backdrop-blur-xl"
-          style={{ top: 68 }}
+          className="fixed left-0 right-0 z-50 border-b border-[color-mix(in_oklab,var(--brand)_30%,transparent)] bg-[color-mix(in_oklab,var(--bg)_92%,transparent)] backdrop-blur-md [transform:translateZ(0)]"
+          style={{ top: 68, willChange: "transform" }}
+
         >
           <div className="container-lux py-4">
             <div className="flex items-center justify-between gap-4 mb-3">
