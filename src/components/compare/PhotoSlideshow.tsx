@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Property } from "@/types/property";
+import { useImagePrewarm } from "@/hooks/use-image-prewarm";
 
 export function PhotoSlideshow({ property }: { property: Property }) {
   const slides = useMemo(() => {
@@ -14,6 +15,7 @@ export function PhotoSlideshow({ property }: { property: Property }) {
 
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+  useImagePrewarm(slides);
 
   useEffect(() => {
     if (slides.length <= 1 || paused) return;
@@ -35,7 +37,8 @@ export function PhotoSlideshow({ property }: { property: Property }) {
             key={slides[idx]}
             src={slides[idx]}
             alt={property.name}
-            loading="lazy"
+            loading="eager"
+            decoding="async"
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}

@@ -4,6 +4,7 @@ import { Check, MapPin, Plus, Ruler, Calendar } from "lucide-react";
 import type { Property } from "@/types/property";
 import { MAX_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { useImagePrewarm } from "@/hooks/use-image-prewarm";
 import { toast } from "sonner";
 import { FavoriteButton } from "@/components/property/FavoriteButton";
 import {
@@ -43,6 +44,7 @@ export function PropertyListRow({ property, index = 0 }: Props) {
   const [slideIdx, setSlideIdx] = useState(0);
   const articleRef = useRef<HTMLElement>(null);
   const { open: hoverOpen, enter, leave } = useHoverIntent(220);
+  useImagePrewarm(slides);
 
   useEffect(() => {
     if (slides.length <= 1 || hoverOpen) return;
@@ -72,7 +74,9 @@ export function PropertyListRow({ property, index = 0 }: Props) {
               key={slides[slideIdx]}
               src={slides[slideIdx]}
               alt={property.name}
-              loading="lazy"
+              loading={index < 2 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "auto"}
+              decoding="async"
               initial={{ opacity: 0, scale: 1.04 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.02 }}

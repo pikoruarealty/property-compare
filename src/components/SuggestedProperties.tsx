@@ -13,6 +13,7 @@ import type { Property, ConfigKey } from "@/types/property";
 import type { QuizAnswers } from "@/context/OnboardingContext";
 import { MAX_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { useImagePrewarm } from "@/hooks/use-image-prewarm";
 import { PropertyHoverCard } from "@/components/property/PropertyHoverCard";
 
 const parsePrice = (s: string | null | undefined): number | null => {
@@ -258,6 +259,8 @@ function SuggestionCard({
   const [slideIdx, setSlideIdx] = useState(0);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
+  // Prewarm cover + gallery so the hover card opens with images already decoded.
+  useImagePrewarm(open ? slides : [property.image]);
 
   // While the card is open, lock page scroll so the view stays put.
   // The card is dismissed only via the X button or Escape.
@@ -325,6 +328,7 @@ function SuggestionCard({
             src={property.image}
             alt={property.name}
             loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover/card:scale-105"
           />
           <div
