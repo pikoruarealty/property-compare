@@ -251,7 +251,7 @@ function SlotCard({
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-6xl border-border bg-popover p-0 sm:rounded-2xl overflow-visible">
+        <DialogContent className="max-w-3xl border-border bg-popover p-0 sm:rounded-2xl overflow-visible max-h-[85vh]">
           <PropertyPicker
             available={available}
             indexLabel={String.fromCharCode(65 + index)}
