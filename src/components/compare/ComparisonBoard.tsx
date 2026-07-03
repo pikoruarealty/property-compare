@@ -237,100 +237,110 @@ function SlotCard({
   const available = pickable.filter((p) => !currentSelected.includes(p.id));
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button className="group flex h-full min-h-[140px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-transparent px-6 py-8 text-center transition-colors hover:border-foreground/40 hover:bg-muted/30">
-          <div className="grid h-9 w-9 place-items-center rounded-full border border-border text-muted-foreground group-hover:text-foreground group-hover:border-foreground/40 transition-colors">
-            <Plus className="h-4 w-4" />
-          </div>
-          <p className="text-[12px] text-foreground/80">Add property {String.fromCharCode(65 + index)}</p>
-          <ChevronDown className="h-3 w-3 text-muted-foreground" />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent
-        align="center"
-        sideOffset={12}
-        className="w-[min(92vw,720px)] rounded-2xl border-border bg-popover p-4 shadow-2xl"
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="group flex h-full min-h-[140px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-transparent px-6 py-8 text-center transition-colors hover:border-foreground/40 hover:bg-muted/30"
       >
-        <div className="mb-3 flex items-end justify-between gap-3">
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.28em] text-champagne">
-              Select property {String.fromCharCode(65 + index)}
-            </p>
-            <h4 className="mt-1 font-display text-[18px] leading-tight text-foreground">
-              Choose from your matched residences
-            </h4>
-          </div>
-          <span className="text-[10px] tracking-luxury text-muted-foreground">
-            {available.length} available
-          </span>
+        <div className="grid h-9 w-9 place-items-center rounded-full border border-border text-muted-foreground group-hover:text-foreground group-hover:border-foreground/40 transition-colors">
+          <Plus className="h-4 w-4" />
         </div>
-        {available.length === 0 ? (
-          <p className="px-3 py-8 text-center text-xs text-muted-foreground">All properties added.</p>
-        ) : (
-          <div className="grid max-h-[440px] grid-cols-2 gap-3 overflow-y-auto pr-1 sm:grid-cols-3">
-            {available.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => {
-                  onPick(p.id);
-                  setOpen(false);
-                }}
-                className="group/pick relative flex flex-col overflow-hidden rounded-xl border border-border bg-card text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/50 hover:shadow-[0_18px_40px_-24px_color-mix(in_oklab,var(--foreground)_35%,transparent)]"
-              >
-                <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover/pick:scale-105"
-                  />
-                  <div
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                      background:
-                        "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
+        <p className="text-[12px] text-foreground/80">Add property {String.fromCharCode(65 + index)}</p>
+        <ChevronDown className="h-3 w-3 text-muted-foreground" />
+      </button>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-5xl border-border bg-popover p-0 sm:rounded-2xl">
+          <DialogHeader className="border-b border-border/60 px-6 pb-4 pt-6">
+            <div className="flex items-end justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-[10px] uppercase tracking-[0.28em] text-champagne">
+                  Select property {String.fromCharCode(65 + index)}
+                </p>
+                <DialogTitle className="mt-1 font-display text-[22px] leading-tight text-foreground">
+                  Choose from your matched residences
+                </DialogTitle>
+                <DialogDescription className="mt-1 text-[12px] text-muted-foreground">
+                  Tap any residence to add it to your comparison.
+                </DialogDescription>
+              </div>
+              <span className="shrink-0 text-[10px] tracking-luxury text-muted-foreground">
+                {available.length} available
+              </span>
+            </div>
+          </DialogHeader>
+
+          {available.length === 0 ? (
+            <p className="px-6 py-12 text-center text-sm text-muted-foreground">
+              All properties added.
+            </p>
+          ) : (
+            <div className="max-h-[68vh] overflow-y-auto px-6 py-5">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                {available.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => {
+                      onPick(p.id);
+                      setOpen(false);
                     }}
-                  />
-                  <span
-                    className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[8px] font-semibold tracking-luxury backdrop-blur-md"
-                    style={{
-                      background: "rgba(255,255,255,0.92)",
-                      color: "#0a0a0a",
-                    }}
+                    className="group/pick relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60 hover:shadow-[0_24px_48px_-24px_color-mix(in_oklab,var(--foreground)_40%,transparent)]"
                   >
-                    {p.status}
-                  </span>
-                  <span
-                    className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full opacity-0 transition-opacity group-hover/pick:opacity-100"
-                    style={{
-                      background: "var(--foreground)",
-                      color: "var(--background)",
-                    }}
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-                <div className="p-2.5">
-                  <p className="truncate text-[8px] font-semibold uppercase tracking-luxury text-muted-foreground">
-                    {p.developer}
-                  </p>
-                  <h5 className="mt-0.5 truncate font-display text-[13px] font-medium leading-tight text-foreground">
-                    {p.name}
-                  </h5>
-                  <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-muted-foreground">
-                    <MapPin className="h-2.5 w-2.5" />
-                    <span className="truncate">{p.location}</span>
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        )}
-      </PopoverContent>
-    </Popover>
+                    <div className="relative aspect-[16/10] w-full overflow-hidden">
+                      <img
+                        src={p.image}
+                        alt={p.name}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover/pick:scale-105"
+                      />
+                      <div
+                        className="pointer-events-none absolute inset-0"
+                        style={{
+                          background:
+                            "linear-gradient(to top, color-mix(in oklab, #000 40%, transparent) 0%, transparent 55%)",
+                        }}
+                      />
+                      <span
+                        className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury backdrop-blur-md"
+                        style={{ background: "rgba(255,255,255,0.92)", color: "#0a0a0a" }}
+                      >
+                        {p.status}
+                      </span>
+                      <span
+                        className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury opacity-0 transition-opacity group-hover/pick:opacity-100"
+                        style={{ background: "var(--foreground)", color: "var(--background)" }}
+                      >
+                        <Plus className="h-2.5 w-2.5" /> Add
+                      </span>
+                    </div>
+                    <div className="p-4">
+                      <p className="text-[9px] font-semibold uppercase tracking-luxury text-muted-foreground">
+                        {p.developer}
+                      </p>
+                      <h5 className="mt-1 truncate font-display text-[17px] font-medium leading-tight text-foreground">
+                        {p.name}
+                      </h5>
+                      <p className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                        <MapPin className="h-3 w-3" />
+                        <span className="truncate">{p.location}</span>
+                      </p>
+                      {p.tagline && (
+                        <p className="mt-2 line-clamp-2 text-[12px] leading-snug text-muted-foreground/90">
+                          {p.tagline}
+                        </p>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
