@@ -196,6 +196,10 @@ function Index() {
       {/* ============ SUGGESTED (prefs-driven marquee) ============ */}
       <SuggestedProperties />
 
+      {/* ============ SUGGESTED COMPARISONS ============ */}
+      <SuggestedComparisons />
+
+
       {/* ============ COLLECTION ============ */}
       <section id="collection" ref={collectionRef} className="relative scroll-mt-28 py-16 sm:py-24">
         <div className="container-lux">
