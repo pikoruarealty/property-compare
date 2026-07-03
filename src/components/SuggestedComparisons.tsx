@@ -1,0 +1,332 @@
+import { useMemo, useRef, useState, useEffect } from "react";
+import { Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import { ChevronRight, ChevronLeft, GitCompareArrows } from "lucide-react";
+import { properties } from "@/data/properties";
+import { useOnboarding } from "@/context/OnboardingContext";
+import {
+  matchesPreferences,
+  parseBudget,
+  allowedConfigKeys,
+} from "@/lib/preference-filter";
+import type { Property, ConfigKey } from "@/types/property";
+import type { QuizAnswers } from "@/context/OnboardingContext";
+
+const parsePrice = (s: string | null | undefined): number | null => {
+  if (!s) return null;
+  const m = String(s).match(/[\d.]+/);
+  return m ? parseFloat(m[0]) : null;
+};
+
+function minPrice(p: Property, wanted: ConfigKey[]): number | null {
+  const keys = (wanted.length > 0
+    ? wanted.filter((k) => p.configurations[k])
+    : (Object.keys(p.configurations) as ConfigKey[])) as ConfigKey[];
+  let min: number | null = null;
+  for (const k of keys) {
+    const price = parsePrice(p.configurations[k]?.price);
+    if (price === null) continue;
+    if (min === null || price < min) min = price;
+  }
+  if (min !== null) return min;
+  // fallback across all configs
+  const all = (Object.values(p.configurations) as Array<{ price?: string } | undefined>)
+    .map((c) => parsePrice(c?.price))
+    .filter((n): n is number => n !== null);
+  return all.length ? Math.min(...all) : null;
+}
+
+function sharedConfig(a: Property, b: Property, wanted: ConfigKey[]): ConfigKey | null {
+  const pool = wanted.length > 0 ? wanted : (Object.keys(a.configurations) as ConfigKey[]);
+  for (const k of pool) {
+    if (a.configurations[k] && b.configurations[k]) return k;
+  }
+  return null;
+}
+
+type Pair = { a: Property; b: Property; score: number };
+
+function buildPairs(answers: QuizAnswers | null): Pair[] {
+  const wanted = allowedConfigKeys(answers);
+  const pool = answers
+    ? properties.filter((p) => matchesPreferences(p, answers))
+    : properties.slice();
+
+  const list = pool.length >= 2 ? pool : properties.slice();
+  const pairs: Pair[] = [];
+  const seen = new Set<string>();
+
+  for (let i = 0; i < list.length; i++) {
+    for (let j = i + 1; j < list.length; j++) {
+      const a = list[i];
+      const b = list[j];
+      const pa = minPrice(a, wanted);
+      const pb = minPrice(b, wanted);
+      if (pa === null || pb === null) continue;
+      const shared = sharedConfig(a, b, wanted);
+      if (wanted.length > 0 && !shared) continue;
+
+      const priceDelta = Math.abs(pa - pb) / Math.max(pa, pb);
+      let score = 0;
+      // similar price band (within 20%)
+      if (priceDelta <= 0.2) score += 5;
+      else if (priceDelta <= 0.35) score += 2;
+      // same location
+      if (a.location && b.location && a.location === b.location) score += 4;
+      // shared configuration
+      if (shared) score += 3;
+      // similar size
+      if (a.sizeNumeric && b.sizeNumeric) {
+        const sizeDelta =
+          Math.abs(a.sizeNumeric - b.sizeNumeric) /
+          Math.max(a.sizeNumeric, b.sizeNumeric);
+        if (sizeDelta <= 0.2) score += 3;
+      }
+      // differ on builder → makes it a useful comparison
+      if (a.developer !== b.developer) score += 1;
+
+      if (score < 3) continue;
+      const key = `${a.id}-${b.id}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      pairs.push({ a, b, score });
+    }
+  }
+
+  pairs.sort((x, y) => y.score - x.score);
+
+  // Diversify: cap each property to appear in max 2 pairs
+  const count = new Map<string, number>();
+  const picked: Pair[] = [];
+  for (const p of pairs) {
+    const ca = count.get(p.a.id) ?? 0;
+    const cb = count.get(p.b.id) ?? 0;
+    if (ca >= 2 || cb >= 2) continue;
+    picked.push(p);
+    count.set(p.a.id, ca + 1);
+    count.set(p.b.id, cb + 1);
+    if (picked.length >= 6) break;
+  }
+
+  // Fallback: if too few, just take top pairs
+  if (picked.length < 4) {
+    for (const p of pairs) {
+      if (picked.includes(p)) continue;
+      picked.push(p);
+      if (picked.length >= 6) break;
+    }
+  }
+  return picked.slice(0, 6);
+}
+
+const HEADINGS = [
+  "People Also Compare",
+  "Most Compared",
+  "Popular Comparisons",
+  "Similar Properties to Compare",
+];
+
+export function SuggestedComparisons() {
+  const { quizAnswers } = useOnboarding();
+  const pairs = useMemo(() => buildPairs(quizAnswers ?? null), [quizAnswers]);
+  const heading = useMemo(
+    () => HEADINGS[Math.floor(Math.random() * HEADINGS.length)],
+    [],
+  );
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const update = () => {
+      setCanLeft(el.scrollLeft > 4);
+      setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      el.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [pairs.length]);
+
+  const nudge = (dir: 1 | -1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.min(el.clientWidth * 0.8, 480), behavior: "smooth" });
+  };
+
+  if (pairs.length === 0) return null;
+
+  return (
+    <section className="relative scroll-mt-28 border-t border-champagne/10 py-14 sm:py-20">
+      <div className="container-lux">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-champagne/30 px-3 py-1 text-[10px] tracking-luxury text-champagne">
+              <GitCompareArrows className="h-3 w-3" /> Curated pairs
+            </span>
+            <h2 className="mt-3 font-display text-[28px] leading-tight text-ivory sm:text-[36px]">
+              {heading.split(" ").slice(0, -1).join(" ")}{" "}
+              <span className="gold-text">{heading.split(" ").slice(-1)[0]}</span>
+            </h2>
+            <p className="mt-1.5 text-[13px] text-muted-foreground">
+              Head-to-head matchups picked from your budget and preferences.
+            </p>
+          </div>
+          <div className="hidden gap-2 sm:flex">
+            <button
+              onClick={() => nudge(-1)}
+              disabled={!canLeft}
+              aria-label="Previous"
+              className="grid h-10 w-10 place-items-center rounded-full gold-border text-champagne transition-opacity disabled:opacity-30 hover:bg-champagne/10"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => nudge(1)}
+              disabled={!canRight}
+              aria-label="Next"
+              className="grid h-10 w-10 place-items-center rounded-full gold-border text-champagne transition-opacity disabled:opacity-30 hover:bg-champagne/10"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        ref={scrollerRef}
+        className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-[max(1.25rem,calc((100vw-80rem)/2))] pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {pairs.map((pair, i) => (
+          <ComparisonCard key={`${pair.a.id}-${pair.b.id}`} pair={pair} index={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
+  const { a, b } = pair;
+  const priceA = minPrice(a, []);
+  const priceB = minPrice(b, []);
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.3) }}
+      className="group relative flex w-[320px] shrink-0 snap-start flex-col overflow-hidden rounded-2xl sm:w-[380px]"
+      style={{
+        background: "var(--card)",
+        border: "1px solid var(--glass-border)",
+        boxShadow:
+          "0 1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent) inset, 0 22px 46px -28px color-mix(in oklab, var(--foreground) 32%, transparent), 0 6px 14px -8px color-mix(in oklab, var(--foreground) 18%, transparent)",
+      }}
+    >
+      <div className="relative grid grid-cols-2">
+        <Link
+          to="/"
+          hash={`property-row-${a.id}`}
+          className="relative block aspect-[4/3] overflow-hidden"
+        >
+          <img
+            src={a.image}
+            alt={a.name}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
+            }}
+          />
+        </Link>
+        <Link
+          to="/"
+          hash={`property-row-${b.id}`}
+          className="relative block aspect-[4/3] overflow-hidden"
+        >
+          <img
+            src={b.image}
+            alt={b.name}
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
+            }}
+          />
+        </Link>
+
+        {/* VS badge */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div
+            className="grid h-12 w-12 place-items-center rounded-full font-display text-[14px] font-semibold tracking-wider"
+            style={{
+              background: "var(--foreground)",
+              color: "var(--background)",
+              border: "2px solid var(--card)",
+              boxShadow:
+                "0 8px 22px -6px color-mix(in oklab, var(--foreground) 45%, transparent)",
+            }}
+          >
+            VS
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 p-4">
+        <PropertyBrief property={a} price={priceA} />
+        <PropertyBrief property={b} price={priceB} />
+      </div>
+
+      <div className="px-4 pb-4">
+        <Link
+          to="/compare"
+          search={{ ids: `${a.id},${b.id}` }}
+          className="flex w-full items-center justify-center gap-2 rounded-full gold-border py-2.5 text-[11px] tracking-luxury text-champagne transition-colors hover:bg-champagne hover:text-lux-black"
+        >
+          <GitCompareArrows className="h-3.5 w-3.5" /> Compare Now
+        </Link>
+      </div>
+    </motion.article>
+  );
+}
+
+function PropertyBrief({ property, price }: { property: Property; price: number | null }) {
+  return (
+    <div className="min-w-0">
+      <p className="truncate text-[9px] font-semibold tracking-luxury text-muted-foreground">
+        {property.developer}
+      </p>
+      <h3 className="mt-1 truncate font-display text-[15px] font-medium text-foreground">
+        {property.name}
+      </h3>
+      <p className="mt-1.5 text-[12px] font-semibold text-ivory">
+        {price !== null ? (
+          <>
+            ₹{price.toFixed(2)} Cr
+            <span className="ml-1 text-[10px] font-normal text-muted-foreground">
+              onwards
+            </span>
+          </>
+        ) : (
+          <span className="text-muted-foreground">Price on request</span>
+        )}
+      </p>
+    </div>
+  );
+}
