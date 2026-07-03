@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, ChevronDown, Sparkles, Minus, Trophy, Info } from "lucide-react";
+import { Plus, X, ChevronDown, Sparkles, Minus, Trophy, Info, MapPin, Check } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
@@ -247,24 +247,83 @@ function SlotCard({
           <ChevronDown className="h-3 w-3 text-muted-foreground" />
         </button>
       </PopoverTrigger>
-      <PopoverContent align="center" className="w-[300px] rounded-xl border-border bg-popover p-1.5">
+      <PopoverContent
+        align="center"
+        sideOffset={12}
+        className="w-[min(92vw,720px)] rounded-2xl border-border bg-popover p-4 shadow-2xl"
+      >
+        <div className="mb-3 flex items-end justify-between gap-3">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.28em] text-champagne">
+              Select property {String.fromCharCode(65 + index)}
+            </p>
+            <h4 className="mt-1 font-display text-[18px] leading-tight text-foreground">
+              Choose from your matched residences
+            </h4>
+          </div>
+          <span className="text-[10px] tracking-luxury text-muted-foreground">
+            {available.length} available
+          </span>
+        </div>
         {available.length === 0 ? (
-          <p className="px-3 py-5 text-center text-xs text-muted-foreground">All properties added.</p>
+          <p className="px-3 py-8 text-center text-xs text-muted-foreground">All properties added.</p>
         ) : (
-          <div className="max-h-[300px] overflow-y-auto">
+          <div className="grid max-h-[440px] grid-cols-2 gap-3 overflow-y-auto pr-1 sm:grid-cols-3">
             {available.map((p) => (
               <button
                 key={p.id}
+                type="button"
                 onClick={() => {
                   onPick(p.id);
                   setOpen(false);
                 }}
-                className="flex w-full items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-muted"
+                className="group/pick relative flex flex-col overflow-hidden rounded-xl border border-border bg-card text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/50 hover:shadow-[0_18px_40px_-24px_color-mix(in_oklab,var(--foreground)_35%,transparent)]"
               >
-                <img src={p.image} alt={p.name} className="h-10 w-14 rounded-md object-cover" />
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[13px] text-foreground">{p.name}</p>
-                  <p className="truncate text-[11px] text-muted-foreground">{p.developer}</p>
+                <div className="relative aspect-[4/3] w-full overflow-hidden">
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover/pick:scale-105"
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
+                    }}
+                  />
+                  <span
+                    className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[8px] font-semibold tracking-luxury backdrop-blur-md"
+                    style={{
+                      background: "rgba(255,255,255,0.92)",
+                      color: "#0a0a0a",
+                    }}
+                  >
+                    {p.status}
+                  </span>
+                  <span
+                    className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full opacity-0 transition-opacity group-hover/pick:opacity-100"
+                    style={{
+                      background: "var(--foreground)",
+                      color: "var(--background)",
+                    }}
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                  </span>
+                </div>
+                <div className="p-2.5">
+                  <p className="truncate text-[8px] font-semibold uppercase tracking-luxury text-muted-foreground">
+                    {p.developer}
+                  </p>
+                  <h5 className="mt-0.5 truncate font-display text-[13px] font-medium leading-tight text-foreground">
+                    {p.name}
+                  </h5>
+                  <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-muted-foreground">
+                    <MapPin className="h-2.5 w-2.5" />
+                    <span className="truncate">{p.location}</span>
+                  </p>
                 </div>
               </button>
             ))}
