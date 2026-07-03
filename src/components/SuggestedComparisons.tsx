@@ -1,9 +1,9 @@
 import { useMemo, useRef, useState, useEffect } from "react";
-import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ChevronRight, ChevronLeft, GitCompareArrows } from "lucide-react";
 import { properties } from "@/data/properties";
 import { useOnboarding } from "@/context/OnboardingContext";
+import { useCompareStore } from "@/stores/compare-store";
 import {
   matchesPreferences,
   parseBudget,
