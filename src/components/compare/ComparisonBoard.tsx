@@ -395,12 +395,13 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-5 p-6 sm:p-8">
+      <div className="flex flex-1 flex-col gap-4 p-5 sm:p-6">
         <div>
           <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
             <span className="inline-block h-px w-5 bg-champagne" /> {p.developer}
           </p>
-          <h3 className="mt-2 font-display text-[28px] leading-[1.05] tracking-[-0.01em] text-foreground sm:text-[32px]">
+          <h3 className="mt-2 font-display text-[22px] leading-[1.05] tracking-[-0.01em] text-foreground sm:text-[26px]">
+
             {p.name}
           </h3>
           <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
