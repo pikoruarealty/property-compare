@@ -278,21 +278,38 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
           />
         </div>
 
-        {/* Vertical partition between the two properties */}
+        {/* Strong vertical partition between the two property images */}
         <div
           className="pointer-events-none absolute left-1/2 top-0 bottom-0 -translate-x-1/2"
           style={{
-            width: "1px",
+            width: "2px",
+            background:
+              "linear-gradient(to bottom, transparent 0%, var(--champagne, #c8a45d) 15%, var(--champagne, #c8a45d) 85%, transparent 100%)",
+            boxShadow:
+              "0 0 12px color-mix(in oklab, var(--champagne, #c8a45d) 55%, transparent)",
+            opacity: 0.9,
+          }}
+        />
+      </div>
+
+      <div className="relative grid grid-cols-2 gap-3 p-4 pt-7">
+        <PropertyBrief property={a} />
+
+        {/* Solid champagne divider spanning the brief row */}
+        <div
+          className="pointer-events-none absolute top-0 bottom-0 left-1/2 -translate-x-1/2"
+          style={{
+            width: "2px",
             background:
               "linear-gradient(to bottom, transparent 0%, var(--champagne, #c8a45d) 20%, var(--champagne, #c8a45d) 80%, transparent 100%)",
-            opacity: 0.55,
+            opacity: 0.7,
           }}
         />
 
-        {/* VS badge */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        {/* VS badge centered over the property-name row */}
+        <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-10">
           <div
-            className="grid h-12 w-12 place-items-center rounded-full font-display text-[14px] font-semibold tracking-wider"
+            className="grid h-11 w-11 place-items-center rounded-full font-display text-[13px] font-semibold tracking-wider"
             style={{
               background: "var(--foreground)",
               color: "var(--background)",
@@ -304,17 +321,7 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
             VS
           </div>
         </div>
-      </div>
 
-      <div className="relative grid grid-cols-2 gap-3 p-4">
-        <PropertyBrief property={a} />
-        <div
-          className="pointer-events-none absolute top-3 bottom-3 left-1/2 -translate-x-1/2"
-          style={{
-            width: "1px",
-            background: "color-mix(in oklab, var(--champagne, #c8a45d) 40%, transparent)",
-          }}
-        />
         <PropertyBrief property={b} />
       </div>
 
