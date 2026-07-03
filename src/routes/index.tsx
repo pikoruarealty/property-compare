@@ -10,6 +10,7 @@ import { StickyCompareTray } from "@/components/compare/StickyCompareTray";
 import { PreferenceBanner } from "@/components/PreferenceBanner";
 import { PreferencePanel } from "@/components/PreferencePanel";
 import { SuggestedProperties } from "@/components/SuggestedProperties";
+import { SuggestedComparisons } from "@/components/SuggestedComparisons";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { matchesPreferences } from "@/lib/preference-filter";
 import type { Property } from "@/types/property";
@@ -194,6 +195,10 @@ function Index() {
 
       {/* ============ SUGGESTED (prefs-driven marquee) ============ */}
       <SuggestedProperties />
+
+      {/* ============ SUGGESTED COMPARISONS ============ */}
+      <SuggestedComparisons />
+
 
       {/* ============ COLLECTION ============ */}
       <section id="collection" ref={collectionRef} className="relative scroll-mt-28 py-16 sm:py-24">
