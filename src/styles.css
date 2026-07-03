@@ -839,6 +839,12 @@ body.suggested-popup-open .suggested-marquee-track {
     radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.14), transparent 55%),
     #f4f7fa;
 }
+.light[data-palette="cloud"] body {
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(59, 130, 246, 0.08), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(148, 163, 184, 0.10), transparent 55%),
+    #fafbfc;
+}
 .dark body {
   background:
     radial-gradient(1000px 600px at 10% -10%, color-mix(in oklab, var(--brand) 12%, transparent), transparent 60%),
