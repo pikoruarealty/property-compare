@@ -134,13 +134,13 @@ function Index() {
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.1 }}
-                className="mt-7 font-display text-[52px] font-extrabold leading-[0.98] tracking-[-0.03em] text-foreground sm:text-[76px] lg:text-[86px]"
+                className="mt-7 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] text-foreground sm:text-[58px] lg:text-[66px]"
               >
-                A new standard
+                India's <span className="gold-text">Smartest</span>
                 <br />
-                in <span className="gold-text">prime</span>
+                Property Comparison
                 <br />
-                real estate.
+                Platform.
               </motion.h1>
 
               <motion.p
