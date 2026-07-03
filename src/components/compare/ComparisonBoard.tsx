@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, ChevronDown, Sparkles, Minus, Trophy, Info, MapPin, Check } from "lucide-react";
+import { Plus, X, ChevronDown, ChevronLeft, ChevronRight, Sparkles, Minus, Trophy, Info, MapPin, Check, Ruler, CalendarDays } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
@@ -251,96 +251,155 @@ function SlotCard({
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-5xl border-border bg-popover p-0 sm:rounded-2xl">
-          <DialogHeader className="border-b border-border/60 px-6 pb-4 pt-6">
-            <div className="flex items-end justify-between gap-3">
-              <div className="min-w-0">
-                <p className="text-[10px] uppercase tracking-[0.28em] text-champagne">
-                  Select property {String.fromCharCode(65 + index)}
-                </p>
-                <DialogTitle className="mt-1 font-display text-[22px] leading-tight text-foreground">
-                  Choose from your matched residences
-                </DialogTitle>
-                <DialogDescription className="mt-1 text-[12px] text-muted-foreground">
-                  Tap any residence to add it to your comparison.
-                </DialogDescription>
-              </div>
-              <span className="shrink-0 text-[10px] tracking-luxury text-muted-foreground">
-                {available.length} available
-              </span>
-            </div>
-          </DialogHeader>
-
-          {available.length === 0 ? (
-            <p className="px-6 py-12 text-center text-sm text-muted-foreground">
-              All properties added.
-            </p>
-          ) : (
-            <div className="max-h-[68vh] overflow-y-auto px-6 py-5">
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                {available.map((p) => (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => {
-                      onPick(p.id);
-                      setOpen(false);
-                    }}
-                    className="group/pick relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-champagne/60 hover:shadow-[0_24px_48px_-24px_color-mix(in_oklab,var(--foreground)_40%,transparent)]"
-                  >
-                    <div className="relative aspect-[16/10] w-full overflow-hidden">
-                      <img
-                        src={p.image}
-                        alt={p.name}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover/pick:scale-105"
-                      />
-                      <div
-                        className="pointer-events-none absolute inset-0"
-                        style={{
-                          background:
-                            "linear-gradient(to top, color-mix(in oklab, #000 40%, transparent) 0%, transparent 55%)",
-                        }}
-                      />
-                      <span
-                        className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury backdrop-blur-md"
-                        style={{ background: "rgba(255,255,255,0.92)", color: "#0a0a0a" }}
-                      >
-                        {p.status}
-                      </span>
-                      <span
-                        className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury opacity-0 transition-opacity group-hover/pick:opacity-100"
-                        style={{ background: "var(--foreground)", color: "var(--background)" }}
-                      >
-                        <Plus className="h-2.5 w-2.5" /> Add
-                      </span>
-                    </div>
-                    <div className="p-4">
-                      <p className="text-[9px] font-semibold uppercase tracking-luxury text-muted-foreground">
-                        {p.developer}
-                      </p>
-                      <h5 className="mt-1 truncate font-display text-[17px] font-medium leading-tight text-foreground">
-                        {p.name}
-                      </h5>
-                      <p className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-                        <MapPin className="h-3 w-3" />
-                        <span className="truncate">{p.location}</span>
-                      </p>
-                      {p.tagline && (
-                        <p className="mt-2 line-clamp-2 text-[12px] leading-snug text-muted-foreground/90">
-                          {p.tagline}
-                        </p>
-                      )}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+        <DialogContent className="max-w-5xl border-border bg-popover p-0 sm:rounded-2xl overflow-hidden">
+          <PropertyPicker
+            available={available}
+            indexLabel={String.fromCharCode(65 + index)}
+            onPick={(id) => {
+              onPick(id);
+              setOpen(false);
+            }}
+          />
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+function PropertyPicker({
+  available,
+  indexLabel,
+  onPick,
+}: {
+  available: Property[];
+  indexLabel: string;
+  onPick: (id: string) => void;
+}) {
+  const [cursor, setCursor] = useState(0);
+
+  if (available.length === 0) {
+    return (
+      <>
+        <DialogHeader className="border-b border-border/60 px-6 pb-4 pt-6">
+          <DialogTitle className="font-display text-[22px] text-foreground">All properties added</DialogTitle>
+          <DialogDescription className="text-[12px] text-muted-foreground">
+            Remove one from your comparison to swap it out.
+          </DialogDescription>
+        </DialogHeader>
+        <p className="px-6 py-12 text-center text-sm text-muted-foreground">Nothing left to add.</p>
+      </>
+    );
+  }
+
+  const safe = ((cursor % available.length) + available.length) % available.length;
+  const p = available[safe];
+  const prev = () => setCursor((c) => c - 1);
+  const next = () => setCursor((c) => c + 1);
+
+  return (
+    <>
+      <DialogHeader className="sr-only">
+        <DialogTitle>Select property {indexLabel}</DialogTitle>
+        <DialogDescription>Browse residences and add one to your comparison.</DialogDescription>
+      </DialogHeader>
+
+      <div className="grid gap-0 md:grid-cols-[1.15fr_1fr]">
+        {/* Image side */}
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted md:aspect-auto md:min-h-[520px]">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={p.id}
+              src={p.image}
+              alt={p.name}
+              initial={{ opacity: 0, scale: 1.02 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          </AnimatePresence>
+
+          <span
+            className="absolute left-4 top-4 rounded-full px-3 py-1.5 text-[10px] font-semibold tracking-luxury backdrop-blur-md"
+            style={{ background: "rgba(255,255,255,0.92)", color: "#0a0a0a" }}
+          >
+            {p.status}
+          </span>
+
+          {available.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={prev}
+                aria-label="Previous"
+                className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lux-black shadow-lg transition hover:bg-white"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={next}
+                aria-label="Next"
+                className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lux-black shadow-lg transition hover:bg-white"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/55 px-3 py-1 text-[10px] font-medium tracking-luxury text-white backdrop-blur">
+                {safe + 1} / {available.length}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Details side */}
+        <div className="flex flex-col justify-between gap-6 px-7 py-8">
+          <div>
+            <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+              <span className="inline-block h-px w-6 bg-champagne" /> {p.developer}
+            </p>
+            <h3 className="mt-3 font-display text-[38px] leading-[1.05] tracking-[-0.01em] text-foreground">
+              {p.name}
+            </h3>
+            <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+              {p.configuration}
+            </p>
+            {p.tagline && (
+              <p className="mt-5 text-[14px] leading-relaxed text-foreground/80">{p.tagline}</p>
+            )}
+          </div>
+
+          <div className="space-y-3">
+            <DetailRow icon={<MapPin className="h-4 w-4" />} label="Location" value={p.location} />
+            <DetailRow icon={<Ruler className="h-4 w-4" />} label="Size" value={p.size} />
+            <DetailRow icon={<CalendarDays className="h-4 w-4" />} label="Possession" value={p.possession} />
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onPick(p.id)}
+            className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-6 py-4 text-[12px] font-semibold tracking-[0.28em] text-foreground transition hover:border-champagne hover:bg-champagne hover:text-lux-black"
+          >
+            <Plus className="h-4 w-4" /> ADD TO COMPARE
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function DetailRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div className="flex items-start gap-3">
+      <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
+        {icon}
+      </span>
+      <div className="min-w-0">
+        <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">{label}</p>
+        <p className="mt-0.5 text-[15px] font-medium text-foreground">{value}</p>
+      </div>
+    </div>
   );
 }
 
