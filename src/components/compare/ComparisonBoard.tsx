@@ -308,13 +308,16 @@ function PropertyPicker({
         </DialogDescription>
       </DialogHeader>
 
-      <div className="overflow-y-auto max-h-[calc(85vh-88px)] px-5 py-5">
-        <div className="flex flex-col gap-4">
+      <div className="overflow-y-auto max-h-[calc(85vh-88px)] px-5 py-5 snap-y snap-mandatory scroll-smooth">
+        <div className="flex flex-col gap-5">
           {available.map((p) => (
-            <PickerCard key={p.id} property={p} onPick={onPick} />
+            <div key={p.id} className="snap-start">
+              <PickerCard property={p} onPick={onPick} />
+            </div>
           ))}
         </div>
       </div>
+
     </>
   );
 }
