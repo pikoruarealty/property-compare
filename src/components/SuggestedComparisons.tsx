@@ -129,10 +129,12 @@ const HEADINGS = [
 export function SuggestedComparisons() {
   const { quizAnswers } = useOnboarding();
   const pairs = useMemo(() => buildPairs(quizAnswers ?? null), [quizAnswers]);
-  const heading = useMemo(
-    () => HEADINGS[Math.floor(Math.random() * HEADINGS.length)],
-    [],
-  );
+  // Pick a stable heading per mount on the client only to avoid SSR/CSR
+  // hydration mismatch from Math.random().
+  const [heading, setHeading] = useState<string>(HEADINGS[0]);
+  useEffect(() => {
+    setHeading(HEADINGS[Math.floor(Math.random() * HEADINGS.length)]);
+  }, []);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
@@ -212,8 +214,21 @@ export function SuggestedComparisons() {
 
 function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
   const { a, b } = pair;
-  const priceA = minPrice(a, []);
-  const priceB = minPrice(b, []);
+  const { clear, toggle } = useCompareStore();
+
+  const handleCompare = () => {
+    clear();
+    toggle(a.id);
+    toggle(b.id);
+    // Scroll to the on-page comparison suite
+    if (typeof window !== "undefined") {
+      // slight delay so store subscribers re-render the board first
+      requestAnimationFrame(() => {
+        const el = document.getElementById("suite");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  };
 
   return (
     <motion.article
@@ -230,11 +245,7 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
       }}
     >
       <div className="relative grid grid-cols-2">
-        <Link
-          to="/"
-          hash={`property-row-${a.id}`}
-          className="relative block aspect-[4/3] overflow-hidden"
-        >
+        <div className="relative block aspect-[4/3] overflow-hidden">
           <img
             src={a.image}
             alt={a.name}
@@ -249,12 +260,8 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
                 "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
             }}
           />
-        </Link>
-        <Link
-          to="/"
-          hash={`property-row-${b.id}`}
-          className="relative block aspect-[4/3] overflow-hidden"
-        >
+        </div>
+        <div className="relative block aspect-[4/3] overflow-hidden">
           <img
             src={b.image}
             alt={b.name}
@@ -269,7 +276,18 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
                 "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
             }}
           />
-        </Link>
+        </div>
+
+        {/* Vertical partition between the two properties */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 bottom-0 -translate-x-1/2"
+          style={{
+            width: "1px",
+            background:
+              "linear-gradient(to bottom, transparent 0%, var(--champagne, #c8a45d) 20%, var(--champagne, #c8a45d) 80%, transparent 100%)",
+            opacity: 0.55,
+          }}
+        />
 
         {/* VS badge */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -288,25 +306,32 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 p-4">
-        <PropertyBrief property={a} price={priceA} />
-        <PropertyBrief property={b} price={priceB} />
+      <div className="relative grid grid-cols-2 gap-3 p-4">
+        <PropertyBrief property={a} />
+        <div
+          className="pointer-events-none absolute top-3 bottom-3 left-1/2 -translate-x-1/2"
+          style={{
+            width: "1px",
+            background: "color-mix(in oklab, var(--champagne, #c8a45d) 40%, transparent)",
+          }}
+        />
+        <PropertyBrief property={b} />
       </div>
 
       <div className="px-4 pb-4">
-        <Link
-          to="/compare"
-          search={{ ids: `${a.id},${b.id}` }}
+        <button
+          type="button"
+          onClick={handleCompare}
           className="flex w-full items-center justify-center gap-2 rounded-full gold-border py-2.5 text-[11px] tracking-luxury text-champagne transition-colors hover:bg-champagne hover:text-lux-black"
         >
           <GitCompareArrows className="h-3.5 w-3.5" /> Compare Now
-        </Link>
+        </button>
       </div>
     </motion.article>
   );
 }
 
-function PropertyBrief({ property, price }: { property: Property; price: number | null }) {
+function PropertyBrief({ property }: { property: Property }) {
   return (
     <div className="min-w-0">
       <p className="truncate text-[9px] font-semibold tracking-luxury text-muted-foreground">
@@ -315,18 +340,12 @@ function PropertyBrief({ property, price }: { property: Property; price: number 
       <h3 className="mt-1 truncate font-display text-[15px] font-medium text-foreground">
         {property.name}
       </h3>
-      <p className="mt-1.5 text-[12px] font-semibold text-ivory">
-        {price !== null ? (
-          <>
-            ₹{price.toFixed(2)} Cr
-            <span className="ml-1 text-[10px] font-normal text-muted-foreground">
-              onwards
-            </span>
-          </>
-        ) : (
-          <span className="text-muted-foreground">Price on request</span>
-        )}
-      </p>
+      {property.location ? (
+        <p className="mt-1 truncate text-[11px] text-muted-foreground">
+          {property.location}
+        </p>
+      ) : null}
     </div>
   );
 }
+
