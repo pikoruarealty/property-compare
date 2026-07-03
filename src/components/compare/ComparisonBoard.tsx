@@ -322,24 +322,24 @@ function PropertyPicker({
         </DialogDescription>
       </DialogHeader>
 
-      <div className="relative px-6 py-6">
+      <div className="relative px-5 py-5 overflow-y-auto max-h-[calc(85vh-72px)]">
         {showArrows && (
           <>
             <button
               type="button"
               onClick={prev}
               aria-label="Previous"
-              className="absolute -left-5 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
+              className="absolute -left-4 top-1/2 z-20 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               type="button"
               onClick={next}
               aria-label="Next"
-              className="absolute -right-5 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
+              className="absolute -right-4 top-1/2 z-20 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-4 w-4" />
             </button>
           </>
         )}
@@ -351,7 +351,7 @@ function PropertyPicker({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -12 }}
             transition={{ duration: 0.25 }}
-            className="grid gap-5 sm:grid-cols-2"
+            className="grid gap-4 sm:grid-cols-2"
           >
             {pageItems.map((p) => (
               <PickerCard key={p.id} property={p} onPick={onPick} />
@@ -360,7 +360,7 @@ function PropertyPicker({
         </AnimatePresence>
 
         {showArrows && (
-          <div className="mt-5 flex items-center justify-center gap-1.5">
+          <div className="mt-4 flex items-center justify-center gap-1.5">
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i}
@@ -368,13 +368,14 @@ function PropertyPicker({
                 onClick={() => setPage(i)}
                 aria-label={`Page ${i + 1}`}
                 className={`h-1.5 rounded-full transition-all ${
-                  i === safePage ? "w-6 bg-foreground" : "w-1.5 bg-border hover:bg-muted-foreground"
+                  i === safePage ? "w-5 bg-foreground" : "w-1.5 bg-border hover:bg-muted-foreground"
                 }`}
               />
             ))}
           </div>
         )}
       </div>
+
     </>
   );
 }
