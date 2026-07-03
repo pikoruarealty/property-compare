@@ -105,7 +105,7 @@ function Index() {
       <section
         id="hero"
         ref={heroRef}
-        className="relative overflow-hidden pt-32 pb-28 scroll-mt-28"
+        className="relative overflow-hidden pt-28 pb-16 scroll-mt-28"
       >
         {/* Ambient decor */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
