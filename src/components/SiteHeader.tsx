@@ -11,7 +11,7 @@ import { useTheme } from "@/context/ThemeContext";
 
 export function SiteHeader() {
   const { userProfile } = useOnboarding();
-  const { theme, toggle, palette, setPalette } = useTheme();
+  const { theme, toggle } = useTheme();
   const hydrated = useHydrated();
   const favCount = useFavoritesStore((s) => s.favorites.length);
   const initials = userProfile?.name
