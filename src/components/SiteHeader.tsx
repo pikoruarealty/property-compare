@@ -7,7 +7,7 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useFavoritesStore } from "@/stores/favorites-store";
 import { useHydrated } from "@/hooks/use-hydrated";
-import { useTheme, PALETTES } from "@/context/ThemeContext";
+import { useTheme } from "@/context/ThemeContext";
 
 export function SiteHeader() {
   const { userProfile } = useOnboarding();
