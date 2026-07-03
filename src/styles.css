@@ -774,11 +774,13 @@ body.suggested-popup-open .suggested-marquee-track {
   --glass-border: rgba(12, 35, 64, 0.14);
 }
 
-/* ---------- Cloud White (light-only, editorial blue accent) ---------- */
+/* ---------- Cloud White — editorial navy + amber accent ---------- */
 [data-palette="cloud"] {
-  --brand: #3b82f6;
-  --brand-soft: #93c5fd;
-  --brand-ink: #0b1a33;
+  --brand: #0a1f4d;
+  --brand-soft: #3b6fd6;
+  --brand-ink: #ffffff;
+  --brand-accent: #c9a24d;
+  --brand-accent-soft: #e6c987;
 }
 .dark[data-palette="cloud"] {
   --background: #0b1220;
@@ -797,20 +799,20 @@ body.suggested-popup-open .suggested-marquee-track {
   --glass-border: rgba(148, 163, 184, 0.22);
 }
 .light[data-palette="cloud"] {
-  --background: #fafbfc;
-  --foreground: #0f172a;
+  --background: #f5f2ea;
+  --foreground: #0a1f4d;
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #0a1f4d;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --secondary: #e8ecf1;
-  --muted: #eef1f5;
-  --muted-foreground: #64748b;
-  --border: rgba(15, 23, 42, 0.10);
-  --input: rgba(15, 23, 42, 0.18);
-  --ring: #3b82f6;
-  --glass-bg: rgba(255, 255, 255, 0.86);
-  --glass-border: rgba(15, 23, 42, 0.08);
+  --popover-foreground: #0a1f4d;
+  --secondary: #ece7dc;
+  --muted: #efeadf;
+  --muted-foreground: #4a5878;
+  --border: rgba(10, 31, 77, 0.12);
+  --input: rgba(10, 31, 77, 0.22);
+  --ring: #0a1f4d;
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(10, 31, 77, 0.10);
 }
 
 /* ---------- Body backgrounds with soft gradients per palette ---------- */
