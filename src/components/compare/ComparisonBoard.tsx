@@ -337,7 +337,7 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
   const go = (dir: 1 | -1) => setIdx((i) => (i + dir + total) % total);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg sm:flex-row sm:min-h-[64vh]">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg sm:flex-row sm:min-h-[48vh]">
       <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:w-[55%]">
         <AnimatePresence initial={false} mode="sync">
           <motion.img
@@ -395,12 +395,13 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-5 p-6 sm:p-8">
+      <div className="flex flex-1 flex-col gap-4 p-5 sm:p-6">
         <div>
           <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
             <span className="inline-block h-px w-5 bg-champagne" /> {p.developer}
           </p>
-          <h3 className="mt-2 font-display text-[28px] leading-[1.05] tracking-[-0.01em] text-foreground sm:text-[32px]">
+          <h3 className="mt-2 font-display text-[22px] leading-[1.05] tracking-[-0.01em] text-foreground sm:text-[26px]">
+
             {p.name}
           </h3>
           <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
