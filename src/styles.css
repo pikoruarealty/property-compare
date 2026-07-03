@@ -774,6 +774,45 @@ body.suggested-popup-open .suggested-marquee-track {
   --glass-border: rgba(12, 35, 64, 0.14);
 }
 
+/* ---------- Cloud White (light-only, editorial blue accent) ---------- */
+[data-palette="cloud"] {
+  --brand: #3b82f6;
+  --brand-soft: #93c5fd;
+  --brand-ink: #0b1a33;
+}
+.dark[data-palette="cloud"] {
+  --background: #0b1220;
+  --foreground: #f5f7fb;
+  --card: #131a2b;
+  --card-foreground: #f5f7fb;
+  --popover: #131a2b;
+  --popover-foreground: #f5f7fb;
+  --secondary: #1a2338;
+  --muted: #131a2b;
+  --muted-foreground: #94a3b8;
+  --border: rgba(148, 163, 184, 0.22);
+  --input: rgba(148, 163, 184, 0.28);
+  --ring: #3b82f6;
+  --glass-bg: rgba(19, 26, 43, 0.82);
+  --glass-border: rgba(148, 163, 184, 0.22);
+}
+.light[data-palette="cloud"] {
+  --background: #fafbfc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --secondary: #e8ecf1;
+  --muted: #eef1f5;
+  --muted-foreground: #64748b;
+  --border: rgba(15, 23, 42, 0.10);
+  --input: rgba(15, 23, 42, 0.18);
+  --ring: #3b82f6;
+  --glass-bg: rgba(255, 255, 255, 0.86);
+  --glass-border: rgba(15, 23, 42, 0.08);
+}
+
 /* ---------- Body backgrounds with soft gradients per palette ---------- */
 .light[data-palette="warm-sand"] body,
 .light:not([data-palette]) body {
@@ -799,6 +838,12 @@ body.suggested-popup-open .suggested-marquee-track {
     radial-gradient(1200px 700px at 10% -10%, rgba(45, 138, 158, 0.10), transparent 60%),
     radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.14), transparent 55%),
     #f4f7fa;
+}
+.light[data-palette="cloud"] body {
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(59, 130, 246, 0.08), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(148, 163, 184, 0.10), transparent 55%),
+    #fafbfc;
 }
 .dark body {
   background:
