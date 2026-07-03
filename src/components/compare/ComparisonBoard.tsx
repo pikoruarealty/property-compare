@@ -308,13 +308,16 @@ function PropertyPicker({
         </DialogDescription>
       </DialogHeader>
 
-      <div className="overflow-y-auto max-h-[calc(85vh-88px)] px-5 py-5">
-        <div className="flex flex-col gap-4">
+      <div className="overflow-y-auto max-h-[calc(85vh-88px)] px-5 py-5 snap-y snap-mandatory scroll-smooth">
+        <div className="flex flex-col gap-5">
           {available.map((p) => (
-            <PickerCard key={p.id} property={p} onPick={onPick} />
+            <div key={p.id} className="snap-start">
+              <PickerCard property={p} onPick={onPick} />
+            </div>
           ))}
         </div>
       </div>
+
     </>
   );
 }
@@ -334,10 +337,11 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
   const go = (dir: 1 | -1) => setIdx((i) => (i + dir + total) % total);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card sm:flex-row">
-      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:w-[46%]">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg sm:flex-row sm:min-h-[64vh]">
+      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:w-[55%]">
         <AnimatePresence initial={false} mode="sync">
           <motion.img
+
             key={images[idx]}
             src={images[idx]}
             alt={p.name}
@@ -391,33 +395,34 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
+      <div className="flex flex-1 flex-col gap-5 p-6 sm:p-8">
         <div>
-          <p className="inline-flex items-center gap-2 text-[8px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
-            <span className="inline-block h-px w-4 bg-champagne" /> {p.developer}
+          <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+            <span className="inline-block h-px w-5 bg-champagne" /> {p.developer}
           </p>
-          <h3 className="mt-1.5 font-display text-[18px] leading-[1.1] tracking-[-0.01em] text-foreground">
+          <h3 className="mt-2 font-display text-[28px] leading-[1.05] tracking-[-0.01em] text-foreground sm:text-[32px]">
             {p.name}
           </h3>
-          <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+          <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
             {p.configuration}
           </p>
         </div>
 
-        <div className="space-y-1.5">
-          <DetailRow icon={<MapPin className="h-3 w-3" />} label="Location" value={p.location} />
-          <DetailRow icon={<Ruler className="h-3 w-3" />} label="Size" value={p.size} />
-          <DetailRow icon={<CalendarDays className="h-3 w-3" />} label="Possession" value={p.possession} />
+        <div className="space-y-2.5">
+          <DetailRow icon={<MapPin className="h-3.5 w-3.5" />} label="Location" value={p.location} />
+          <DetailRow icon={<Ruler className="h-3.5 w-3.5" />} label="Size" value={p.size} />
+          <DetailRow icon={<CalendarDays className="h-3.5 w-3.5" />} label="Possession" value={p.possession} />
         </div>
 
         <button
           type="button"
           onClick={() => onPick(p.id)}
-          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-[10px] font-semibold tracking-[0.24em] text-foreground transition hover:border-champagne hover:bg-champagne hover:text-lux-black"
+          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-5 py-3.5 text-[11px] font-semibold tracking-[0.26em] text-foreground transition hover:border-champagne hover:bg-champagne hover:text-lux-black"
         >
-          <Plus className="h-3 w-3" /> ADD TO COMPARE
+          <Plus className="h-3.5 w-3.5" /> ADD TO COMPARE
         </button>
       </div>
+
     </div>
   );
 }
