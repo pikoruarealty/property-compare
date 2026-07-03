@@ -251,7 +251,7 @@ function SlotCard({
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-5xl border-border bg-popover p-0 sm:rounded-2xl overflow-hidden">
+        <DialogContent className="max-w-6xl border-border bg-popover p-0 sm:rounded-2xl overflow-visible">
           <PropertyPicker
             available={available}
             indexLabel={String.fromCharCode(65 + index)}
@@ -266,6 +266,8 @@ function SlotCard({
   );
 }
 
+const PAGE_SIZE = 2;
+
 function PropertyPicker({
   available,
   indexLabel,
@@ -275,7 +277,7 @@ function PropertyPicker({
   indexLabel: string;
   onPick: (id: string) => void;
 }) {
-  const [cursor, setCursor] = useState(0);
+  const [page, setPage] = useState(0);
 
   if (available.length === 0) {
     return (
@@ -291,117 +293,159 @@ function PropertyPicker({
     );
   }
 
-  const safe = ((cursor % available.length) + available.length) % available.length;
-  const p = available[safe];
-  const prev = () => setCursor((c) => c - 1);
-  const next = () => setCursor((c) => c + 1);
+  const totalPages = Math.max(1, Math.ceil(available.length / PAGE_SIZE));
+  const safePage = ((page % totalPages) + totalPages) % totalPages;
+  const start = safePage * PAGE_SIZE;
+  const pageItems = available.slice(start, start + PAGE_SIZE);
+  const prev = () => setPage((p) => p - 1);
+  const next = () => setPage((p) => p + 1);
+  const showArrows = available.length > PAGE_SIZE;
 
   return (
     <>
-      <DialogHeader className="sr-only">
-        <DialogTitle>Select property {indexLabel}</DialogTitle>
-        <DialogDescription>Browse residences and add one to your comparison.</DialogDescription>
+      <DialogHeader className="border-b border-border/60 px-6 pb-3 pt-5">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+              Select property {indexLabel}
+            </p>
+            <DialogTitle className="mt-1 font-display text-[20px] text-foreground">
+              Choose from your matched residences
+            </DialogTitle>
+          </div>
+          <p className="text-[11px] text-muted-foreground">
+            {start + 1}–{Math.min(start + PAGE_SIZE, available.length)} of {available.length}
+          </p>
+        </div>
+        <DialogDescription className="sr-only">
+          Browse residences and add one to your comparison.
+        </DialogDescription>
       </DialogHeader>
 
-      <div className="grid gap-0 md:grid-cols-[1.15fr_1fr]">
-        {/* Image side */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted md:aspect-auto md:min-h-[520px]">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={p.id}
-              src={p.image}
-              alt={p.name}
-              initial={{ opacity: 0, scale: 1.02 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              className="absolute inset-0 h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
-          </AnimatePresence>
+      <div className="relative px-6 py-6">
+        {showArrows && (
+          <>
+            <button
+              type="button"
+              onClick={prev}
+              aria-label="Previous"
+              className="absolute -left-5 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              aria-label="Next"
+              className="absolute -right-5 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </>
+        )}
 
-          <span
-            className="absolute left-4 top-4 rounded-full px-3 py-1.5 text-[10px] font-semibold tracking-luxury backdrop-blur-md"
-            style={{ background: "rgba(255,255,255,0.92)", color: "#0a0a0a" }}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={safePage}
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -12 }}
+            transition={{ duration: 0.25 }}
+            className="grid gap-5 sm:grid-cols-2"
           >
-            {p.status}
-          </span>
+            {pageItems.map((p) => (
+              <PickerCard key={p.id} property={p} onPick={onPick} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
 
-          {available.length > 1 && (
-            <>
+        {showArrows && (
+          <div className="mt-5 flex items-center justify-center gap-1.5">
+            {Array.from({ length: totalPages }).map((_, i) => (
               <button
+                key={i}
                 type="button"
-                onClick={prev}
-                aria-label="Previous"
-                className="absolute left-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lux-black shadow-lg transition hover:bg-white"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                aria-label="Next"
-                className="absolute right-3 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-lux-black shadow-lg transition hover:bg-white"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/55 px-3 py-1 text-[10px] font-medium tracking-luxury text-white backdrop-blur">
-                {safe + 1} / {available.length}
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Details side */}
-        <div className="flex flex-col justify-between gap-6 px-7 py-8">
-          <div>
-            <p className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
-              <span className="inline-block h-px w-6 bg-champagne" /> {p.developer}
-            </p>
-            <h3 className="mt-3 font-display text-[38px] leading-[1.05] tracking-[-0.01em] text-foreground">
-              {p.name}
-            </h3>
-            <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
-              {p.configuration}
-            </p>
-            {p.tagline && (
-              <p className="mt-5 text-[14px] leading-relaxed text-foreground/80">{p.tagline}</p>
-            )}
+                onClick={() => setPage(i)}
+                aria-label={`Page ${i + 1}`}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === safePage ? "w-6 bg-foreground" : "w-1.5 bg-border hover:bg-muted-foreground"
+                }`}
+              />
+            ))}
           </div>
-
-          <div className="space-y-3">
-            <DetailRow icon={<MapPin className="h-4 w-4" />} label="Location" value={p.location} />
-            <DetailRow icon={<Ruler className="h-4 w-4" />} label="Size" value={p.size} />
-            <DetailRow icon={<CalendarDays className="h-4 w-4" />} label="Possession" value={p.possession} />
-          </div>
-
-          <button
-            type="button"
-            onClick={() => onPick(p.id)}
-            className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-6 py-4 text-[12px] font-semibold tracking-[0.28em] text-foreground transition hover:border-champagne hover:bg-champagne hover:text-lux-black"
-          >
-            <Plus className="h-4 w-4" /> ADD TO COMPARE
-          </button>
-        </div>
+        )}
       </div>
     </>
   );
 }
 
-function DetailRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: string) => void }) {
   return (
-    <div className="flex items-start gap-3">
-      <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
-        {icon}
-      </span>
-      <div className="min-w-0">
-        <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">{label}</p>
-        <p className="mt-0.5 text-[15px] font-medium text-foreground">{value}</p>
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+        <img
+          src={p.image}
+          alt={p.name}
+          className="h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+        <span
+          className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury backdrop-blur-md"
+          style={{ background: "rgba(255,255,255,0.92)", color: "#0a0a0a" }}
+        >
+          {p.status}
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col gap-4 p-5">
+        <div>
+          <p className="inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+            <span className="inline-block h-px w-5 bg-champagne" /> {p.developer}
+          </p>
+          <h3 className="mt-2 font-display text-[24px] leading-[1.1] tracking-[-0.01em] text-foreground">
+            {p.name}
+          </h3>
+          <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+            {p.configuration}
+          </p>
+          {p.tagline && (
+            <p className="mt-3 line-clamp-2 text-[12px] leading-relaxed text-foreground/75">{p.tagline}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <DetailRow icon={<MapPin className="h-3.5 w-3.5" />} label="Location" value={p.location} />
+          <DetailRow icon={<Ruler className="h-3.5 w-3.5" />} label="Size" value={p.size} />
+          <DetailRow icon={<CalendarDays className="h-3.5 w-3.5" />} label="Possession" value={p.possession} />
+        </div>
+
+        <button
+          type="button"
+          onClick={() => onPick(p.id)}
+          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-[11px] font-semibold tracking-[0.24em] text-foreground transition hover:border-champagne hover:bg-champagne hover:text-lux-black"
+        >
+          <Plus className="h-3.5 w-3.5" /> ADD TO COMPARE
+        </button>
       </div>
     </div>
   );
 }
+
+function DetailRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
+        {icon}
+      </span>
+      <div className="min-w-0">
+        <p className="text-[8px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">{label}</p>
+        <p className="mt-0.5 text-[12px] font-medium text-foreground truncate">{value}</p>
+      </div>
+    </div>
+  );
+}
+
 
 /* ---------------- helpers ---------------- */
 const parseMaxNum = (s: string | null | undefined): number | null => {
