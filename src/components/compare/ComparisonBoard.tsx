@@ -266,8 +266,6 @@ function SlotCard({
   );
 }
 
-const PAGE_SIZE = 2;
-
 function PropertyPicker({
   available,
   indexLabel,
@@ -277,8 +275,6 @@ function PropertyPicker({
   indexLabel: string;
   onPick: (id: string) => void;
 }) {
-  const [page, setPage] = useState(0);
-
   if (available.length === 0) {
     return (
       <>
@@ -293,14 +289,6 @@ function PropertyPicker({
     );
   }
 
-  const totalPages = Math.max(1, Math.ceil(available.length / PAGE_SIZE));
-  const safePage = ((page % totalPages) + totalPages) % totalPages;
-  const start = safePage * PAGE_SIZE;
-  const pageItems = available.slice(start, start + PAGE_SIZE);
-  const prev = () => setPage((p) => p - 1);
-  const next = () => setPage((p) => p + 1);
-  const showArrows = available.length > PAGE_SIZE;
-
   return (
     <>
       <DialogHeader className="border-b border-border/60 px-6 pb-3 pt-5">
@@ -313,93 +301,97 @@ function PropertyPicker({
               Choose from your matched residences
             </DialogTitle>
           </div>
-          <p className="text-[11px] text-muted-foreground">
-            {start + 1}–{Math.min(start + PAGE_SIZE, available.length)} of {available.length}
-          </p>
+          <p className="text-[11px] text-muted-foreground">{available.length} residences</p>
         </div>
         <DialogDescription className="sr-only">
-          Browse residences and add one to your comparison.
+          Scroll to browse residences and add one to your comparison.
         </DialogDescription>
       </DialogHeader>
 
-      <div className="relative px-5 py-5 overflow-y-auto max-h-[calc(85vh-72px)]">
-        {showArrows && (
-          <>
-            <button
-              type="button"
-              onClick={prev}
-              aria-label="Previous"
-              className="absolute -left-4 top-1/2 z-20 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={next}
-              aria-label="Next"
-              className="absolute -right-4 top-1/2 z-20 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </>
-        )}
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={safePage}
-            initial={{ opacity: 0, x: 12 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -12 }}
-            transition={{ duration: 0.25 }}
-            className="grid gap-4 sm:grid-cols-2"
-          >
-            {pageItems.map((p) => (
-              <PickerCard key={p.id} property={p} onPick={onPick} />
-            ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {showArrows && (
-          <div className="mt-4 flex items-center justify-center gap-1.5">
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setPage(i)}
-                aria-label={`Page ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === safePage ? "w-5 bg-foreground" : "w-1.5 bg-border hover:bg-muted-foreground"
-                }`}
-              />
-            ))}
-          </div>
-        )}
+      <div className="overflow-y-auto max-h-[calc(85vh-88px)] px-5 py-5">
+        <div className="flex flex-col gap-4">
+          {available.map((p) => (
+            <PickerCard key={p.id} property={p} onPick={onPick} />
+          ))}
+        </div>
       </div>
-
     </>
   );
 }
 
+function propertyImages(p: Property): string[] {
+  const g = (p.gallery ?? {}) as unknown as Record<string, string>;
+  const list = [p.image, g.livingRoom, g.masterBedroom, g.pool, g.clubhouse].filter(
+    (s): s is string => Boolean(s),
+  );
+  return Array.from(new Set(list));
+}
+
 function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: string) => void }) {
+  const images = useMemo(() => propertyImages(p), [p]);
+  const [idx, setIdx] = useState(0);
+  const total = images.length;
+  const go = (dir: 1 | -1) => setIdx((i) => (i + dir + total) % total);
+
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card">
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-        <img
-          src={p.image}
-          alt={p.name}
-          className="h-full w-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
+    <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card sm:flex-row">
+      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:w-[46%]">
+        <AnimatePresence initial={false} mode="sync">
+          <motion.img
+            key={images[idx]}
+            src={images[idx]}
+            alt={p.name}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </AnimatePresence>
         <span
           className="absolute left-2.5 top-2.5 rounded-full px-2 py-0.5 text-[8px] font-semibold tracking-luxury backdrop-blur-md"
           style={{ background: "rgba(255,255,255,0.92)", color: "#0a0a0a" }}
         >
           {p.status}
         </span>
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Previous image"
+              className="absolute left-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white transition hover:bg-black/80"
+            >
+              <ChevronLeft className="h-3.5 w-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Next image"
+              className="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white transition hover:bg-black/80"
+            >
+              <ChevronRight className="h-3.5 w-3.5" />
+            </button>
+            <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setIdx(i)}
+                  aria-label={`Image ${i + 1}`}
+                  className={`h-1 rounded-full transition-all ${
+                    i === idx ? "w-4 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-4">
+      <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
         <div>
           <p className="inline-flex items-center gap-2 text-[8px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
             <span className="inline-block h-px w-4 bg-champagne" /> {p.developer}
