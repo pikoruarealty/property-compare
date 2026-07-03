@@ -251,7 +251,7 @@ function SlotCard({
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-6xl border-border bg-popover p-0 sm:rounded-2xl overflow-visible">
+        <DialogContent className="max-w-3xl border-border bg-popover p-0 sm:rounded-2xl overflow-visible max-h-[85vh]">
           <PropertyPicker
             available={available}
             indexLabel={String.fromCharCode(65 + index)}
@@ -322,24 +322,24 @@ function PropertyPicker({
         </DialogDescription>
       </DialogHeader>
 
-      <div className="relative px-6 py-6">
+      <div className="relative px-5 py-5 overflow-y-auto max-h-[calc(85vh-72px)]">
         {showArrows && (
           <>
             <button
               type="button"
               onClick={prev}
               aria-label="Previous"
-              className="absolute -left-5 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
+              className="absolute -left-4 top-1/2 z-20 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               type="button"
               onClick={next}
               aria-label="Next"
-              className="absolute -right-5 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
+              className="absolute -right-4 top-1/2 z-20 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-foreground text-background shadow-xl transition hover:scale-105"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-4 w-4" />
             </button>
           </>
         )}
@@ -351,7 +351,7 @@ function PropertyPicker({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -12 }}
             transition={{ duration: 0.25 }}
-            className="grid gap-5 sm:grid-cols-2"
+            className="grid gap-4 sm:grid-cols-2"
           >
             {pageItems.map((p) => (
               <PickerCard key={p.id} property={p} onPick={onPick} />
@@ -360,7 +360,7 @@ function PropertyPicker({
         </AnimatePresence>
 
         {showArrows && (
-          <div className="mt-5 flex items-center justify-center gap-1.5">
+          <div className="mt-4 flex items-center justify-center gap-1.5">
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i}
@@ -368,21 +368,22 @@ function PropertyPicker({
                 onClick={() => setPage(i)}
                 aria-label={`Page ${i + 1}`}
                 className={`h-1.5 rounded-full transition-all ${
-                  i === safePage ? "w-6 bg-foreground" : "w-1.5 bg-border hover:bg-muted-foreground"
+                  i === safePage ? "w-5 bg-foreground" : "w-1.5 bg-border hover:bg-muted-foreground"
                 }`}
               />
             ))}
           </div>
         )}
       </div>
+
     </>
   );
 }
 
 function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: string) => void }) {
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card">
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+    <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card">
+      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
         <img
           src={p.image}
           alt={p.name}
@@ -391,41 +392,38 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
           decoding="async"
         />
         <span
-          className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury backdrop-blur-md"
+          className="absolute left-2.5 top-2.5 rounded-full px-2 py-0.5 text-[8px] font-semibold tracking-luxury backdrop-blur-md"
           style={{ background: "rgba(255,255,255,0.92)", color: "#0a0a0a" }}
         >
           {p.status}
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 p-5">
+      <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
-          <p className="inline-flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
-            <span className="inline-block h-px w-5 bg-champagne" /> {p.developer}
+          <p className="inline-flex items-center gap-2 text-[8px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+            <span className="inline-block h-px w-4 bg-champagne" /> {p.developer}
           </p>
-          <h3 className="mt-2 font-display text-[24px] leading-[1.1] tracking-[-0.01em] text-foreground">
+          <h3 className="mt-1.5 font-display text-[18px] leading-[1.1] tracking-[-0.01em] text-foreground">
             {p.name}
           </h3>
-          <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+          <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
             {p.configuration}
           </p>
-          {p.tagline && (
-            <p className="mt-3 line-clamp-2 text-[12px] leading-relaxed text-foreground/75">{p.tagline}</p>
-          )}
         </div>
 
-        <div className="space-y-2">
-          <DetailRow icon={<MapPin className="h-3.5 w-3.5" />} label="Location" value={p.location} />
-          <DetailRow icon={<Ruler className="h-3.5 w-3.5" />} label="Size" value={p.size} />
-          <DetailRow icon={<CalendarDays className="h-3.5 w-3.5" />} label="Possession" value={p.possession} />
+        <div className="space-y-1.5">
+          <DetailRow icon={<MapPin className="h-3 w-3" />} label="Location" value={p.location} />
+          <DetailRow icon={<Ruler className="h-3 w-3" />} label="Size" value={p.size} />
+          <DetailRow icon={<CalendarDays className="h-3 w-3" />} label="Possession" value={p.possession} />
         </div>
 
         <button
           type="button"
           onClick={() => onPick(p.id)}
-          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-[11px] font-semibold tracking-[0.24em] text-foreground transition hover:border-champagne hover:bg-champagne hover:text-lux-black"
+          className="mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-[10px] font-semibold tracking-[0.24em] text-foreground transition hover:border-champagne hover:bg-champagne hover:text-lux-black"
         >
-          <Plus className="h-3.5 w-3.5" /> ADD TO COMPARE
+          <Plus className="h-3 w-3" /> ADD TO COMPARE
         </button>
       </div>
     </div>
