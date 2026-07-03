@@ -162,7 +162,6 @@ function Index() {
               <button
                 type="submit"
                 className="rounded-full bg-champagne px-7 py-3 text-[12px] font-semibold tracking-luxury text-white transition hover:brightness-110"
-                style={{ color: "var(--brand-ink)" === "var(--brand-ink)" ? "#fff" : undefined }}
               >
                 Explore
               </button>
