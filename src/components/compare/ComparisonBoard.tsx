@@ -337,10 +337,11 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
   const go = (dir: 1 | -1) => setIdx((i) => (i + dir + total) % total);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card sm:flex-row">
-      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:w-[46%]">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg sm:flex-row sm:min-h-[64vh]">
+      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:w-[55%]">
         <AnimatePresence initial={false} mode="sync">
           <motion.img
+
             key={images[idx]}
             src={images[idx]}
             alt={p.name}
