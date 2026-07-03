@@ -101,63 +101,93 @@ function Index() {
       <StickyCompareTray watchRef={heroRef} hideRef={collectionRef} onCompare={() => scrollToId("suite")} onAdd={() => scrollToId("collection")} />
 
 
-      {/* ============ HERO ============ */}
+      {/* ============ HERO — Luminous Cloud ============ */}
       <section
         id="hero"
         ref={heroRef}
-        className="relative overflow-hidden pt-36 pb-20 scroll-mt-28"
+        className="relative overflow-hidden pt-36 pb-24 scroll-mt-28"
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "var(--gradient-radial-gold)" }}
-        />
         <div className="container-lux relative">
+          <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="inline-flex items-center gap-2 rounded-full border border-champagne/25 bg-champagne/10 px-4 py-1.5 text-[10px] font-semibold tracking-[0.28em] text-champagne uppercase"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
+              Curated Residences · 2026
+            </motion.span>
 
-          <div className="mt-8 grid grid-cols-1 gap-10">
-            <div>
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.1 }}
-                className="font-display text-[44px] leading-[1.02] text-ivory sm:text-[68px] lg:text-[78px]"
-                style={{ maxWidth: "18ch" }}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.1 }}
+              className="mt-8 font-display text-[46px] font-extrabold leading-[1.02] tracking-tight text-foreground sm:text-[72px] lg:text-[86px]"
+            >
+              The New Standard in
+              <br />
+              <span className="gold-text">Prime Real Estate.</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.25 }}
+              className="mt-6 max-w-xl text-[16px] leading-relaxed text-muted-foreground sm:text-[18px]"
+            >
+              A curated, editorial comparison suite for ultra-luxury homes.
+              Compose up to three residences side by side and let the differences speak.
+            </motion.p>
+
+            {/* Pill search */}
+            <motion.form
+              onSubmit={(e) => {
+                e.preventDefault();
+                scrollToId("collection");
+              }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.4 }}
+              className="mt-12 flex w-full max-w-2xl items-center gap-2 rounded-full border border-border bg-secondary/70 p-1.5 backdrop-blur-md shadow-[0_18px_44px_-28px_rgba(15,23,42,0.25)]"
+            >
+              <div className="flex flex-1 items-center gap-3 px-5">
+                <Search className="h-4 w-4 text-champagne" />
+                <input
+                  type="text"
+                  placeholder="Location, lifestyle, or architect…"
+                  className="w-full bg-transparent py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:outline-none"
+                />
+              </div>
+              <button
+                type="submit"
+                className="rounded-full bg-champagne px-7 py-3 text-[12px] font-semibold tracking-luxury text-white transition hover:brightness-110"
+                style={{ color: "var(--brand-ink)" === "var(--brand-ink)" ? "#fff" : undefined }}
               >
-                India's Smartest Property{" "}
-                <span className="gold-text">Comparison</span> Platform.
+                Explore
+              </button>
+            </motion.form>
 
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.25 }}
-                className="mt-6 max-w-xl text-[16px] leading-relaxed text-muted-foreground"
+            {/* Secondary CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.55 }}
+              className="mt-8 flex flex-wrap items-center justify-center gap-3"
+            >
+              <button
+                onClick={() => scrollToId("suite")}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-[12px] font-medium text-foreground transition hover:border-champagne/50 hover:text-champagne"
               >
-                A curated, editorial comparison suite for ultra-luxury homes. Compose
-                up to three residences side by side and let the differences speak.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.4 }}
-                className="mt-10 flex flex-wrap items-center gap-3"
+                <GitCompareArrows className="h-3.5 w-3.5" /> Start a comparison
+              </button>
+              <button
+                onClick={() => scrollToId("collection")}
+                className="inline-flex items-center gap-2 rounded-full border border-transparent px-5 py-2.5 text-[12px] font-medium text-muted-foreground transition hover:text-foreground"
               >
-                <button
-                  onClick={() => scrollToId("suite")}
-                  className="inline-flex items-center gap-2 rounded-full bg-champagne px-6 py-3 text-[12px] tracking-luxury text-lux-black hover:bg-muted-gold transition-colors shadow-[0_18px_40px_-14px_rgba(200,164,93,0.55)]"
-                >
-                  <GitCompareArrows className="h-3.5 w-3.5" /> Start a comparison
-                </button>
-                <button
-                  onClick={() => scrollToId("collection")}
-                  className="inline-flex items-center gap-2 rounded-full gold-border px-6 py-3 text-[12px] tracking-luxury text-champagne hover:bg-champagne/10 transition-colors"
-                >
-                  <LayoutList className="h-3.5 w-3.5" /> Browse the collection
-                </button>
-              </motion.div>
-            </div>
-
+                <LayoutList className="h-3.5 w-3.5" /> Browse the collection
+              </button>
+            </motion.div>
           </div>
 
           {/* scroll cue */}
@@ -166,7 +196,7 @@ function Index() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 0.8 }}
-            className="mt-16 inline-flex items-center gap-2 text-[10px] tracking-luxury text-muted-foreground hover:text-champagne transition-colors"
+            className="mx-auto mt-20 flex items-center gap-2 text-[10px] tracking-luxury text-muted-foreground transition-colors hover:text-champagne"
           >
             <motion.span
               animate={{ y: [0, 4, 0] }}
