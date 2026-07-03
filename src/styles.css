@@ -893,7 +893,7 @@ body.suggested-popup-open .suggested-marquee-track {
 .ring-champagne\/45 { --tw-ring-color: color-mix(in oklab, var(--brand) 45%, transparent) !important; }
 
 .gold-text {
-  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 100%) !important;
+  background: linear-gradient(135deg, var(--brand-accent, var(--brand)) 0%, var(--brand-accent-soft, var(--brand-soft)) 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
