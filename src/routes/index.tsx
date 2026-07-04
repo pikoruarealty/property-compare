@@ -202,28 +202,6 @@ function Index() {
                 </button>
               </motion.div>
 
-              {/* Stats strip */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.7 }}
-                className="mt-12 grid max-w-lg grid-cols-3 divide-x divide-foreground/10 rounded-2xl border border-foreground/10 bg-card/60 py-5 backdrop-blur"
-              >
-                {[
-                  { n: String(properties.length), l: "Residences" },
-                  { n: "12", l: "Micro-markets" },
-                  { n: "3", l: "Side-by-side" },
-                ].map((s) => (
-                  <div key={s.l} className="px-4 text-center">
-                    <div className="font-display text-[26px] font-bold text-foreground tabular-nums">
-                      {s.n}
-                    </div>
-                    <div className="mt-1 text-[10px] tracking-luxury text-muted-foreground">
-                      {s.l}
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
             </div>
 
             {/* RIGHT — Featured residence composition */}
