@@ -123,8 +123,8 @@ function Index() {
       >
         {/* Ambient decor */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
-          <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(201,162,77,0.28),transparent_70%)] blur-3xl" />
-          <div className="absolute top-10 right-[-160px] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(59,111,214,0.18),transparent_70%)] blur-3xl" />
+          <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.04),transparent_70%)] blur-3xl" />
+          <div className="absolute top-10 right-[-160px] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.03),transparent_70%)] blur-3xl" />
         </div>
 
         <div className="container-lux relative z-10">
@@ -228,7 +228,7 @@ function Index() {
               <div
                 aria-hidden
                 className="absolute -inset-6 rounded-[36px] border border-foreground/10"
-                style={{ background: "linear-gradient(160deg, rgba(201,162,77,0.10), rgba(59,111,214,0.05))" }}
+                style={{ background: "linear-gradient(160deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01))" }}
               />
               <div
                 aria-hidden
