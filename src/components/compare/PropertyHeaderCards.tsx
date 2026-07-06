@@ -16,9 +16,9 @@ export function PropertyHeaderCards({ properties }: PropertyHeaderCardsProps) {
         {properties.map((p, i) => (
           <motion.div
             key={p.id}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: i * 0.08 }}
+            initial={{ opacity: 0, y: 28, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.9, delay: i * 0.18, ease: [0.16, 0.84, 0.24, 1] }}
             className="group overflow-hidden rounded-3xl gold-border"
           >
             <div className="relative aspect-[16/10] overflow-hidden sm:aspect-[16/7]">
