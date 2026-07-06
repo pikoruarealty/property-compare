@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, GitCompareArrows, LayoutList, Search } from "lucide-react";
 import { properties } from "@/data/properties";
 import { PropertyListRow } from "@/components/property/PropertyListRow";
@@ -46,7 +46,19 @@ function Index() {
   const comparisonRef = useRef<HTMLDivElement | null>(null);
   const collectionRef = useRef<HTMLElement | null>(null);
   const [activeChapter, setActiveChapter] = useState("hero");
+  const [heroIdx, setHeroIdx] = useState(0);
   const { quizAnswers } = useOnboarding();
+
+  useEffect(() => {
+    if (properties.length <= 1) return;
+    const id = window.setInterval(
+      () => setHeroIdx((i) => (i + 1) % properties.length),
+      4200,
+    );
+    return () => window.clearInterval(id);
+  }, []);
+
+  const heroProperty = properties[heroIdx] ?? properties[0];
 
   const { matched, others } = useMemo(() => {
     if (!quizAnswers) return { matched: [] as Property[], others: properties };
@@ -229,29 +241,45 @@ function Index() {
                 style={{ borderColor: "var(--brand-accent, var(--brand))" }}
               />
 
-              {/* Main image */}
+              {/* Main image — animated loop */}
               <div className="relative overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(10,31,77,0.45)]">
-                <div className="aspect-[4/5] w-full">
-                  <img
-                    src={properties[0]?.image}
-                    alt={properties[0]?.name ?? "Featured residence"}
-                    className="h-full w-full object-cover"
-                    loading="eager"
-                    decoding="async"
-                  />
-                </div>
-                <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-[10px] tracking-luxury text-white">
-                  <span className="rounded-full bg-black/40 px-3 py-1 backdrop-blur">Featured · {properties[0]?.location ?? "Reserve"}</span>
-                  <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">Vol. XII</span>
-                </div>
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-6 text-white">
-                  <div className="text-[10px] tracking-luxury opacity-80">Editor's choice</div>
-                  <div className="mt-1 font-display text-2xl font-bold leading-tight sm:text-[28px]">
-                    {properties[0]?.name}
-                  </div>
-                  <div className="mt-1 text-[12px] opacity-80">
-                    {properties[0]?.configuration}
-                  </div>
+                <div className="relative aspect-[4/5] w-full [perspective:1200px]">
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.div
+                      key={heroProperty.id}
+                      initial={{ x: "-70%", scale: 0.45, opacity: 0, rotateY: 25 }}
+                      animate={{ x: "0%", scale: 1, opacity: 1, rotateY: 0 }}
+                      exit={{ x: "70%", scale: 0.45, opacity: 0, rotateY: -25 }}
+                      transition={{
+                        x: { duration: 1.1, ease: [0.22, 1, 0.36, 1] },
+                        scale: { duration: 1.1, ease: [0.22, 1, 0.36, 1] },
+                        opacity: { duration: 0.6 },
+                        rotateY: { duration: 1.1, ease: [0.22, 1, 0.36, 1] },
+                      }}
+                      className="absolute inset-0"
+                    >
+                      <img
+                        src={heroProperty.image}
+                        alt={heroProperty.name}
+                        className="h-full w-full object-cover"
+                        loading="eager"
+                        decoding="async"
+                      />
+                      <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-[10px] tracking-luxury text-white">
+                        <span className="rounded-full bg-black/40 px-3 py-1 backdrop-blur">Featured · {heroProperty.location}</span>
+                        <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">Vol. XII</span>
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-6 text-white">
+                        <div className="text-[10px] tracking-luxury opacity-80">Editor's choice</div>
+                        <div className="mt-1 font-display text-2xl font-bold leading-tight sm:text-[28px]">
+                          {heroProperty.name}
+                        </div>
+                        <div className="mt-1 text-[12px] opacity-80">
+                          {heroProperty.configuration}
+                        </div>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
               </div>
 
