@@ -815,46 +815,45 @@ body.suggested-popup-open .suggested-marquee-track {
   --glass-border: rgba(10, 31, 77, 0.10);
 }
 
-/* ---------- Body backgrounds with soft gradients per palette ---------- */
+/* ---------- Body backgrounds: pure white base, faint palette-tinted radials ---------- */
 .light[data-palette="warm-sand"] body,
 .light:not([data-palette]) body {
   background:
-    radial-gradient(1200px 700px at 10% -10%, rgba(184, 137, 74, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 100% 0%, rgba(217, 185, 133, 0.14), transparent 55%),
+    radial-gradient(1200px 700px at 10% -10%, rgba(184, 137, 74, 0.05), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(217, 185, 133, 0.06), transparent 55%),
     #ffffff;
 }
 .light[data-palette="sage"] body {
   background:
-    radial-gradient(1200px 700px at 10% -10%, rgba(125, 155, 118, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 100% 0%, rgba(168, 192, 160, 0.16), transparent 55%),
-    #f5f0e8;
+    radial-gradient(1200px 700px at 10% -10%, rgba(125, 155, 118, 0.05), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(168, 192, 160, 0.06), transparent 55%),
+    #ffffff;
 }
 .light[data-palette="emerald"] body {
   background:
-    radial-gradient(1200px 700px at 10% -10%, rgba(13, 122, 95, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.16), transparent 55%),
-    #f7f3e6;
+    radial-gradient(1200px 700px at 10% -10%, rgba(13, 122, 95, 0.05), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.05), transparent 55%),
+    #ffffff;
 }
 .light[data-palette="ocean"] body {
   background:
-    radial-gradient(1200px 700px at 10% -10%, rgba(45, 138, 158, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.14), transparent 55%),
-    #f4f7fa;
+    radial-gradient(1200px 700px at 10% -10%, rgba(45, 138, 158, 0.05), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.05), transparent 55%),
+    #ffffff;
 }
 .light[data-palette="cloud"] body {
   background:
-    radial-gradient(1100px 700px at 8% -8%, rgba(201, 162, 77, 0.20), transparent 60%),
-    radial-gradient(900px 700px at 100% 0%, rgba(59, 111, 214, 0.14), transparent 55%),
-    radial-gradient(700px 500px at 50% 100%, rgba(10, 31, 77, 0.06), transparent 60%),
-    #f5f2ea;
+    radial-gradient(1100px 700px at 8% -8%, rgba(59, 111, 214, 0.05), transparent 60%),
+    radial-gradient(900px 700px at 100% 0%, rgba(10, 31, 77, 0.04), transparent 55%),
+    #ffffff;
 }
 .light[data-palette="cloud"] body::before {
   content: "";
   position: fixed; inset: 0; pointer-events: none; z-index: -1;
   background-image:
-    linear-gradient(rgba(10,31,77,0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10,31,77,0.045) 1px, transparent 1px);
-  background-size: 56px 56px;
+    linear-gradient(rgba(10,31,77,0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,31,77,0.028) 1px, transparent 1px);
+  background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 40%, transparent 100%);
 }
 .dark body {
