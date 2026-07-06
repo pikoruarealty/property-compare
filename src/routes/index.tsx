@@ -53,7 +53,7 @@ function Index() {
     if (properties.length <= 1) return;
     const id = window.setInterval(
       () => setHeroIdx((i) => (i + 1) % properties.length),
-      4200,
+      5600,
     );
     return () => window.clearInterval(id);
   }, []);
@@ -118,7 +118,7 @@ function Index() {
       <section
         id="hero"
         ref={heroRef}
-        className="relative overflow-hidden pt-28 pb-16 scroll-mt-28"
+        className="relative pt-28 pb-16 scroll-mt-28"
       >
         {/* Ambient decor */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
@@ -129,7 +129,7 @@ function Index() {
         <div className="container-lux relative z-10">
           <div className="grid grid-cols-1 items-start gap-14 lg:grid-cols-[1.05fr_0.95fr]">
             {/* LEFT — copy */}
-            <div className="relative">
+            <div className="relative z-20">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -222,7 +222,7 @@ function Index() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mx-auto w-full max-w-[540px] lg:mx-0 lg:justify-self-end"
+              className="relative z-0 mx-auto w-full max-w-[540px] lg:mx-0 lg:justify-self-end"
             >
               {/* Frame accent */}
               <div
@@ -241,22 +241,23 @@ function Index() {
                 style={{ borderColor: "var(--brand-accent, var(--brand))" }}
               />
 
-              {/* Main image — animated loop */}
-              <div className="relative overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(10,31,77,0.45)]">
-                <div className="relative aspect-[4/5] w-full [perspective:1200px]">
+              {/* Main image — animated loop across the page */}
+              <div className="relative rounded-[28px]">
+                <div className="relative aspect-[4/5] w-full [perspective:1400px]">
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.div
                       key={heroProperty.id}
-                      initial={{ x: "-70%", scale: 0.45, opacity: 0, rotateY: 25 }}
-                      animate={{ x: "0%", scale: 1, opacity: 1, rotateY: 0 }}
-                      exit={{ x: "70%", scale: 0.45, opacity: 0, rotateY: -25 }}
+                      initial={{ x: "-95vw", y: "38vh", scale: 0.28, opacity: 0, rotate: -8 }}
+                      animate={{ x: "0vw", y: "0vh", scale: 1, opacity: 1, rotate: 0 }}
+                      exit={{ x: "95vw", y: "-38vh", scale: 0.28, opacity: 0, rotate: 8 }}
                       transition={{
-                        x: { duration: 1.1, ease: [0.22, 1, 0.36, 1] },
-                        scale: { duration: 1.1, ease: [0.22, 1, 0.36, 1] },
-                        opacity: { duration: 0.6 },
-                        rotateY: { duration: 1.1, ease: [0.22, 1, 0.36, 1] },
+                        x: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
+                        y: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
+                        scale: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
+                        rotate: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
+                        opacity: { duration: 0.7 },
                       }}
-                      className="absolute inset-0"
+                      className="absolute inset-0 overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(10,31,77,0.45)]"
                     >
                       <img
                         src={heroProperty.image}
