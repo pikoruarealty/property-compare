@@ -248,15 +248,15 @@ function Index() {
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.div
                       key={heroProperty.id}
-                      initial={{ x: "-110vw", y: "45vh", scale: 0.15, opacity: 0, rotate: -540 }}
+                      initial={{ x: "-110vw", y: "42vh", scale: 0.18, opacity: 0, rotate: -480 }}
                       animate={{ x: "0vw", y: "0vh", scale: 1, opacity: 1, rotate: 0 }}
-                      exit={{ x: "110vw", y: "-45vh", scale: 0.15, opacity: 0, rotate: 540 }}
+                      exit={{ x: "110vw", y: "-42vh", scale: 0.18, opacity: 0, rotate: 480 }}
                       transition={{
-                        x: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
-                        y: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
-                        scale: { duration: 1.4, ease: [0.34, 1.3, 0.64, 1] },
-                        rotate: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
-                        opacity: { duration: 0.5, ease: "easeInOut" },
+                        x: { duration: 2.2, ease: [0.16, 0.84, 0.24, 1] },
+                        y: { duration: 2.2, ease: [0.22, 1, 0.36, 1] },
+                        scale: { duration: 2.2, ease: [0.34, 1.15, 0.5, 1] },
+                        rotate: { duration: 2.2, ease: [0.19, 1, 0.22, 1] },
+                        opacity: { duration: 0.9, ease: [0.4, 0, 0.2, 1] },
                       }}
 
 
