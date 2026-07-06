@@ -244,36 +244,64 @@ function Index() {
 
               {/* Main image — animated loop across the page */}
               <div className="relative rounded-[28px]">
-                <div className="relative aspect-[4/5] w-full [perspective:1400px]">
+                <motion.div
+                  animate={{ y: [0, -10, 0, 6, 0], rotate: [0, 0.6, 0, -0.6, 0] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative aspect-[4/5] w-full [perspective:1400px]"
+                >
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.div
                       key={heroProperty.id}
-                      initial={{ x: "-110vw", y: "42vh", scale: 0.18, opacity: 0, rotate: -480 }}
-                      animate={{ x: "0vw", y: "0vh", scale: 1, opacity: 1, rotate: 0 }}
-                      exit={{ x: "110vw", y: "-42vh", scale: 0.18, opacity: 0, rotate: 480 }}
+                      initial={{ x: "-110vw", y: "42vh", scale: 0.18, opacity: 0, rotate: -480, filter: "blur(14px)" }}
+                      animate={{ x: "0vw", y: "0vh", scale: 1, opacity: 1, rotate: 0, filter: "blur(0px)" }}
+                      exit={{ x: "110vw", y: "-42vh", scale: 0.18, opacity: 0, rotate: 480, filter: "blur(14px)" }}
                       transition={{
                         x: { duration: 2.2, ease: [0.16, 0.84, 0.24, 1] },
                         y: { duration: 2.2, ease: [0.22, 1, 0.36, 1] },
                         scale: { duration: 2.2, ease: [0.34, 1.15, 0.5, 1] },
                         rotate: { duration: 2.2, ease: [0.19, 1, 0.22, 1] },
                         opacity: { duration: 0.9, ease: [0.4, 0, 0.2, 1] },
+                        filter: { duration: 1.2, ease: [0.4, 0, 0.2, 1] },
                       }}
-
-
                       className="absolute inset-0 overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(10,31,77,0.45)]"
                     >
-                      <img
+                      <motion.img
                         src={heroProperty.image}
                         alt={heroProperty.name}
                         className="h-full w-full object-cover"
                         loading="eager"
                         decoding="async"
+                        initial={{ scale: 1.15 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 6, ease: [0.22, 1, 0.36, 1] }}
                       />
-                      <div className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-[10px] tracking-luxury text-white">
+                      {/* shimmer sweep */}
+                      <motion.div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0"
+                        initial={{ x: "-120%" }}
+                        animate={{ x: "120%" }}
+                        transition={{ duration: 1.8, delay: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                        style={{
+                          background:
+                            "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.22) 50%, transparent 70%)",
+                        }}
+                      />
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-[10px] tracking-luxury text-white"
+                      >
                         <span className="rounded-full bg-black/40 px-3 py-1 backdrop-blur">Featured · {heroProperty.location}</span>
                         <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">Vol. XII</span>
-                      </div>
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-6 text-white">
+                      </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-6 text-white"
+                      >
                         <div className="text-[10px] tracking-luxury opacity-80">Editor's choice</div>
                         <div className="mt-1 font-display text-2xl font-bold leading-tight sm:text-[28px]">
                           {heroProperty.name}
@@ -281,11 +309,12 @@ function Index() {
                         <div className="mt-1 text-[12px] opacity-80">
                           {heroProperty.configuration}
                         </div>
-                      </div>
+                      </motion.div>
                     </motion.div>
                   </AnimatePresence>
-                </div>
+                </motion.div>
               </div>
+
 
               {/* Floating comparison card */}
               <motion.div
