@@ -822,7 +822,7 @@ body.suggested-popup-open .suggested-marquee-track {
   background:
     radial-gradient(1200px 700px at 10% -10%, rgba(184, 137, 74, 0.10), transparent 60%),
     radial-gradient(900px 600px at 100% 0%, rgba(217, 185, 133, 0.14), transparent 55%),
-    #faf7f2;
+    #ffffff;
 }
 .light[data-palette="sage"] body {
   background:
