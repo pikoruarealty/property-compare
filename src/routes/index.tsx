@@ -129,7 +129,7 @@ function Index() {
         <div className="container-lux relative z-10">
           <div className="grid grid-cols-1 items-start gap-14 lg:grid-cols-[1.05fr_0.95fr]">
             {/* LEFT — copy */}
-            <div className="relative">
+            <div className="relative z-20">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
