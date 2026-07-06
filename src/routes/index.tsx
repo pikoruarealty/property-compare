@@ -53,7 +53,7 @@ function Index() {
     if (properties.length <= 1) return;
     const id = window.setInterval(
       () => setHeroIdx((i) => (i + 1) % properties.length),
-      1500,
+      2500,
     );
 
     return () => window.clearInterval(id);
