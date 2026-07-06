@@ -228,7 +228,7 @@ function Index() {
               <div
                 aria-hidden
                 className="absolute -inset-6 rounded-[36px] border border-foreground/10"
-                style={{ background: "linear-gradient(160deg, rgba(201,162,77,0.10), rgba(59,111,214,0.05))" }}
+                style={{ background: "linear-gradient(160deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01))" }}
               />
               <div
                 aria-hidden
