@@ -163,8 +163,7 @@ function Index() {
                 transition={{ duration: 0.9, delay: 0.25 }}
                 className="mt-7 max-w-lg text-[16px] leading-relaxed text-muted-foreground sm:text-[17px]"
               >
-                An editorial suite for comparing ultra-luxury homes. Compose up to three
-                residences side by side and let the differences speak for themselves.
+                {"\n"}
               </motion.p>
 
               {/* Pill search */}
