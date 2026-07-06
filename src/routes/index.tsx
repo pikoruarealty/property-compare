@@ -53,17 +53,6 @@ function Index() {
     if (properties.length <= 1) return;
     const id = window.setInterval(
       () => setHeroIdx((i) => (i + 1) % properties.length),
-      4200,
-      // hold ~4s at center, then swap (transit ~1.4s)
-    );
-    // note: setInterval fires at the given delay; adjust below
-  }, []);
-
-  // separate interval effect for clarity
-  useEffect(() => {
-    if (properties.length <= 1) return;
-    const id = window.setInterval(
-      () => {},
       5600,
     );
     return () => window.clearInterval(id);
