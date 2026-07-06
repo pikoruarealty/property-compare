@@ -11,6 +11,7 @@ import { PreferenceBanner } from "@/components/PreferenceBanner";
 import { PreferencePanel } from "@/components/PreferencePanel";
 import { SuggestedProperties } from "@/components/SuggestedProperties";
 import { SuggestedComparisons } from "@/components/SuggestedComparisons";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { matchesPreferences } from "@/lib/preference-filter";
 import type { Property } from "@/types/property";
