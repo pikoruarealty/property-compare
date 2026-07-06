@@ -53,8 +53,9 @@ function Index() {
     if (properties.length <= 1) return;
     const id = window.setInterval(
       () => setHeroIdx((i) => (i + 1) % properties.length),
-      5600,
+      9000,
     );
+
     return () => window.clearInterval(id);
   }, []);
 
@@ -247,16 +248,17 @@ function Index() {
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.div
                       key={heroProperty.id}
-                      initial={{ x: "-95vw", y: "38vh", scale: 0.28, opacity: 0, rotate: -8 }}
+                      initial={{ x: "-105vw", y: "42vh", scale: 0.22, opacity: 0, rotate: -10 }}
                       animate={{ x: "0vw", y: "0vh", scale: 1, opacity: 1, rotate: 0 }}
-                      exit={{ x: "95vw", y: "-38vh", scale: 0.28, opacity: 0, rotate: 8 }}
+                      exit={{ x: "105vw", y: "-42vh", scale: 0.22, opacity: 0, rotate: 10 }}
                       transition={{
-                        x: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
-                        y: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
-                        scale: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
-                        rotate: { duration: 1.4, ease: [0.22, 1, 0.36, 1] },
-                        opacity: { duration: 0.7 },
+                        x: { duration: 2.6, ease: [0.22, 1, 0.36, 1] },
+                        y: { duration: 2.6, ease: [0.22, 1, 0.36, 1] },
+                        scale: { duration: 2.6, ease: [0.22, 1, 0.36, 1] },
+                        rotate: { duration: 2.6, ease: [0.22, 1, 0.36, 1] },
+                        opacity: { duration: 1.2, ease: "easeInOut" },
                       }}
+
                       className="absolute inset-0 overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(10,31,77,0.45)]"
                     >
                       <img
