@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, GitCompareArrows, LayoutList, Search } from "lucide-react";
 import { properties } from "@/data/properties";
 import { PropertyListRow } from "@/components/property/PropertyListRow";
