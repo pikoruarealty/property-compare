@@ -34,12 +34,18 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
   useEffect(() => {
     const el = watchRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setPastHero(!entry.isIntersecting),
-      { threshold: 0, rootMargin: "-68px 0px 0px 0px" }, // 68px = navbar height
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const check = () => {
+      const rect = el.getBoundingClientRect();
+      // Show tray only once the watched section has fully scrolled above the navbar.
+      setPastHero(rect.bottom <= 68);
+    };
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
   }, [watchRef]);
 
   useEffect(() => {
