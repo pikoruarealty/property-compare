@@ -318,13 +318,25 @@ function Index() {
       <section
         id="suite"
         ref={comparisonRef as React.RefObject<HTMLDivElement>}
-        className="relative scroll-mt-28 py-12 sm:py-16"
+        className="relative scroll-mt-28"
       >
-        <div className="container-lux">
-        </div>
-        <div className="mt-8">
+        <ContainerScroll
+          titleComponent={
+            <>
+              <div className="text-[10px] font-semibold tracking-[0.32em] uppercase text-champagne">
+                COMPARISON SUITE
+              </div>
+              <h2 className="mt-4 font-display text-[36px] font-bold leading-tight text-ivory sm:text-[52px]">
+                Compose your <span className="gold-text">comparison</span>
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-[14px] text-muted-foreground sm:text-[15px]">
+                Select 2 to 3 residences. Each becomes a column. Pikorua highlights what distinguishes them.
+              </p>
+            </>
+          }
+        >
           <ComparisonBoard />
-        </div>
+        </ContainerScroll>
       </section>
 
       {/* ============ SUGGESTED (prefs-driven marquee) ============ */}
