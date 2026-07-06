@@ -46,7 +46,19 @@ function Index() {
   const comparisonRef = useRef<HTMLDivElement | null>(null);
   const collectionRef = useRef<HTMLElement | null>(null);
   const [activeChapter, setActiveChapter] = useState("hero");
+  const [heroIdx, setHeroIdx] = useState(0);
   const { quizAnswers } = useOnboarding();
+
+  useEffect(() => {
+    if (properties.length <= 1) return;
+    const id = window.setInterval(
+      () => setHeroIdx((i) => (i + 1) % properties.length),
+      4200,
+    );
+    return () => window.clearInterval(id);
+  }, []);
+
+  const heroProperty = properties[heroIdx] ?? properties[0];
 
   const { matched, others } = useMemo(() => {
     if (!quizAnswers) return { matched: [] as Property[], others: properties };
