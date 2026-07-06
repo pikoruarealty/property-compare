@@ -641,20 +641,21 @@ body.suggested-popup-open .suggested-marquee-track {
 }
 .light[data-palette="warm-sand"],
 .light:not([data-palette]) {
-  --background: #faf7f2;
+  --background: #ffffff;
   --foreground: #2c1f10;
   --card: #ffffff;
   --card-foreground: #2c1f10;
   --popover: #ffffff;
   --popover-foreground: #2c1f10;
-  --secondary: #efe6d6;
-  --muted: #f2ead9;
+  --secondary: #f5f0e6;
+  --muted: #f7f2e8;
   --muted-foreground: #6b533a;
-  --border: rgba(74, 50, 24, 0.14);
-  --input: rgba(74, 50, 24, 0.22);
+  --border: rgba(74, 50, 24, 0.12);
+  --input: rgba(74, 50, 24, 0.2);
   --ring: #b8894a;
-  --glass-bg: rgba(255, 252, 245, 0.92);
-  --glass-border: rgba(74, 50, 24, 0.14);
+  --glass-bg: rgba(255, 255, 255, 0.94);
+  --glass-border: rgba(74, 50, 24, 0.12);
+
 }
 
 /* ---------- Sage & Cream ---------- */
@@ -821,7 +822,7 @@ body.suggested-popup-open .suggested-marquee-track {
   background:
     radial-gradient(1200px 700px at 10% -10%, rgba(184, 137, 74, 0.10), transparent 60%),
     radial-gradient(900px 600px at 100% 0%, rgba(217, 185, 133, 0.14), transparent 55%),
-    #faf7f2;
+    #ffffff;
 }
 .light[data-palette="sage"] body {
   background:
