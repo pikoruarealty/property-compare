@@ -297,7 +297,7 @@ function SlotPill({
 
   return (
     <div
-      className={`${base} group border-[color-mix(in_oklab,var(--brand)_30%,transparent)] bg-secondary text-foreground transition hover:border-[var(--brand)]`}
+      className={`${base} group border-[color-mix(in_oklab,var(--brand)_60%,transparent)] bg-soft-black/60 text-ivory transition hover:border-[var(--brand)]`}
     >
       <img
         src={slot.image}
@@ -314,7 +314,7 @@ function SlotPill({
         type="button"
         onClick={onRemove}
         aria-label={`Remove ${slot.name} from comparison`}
-        className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-foreground/20 text-foreground/70 transition hover:border-foreground hover:text-foreground hover:bg-foreground/10"
+        className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-champagne/30 text-ivory/70 transition hover:border-champagne hover:text-champagne hover:bg-champagne/10"
       >
         <X className="h-3.5 w-3.5" />
       </button>
