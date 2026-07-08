@@ -66,7 +66,7 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
   }, [hideRef]);
 
   const visible = pastHero && !reachedHide;
-
+  console.log("[TrayDebug] render visible:", visible, "pastHero:", pastHero, "reachedHide:", reachedHide, "selected:", selected);
 
   const items = selected
     .map((id) => getPropertyById(id))
