@@ -836,9 +836,9 @@ body.suggested-popup-open .suggested-marquee-track {
 }
 .light[data-palette="ocean"] body {
   background:
-    radial-gradient(1200px 700px at 10% -10%, rgba(45, 138, 158, 0.05), transparent 60%),
-    radial-gradient(900px 600px at 100% 0%, rgba(201, 168, 76, 0.05), transparent 55%),
-    #ffffff;
+    radial-gradient(1200px 700px at 10% -10%, rgba(71, 85, 105, 0.04), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(224, 242, 254, 0.5), transparent 55%),
+    #f8fafc;
 }
 .light[data-palette="cloud"] body {
   background:
