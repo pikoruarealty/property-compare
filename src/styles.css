@@ -141,10 +141,9 @@
 
 .light body {
   background:
-    linear-gradient(rgba(8, 8, 8, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(8, 8, 8, 0.035) 1px, transparent 1px),
-    #ffffff;
-  background-size: 44px 44px;
+    radial-gradient(1200px 700px at 10% -10%, rgba(71, 85, 105, 0.04), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(224, 242, 254, 0.5), transparent 55%),
+    #f8fafc;
 }
 
 .light header,
