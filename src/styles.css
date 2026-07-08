@@ -734,43 +734,43 @@ body.suggested-popup-open .suggested-marquee-track {
   --glass-border: rgba(6, 78, 59, 0.14);
 }
 
-/* ---------- Ocean & Champagne ---------- */
+/* ---------- Ocean Mist & Slate ---------- */
 [data-palette="ocean"] {
-  --brand: #2d8a9e;
-  --brand-soft: #7cc0ce;
-  --brand-ink: #0c2340;
+  --brand: #475569;
+  --brand-soft: #94a3b8;
+  --brand-ink: #f8fafc;
 }
 .dark[data-palette="ocean"] {
-  --background: #0a141a;
-  --foreground: #eaf3f7;
-  --card: #12212b;
-  --card-foreground: #eaf3f7;
-  --popover: #12212b;
-  --popover-foreground: #eaf3f7;
-  --secondary: #17303c;
-  --muted: #101e26;
-  --muted-foreground: #a9c4cf;
-  --border: rgba(124, 192, 206, 0.20);
-  --input: rgba(124, 192, 206, 0.24);
-  --ring: #7cc0ce;
-  --glass-bg: rgba(18, 33, 43, 0.82);
-  --glass-border: rgba(124, 192, 206, 0.20);
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  --secondary: #334155;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --border: rgba(148, 163, 184, 0.20);
+  --input: rgba(148, 163, 184, 0.24);
+  --ring: #94a3b8;
+  --glass-bg: rgba(30, 41, 59, 0.82);
+  --glass-border: rgba(148, 163, 184, 0.20);
 }
 .light[data-palette="ocean"] {
-  --background: #f4f7fa;
-  --foreground: #0c2340;
+  --background: #f8fafc;
+  --foreground: #334155;
   --card: #ffffff;
-  --card-foreground: #0c2340;
+  --card-foreground: #334155;
   --popover: #ffffff;
-  --popover-foreground: #0c2340;
-  --secondary: #dfeaf2;
-  --muted: #e6eef5;
-  --muted-foreground: #3f5773;
-  --border: rgba(12, 35, 64, 0.14);
-  --input: rgba(12, 35, 64, 0.22);
-  --ring: #2d8a9e;
-  --glass-bg: rgba(252, 253, 255, 0.92);
-  --glass-border: rgba(12, 35, 64, 0.14);
+  --popover-foreground: #334155;
+  --secondary: #e0f2fe;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: rgba(71, 85, 105, 0.14);
+  --input: rgba(71, 85, 105, 0.22);
+  --ring: #475569;
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(71, 85, 105, 0.12);
 }
 
 /* ---------- Cloud White — editorial navy + amber accent ---------- */
