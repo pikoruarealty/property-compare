@@ -356,7 +356,7 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
         </AnimatePresence>
         <span
           className="absolute left-2.5 top-2.5 rounded-full px-2 py-0.5 text-[8px] font-semibold tracking-luxury backdrop-blur-md"
-          style={{ background: "rgba(255,255,255,0.92)", color: "#0a0a0a" }}
+          style={{ background: "var(--card)", color: "var(--foreground)" }}
         >
           {p.status}
         </span>
@@ -366,7 +366,7 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
               type="button"
               onClick={() => go(-1)}
               aria-label="Previous image"
-              className="absolute left-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white transition hover:bg-black/80"
+              className="absolute left-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full bg-foreground/55 text-background transition hover:bg-foreground/80"
             >
               <ChevronLeft className="h-3.5 w-3.5" />
             </button>
@@ -374,7 +374,7 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
               type="button"
               onClick={() => go(1)}
               aria-label="Next image"
-              className="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white transition hover:bg-black/80"
+              className="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full bg-foreground/55 text-background transition hover:bg-foreground/80"
             >
               <ChevronRight className="h-3.5 w-3.5" />
             </button>
@@ -386,7 +386,7 @@ function PickerCard({ property: p, onPick }: { property: Property; onPick: (id: 
                   onClick={() => setIdx(i)}
                   aria-label={`Image ${i + 1}`}
                   className={`h-1 rounded-full transition-all ${
-                    i === idx ? "w-4 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"
+                    i === idx ? "w-4 bg-background" : "w-1.5 bg-background/50 hover:bg-background/80"
                   }`}
                 />
               ))}
