@@ -80,17 +80,16 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
         <motion.div
           key="sticky-compare-tray"
           aria-label="Comparison tray"
-          initial={{ y: "-100%" }}
+          initial={{ y: "100%" }}
           animate={{ y: 0 }}
-          exit={{ y: "-100%" }}
+          exit={{ y: "100%" }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed left-0 right-0 z-50 border-b border-[color-mix(in_oklab,var(--brand)_30%,transparent)] bg-[color-mix(in_oklab,var(--bg)_92%,transparent)] backdrop-blur-md [transform:translateZ(0)]"
-          style={{ top: 68, willChange: "transform" }}
-
+          className="fixed left-0 right-0 z-50 border-t border-[color-mix(in_oklab,var(--brand)_18%,transparent)] bg-[color-mix(in_oklab,var(--background)_94%,transparent)] shadow-[0_-20px_60px_-24px_rgba(8,8,8,0.12)] backdrop-blur-md [transform:translateZ(0)]"
+          style={{ bottom: 0, willChange: "transform" }}
         >
-          <div className="container-lux py-4">
+          <div className="container-lux py-3 sm:py-4">
             <div className="flex items-center justify-between gap-4 mb-3">
-              <p className="whitespace-nowrap text-[10px] uppercase tracking-luxury text-champagne">
+              <p className="whitespace-nowrap text-[10px] uppercase tracking-luxury text-muted-foreground">
                 Comparison Suite · {items.length} / {MAX_COMPARE}
               </p>
               <button
@@ -101,7 +100,7 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
                 className={[
                   "whitespace-nowrap rounded-full border px-5 py-2 text-[11px] uppercase tracking-luxury transition",
                   ready
-                    ? "border-[var(--brand)] text-[var(--brand)] hover:bg-[color-mix(in_oklab,var(--brand)_12%,transparent)]"
+                    ? "border-[var(--brand)] bg-[var(--brand)] text-[var(--primary-foreground)] hover:bg-[color-mix(in_oklab,var(--brand)_88%,black)]"
                     : "cursor-not-allowed border-[color-mix(in_oklab,var(--brand)_35%,transparent)] text-[color-mix(in_oklab,var(--brand)_45%,transparent)] opacity-50",
                 ].join(" ")}
               >
@@ -190,12 +189,12 @@ function SlotPill({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className={`${base} border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)] text-ivory/60 hover:text-ivory hover:border-[var(--brand)] hover:bg-[color-mix(in_oklab,var(--brand)_8%,transparent)] transition cursor-pointer text-left`}
+          className={`${base} border-dashed border-[color-mix(in_oklab,var(--brand)_35%,transparent)] text-muted-foreground hover:text-foreground hover:border-[var(--brand)] hover:bg-[color-mix(in_oklab,var(--brand)_6%,transparent)] transition cursor-pointer text-left`}
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-label="Add a property to comparison"
         >
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)]">
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-dashed border-[color-mix(in_oklab,var(--brand)_35%,transparent)]">
             <Plus className="h-4 w-4" strokeWidth={1.5} />
           </div>
           <span className="truncate text-[12px] uppercase tracking-luxury">
@@ -206,11 +205,11 @@ function SlotPill({
         <AnimatePresence>
           {open && (
             <motion.div
-              initial={{ opacity: 0, y: -6 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
+              exit={{ opacity: 0, y: 6 }}
               transition={{ duration: 0.15 }}
-              className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 rounded-2xl border border-[color-mix(in_oklab,var(--brand)_35%,transparent)] bg-[var(--glass-bg)] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.55)] backdrop-blur-xl"
+              className="absolute left-0 right-0 bottom-[calc(100%+8px)] z-50 rounded-2xl border border-[color-mix(in_oklab,var(--brand)_22%,transparent)] bg-[var(--glass-bg)] shadow-[0_-20px_60px_-20px_rgba(0,0,0,0.22)] backdrop-blur-xl"
               role="listbox"
             >
               {added ? (
@@ -298,7 +297,7 @@ function SlotPill({
 
   return (
     <div
-      className={`${base} group border-[color-mix(in_oklab,var(--brand)_60%,transparent)] bg-soft-black/60 text-ivory transition hover:border-[var(--brand)]`}
+      className={`${base} group border-[color-mix(in_oklab,var(--brand)_30%,transparent)] bg-secondary text-foreground transition hover:border-[var(--brand)]`}
     >
       <img
         src={slot.image}
@@ -315,7 +314,7 @@ function SlotPill({
         type="button"
         onClick={onRemove}
         aria-label={`Remove ${slot.name} from comparison`}
-        className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-champagne/30 text-ivory/70 transition hover:border-champagne hover:text-champagne hover:bg-champagne/10"
+        className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-foreground/20 text-foreground/70 transition hover:border-foreground hover:text-foreground hover:bg-foreground/10"
       >
         <X className="h-3.5 w-3.5" />
       </button>
