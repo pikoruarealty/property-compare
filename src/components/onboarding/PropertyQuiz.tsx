@@ -85,12 +85,12 @@ export function PropertyQuiz({
   return (
     <div className="flex h-full flex-col">
       <div className="mb-6">
-        <p className="text-[11px] tracking-[0.22em] text-[#C8A45D] uppercase">
+        <p className="text-[11px] tracking-[0.22em] text-[var(--brand)] uppercase">
           Question {q} of 3
         </p>
-        <div className="mt-2 h-px w-full overflow-hidden bg-white/10">
+        <div className="mt-2 h-px w-full overflow-hidden bg-border">
           <motion.div
-            className="h-full bg-[#C8A45D]"
+            className="h-full bg-[var(--brand)]"
             initial={false}
             animate={{ width: `${(q / 3) * 100}%` }}
             transition={transition}
