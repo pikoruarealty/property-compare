@@ -608,9 +608,9 @@ body.suggested-popup-open .suggested-marquee-track {
    ========================================================= */
 
 :root {
-  --brand: #b8894a;
-  --brand-soft: #d9b985;
-  --brand-ink: #4a3218;
+  --brand: #475569;
+  --brand-soft: #94a3b8;
+  --brand-ink: #f8fafc;
 }
 
 /* ---------- Warm Sand & Clay (default) ---------- */
