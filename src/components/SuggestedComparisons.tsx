@@ -284,9 +284,9 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
           style={{
             width: "2px",
             background:
-              "linear-gradient(to bottom, transparent 0%, var(--champagne, #c8a45d) 15%, var(--champagne, #c8a45d) 85%, transparent 100%)",
+              "linear-gradient(to bottom, transparent 0%, var(--brand) 15%, var(--brand) 85%, transparent 100%)",
             boxShadow:
-              "0 0 12px color-mix(in oklab, var(--champagne, #c8a45d) 55%, transparent)",
+              "0 0 12px color-mix(in oklab, var(--brand) 55%, transparent)",
             opacity: 0.9,
           }}
         />
