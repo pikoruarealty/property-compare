@@ -317,7 +317,7 @@ function Index() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, delay: 0.55 }}
-                className="absolute -right-8 bottom-10 z-30 hidden w-[260px] rounded-2xl border border-foreground/10 bg-card/95 p-4 shadow-[0_30px_60px_-30px_rgba(10,31,77,0.25)] backdrop-blur sm:block"
+                className="absolute -right-8 bottom-10 z-30 hidden w-[260px] rounded-2xl border border-foreground/10 bg-card/95 p-4 shadow-[var(--shadow-deep)] backdrop-blur sm:block"
               >
                 <div className="flex items-center gap-2 text-[10px] tracking-luxury text-muted-foreground">
                   <span
