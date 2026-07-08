@@ -18,18 +18,18 @@ export function WelcomeCard() {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <Sparkles className="h-8 w-8 text-[#C8A45D]" />
+        <Sparkles className="h-8 w-8 text-[var(--brand)]" />
       </motion.div>
 
-      <h2 className="mt-6 font-display text-4xl text-[#F7F3EA]">Welcome, {firstName}.</h2>
+      <h2 className="mt-6 font-display text-4xl text-foreground">Welcome, {firstName}.</h2>
       <p
-        className="mt-3 font-display text-2xl text-[#C8A45D]"
+        className="mt-3 font-display text-2xl text-[var(--brand)]"
         style={{ fontStyle: "normal" }}
       >
         Your private collection awaits.
       </p>
 
-      <p className="mt-6 max-w-[380px] text-[15px] leading-relaxed text-[#F7F3EA]/65">
+      <p className="mt-6 max-w-[380px] text-[15px] leading-relaxed text-muted-foreground">
         We've prepared 23 curated residences across Ahmedabad's finest addresses — each one
         selected with the eye of a collector.
       </p>
@@ -41,14 +41,14 @@ export function WelcomeCard() {
         className="mt-10 h-px max-w-[380px]"
         style={{
           background:
-            "linear-gradient(90deg, transparent 0%, #C8A45D 50%, transparent 100%)",
+            "linear-gradient(90deg, transparent 0%, var(--brand) 50%, transparent 100%)",
         }}
       />
 
       <div className="mt-10 w-full max-w-[320px]">
         <button
           onClick={() => setPhase("site-preview")}
-          className="flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-[#C8A45D] to-[#A8884C] text-sm font-medium tracking-wide text-[#121416] transition-opacity hover:opacity-95"
+          className="flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-[var(--brand)] to-[var(--brand-soft)] text-sm font-medium tracking-wide text-[var(--brand-ink)] transition-opacity hover:opacity-95"
         >
           Explore the collection →
         </button>

@@ -56,7 +56,7 @@ export function OnboardingOverlay() {
           transition={{ duration: 0.5 }}
           className="fixed inset-0 z-[100] flex items-stretch justify-center overflow-y-auto sm:items-center"
           style={{
-            backgroundColor: "rgba(10, 10, 12, 0.18)",
+            backgroundColor: "rgba(71, 85, 105, 0.18)",
             backdropFilter: "blur(2px)",
           }}
           aria-modal="true"
@@ -71,8 +71,8 @@ export function OnboardingOverlay() {
             style={{
               minHeight: "min(100dvh, 640px)",
               borderRadius: 24,
-              border: "1px solid rgba(200,164,93,0.2)",
-              backgroundColor: "#1C1E22",
+              border: "1px solid var(--glass-border)",
+              backgroundColor: "var(--card)",
             }}
           >
             <div aria-hidden className="gemini-bg pointer-events-none absolute inset-0 overflow-hidden" style={{ borderRadius: 24, zIndex: 0 }}>
@@ -91,9 +91,9 @@ export function OnboardingOverlay() {
                 aria-label="Close"
                 className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full transition-colors"
                 style={{
-                  border: "1px solid rgba(200,164,93,0.3)",
-                  backgroundColor: "rgba(28,30,34,0.9)",
-                  color: "#C8A45D",
+                  border: "1px solid var(--glass-border)",
+                  backgroundColor: "var(--glass-bg)",
+                  color: "var(--foreground)",
                 }}
               >
                 <X className="h-4 w-4" />

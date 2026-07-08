@@ -257,7 +257,7 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
+                "linear-gradient(to top, color-mix(in oklab, var(--foreground) 30%, transparent) 0%, transparent 45%)",
             }}
           />
         </div>
@@ -273,7 +273,7 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
+                "linear-gradient(to top, color-mix(in oklab, var(--foreground) 30%, transparent) 0%, transparent 45%)",
             }}
           />
         </div>
@@ -284,9 +284,9 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
           style={{
             width: "2px",
             background:
-              "linear-gradient(to bottom, transparent 0%, var(--champagne, #c8a45d) 15%, var(--champagne, #c8a45d) 85%, transparent 100%)",
+              "linear-gradient(to bottom, transparent 0%, var(--brand) 15%, var(--brand) 85%, transparent 100%)",
             boxShadow:
-              "0 0 12px color-mix(in oklab, var(--champagne, #c8a45d) 55%, transparent)",
+              "0 0 12px color-mix(in oklab, var(--brand) 55%, transparent)",
             opacity: 0.9,
           }}
         />
@@ -295,13 +295,13 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
       <div className="relative grid grid-cols-2 gap-3 p-4 pt-7">
         <PropertyBrief property={a} />
 
-        {/* Solid champagne divider spanning the brief row */}
+        {/* Solid brand divider spanning the brief row */}
         <div
           className="pointer-events-none absolute top-0 bottom-0 left-1/2 -translate-x-1/2"
           style={{
             width: "2px",
             background:
-              "linear-gradient(to bottom, transparent 0%, var(--champagne, #c8a45d) 20%, var(--champagne, #c8a45d) 80%, transparent 100%)",
+              "linear-gradient(to bottom, transparent 0%, var(--brand) 20%, var(--brand) 80%, transparent 100%)",
             opacity: 0.7,
           }}
         />

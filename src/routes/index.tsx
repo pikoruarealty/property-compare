@@ -123,8 +123,8 @@ function Index() {
       >
         {/* Ambient decor */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
-          <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.04),transparent_70%)] blur-3xl" />
-          <div className="absolute top-10 right-[-160px] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.03),transparent_70%)] blur-3xl" />
+          <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(71,85,105,0.04),transparent_70%)] blur-3xl" />
+          <div className="absolute top-10 right-[-160px] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(224,242,254,0.45),transparent_70%)] blur-3xl" />
         </div>
 
         <div className="container-lux relative z-10">
@@ -175,7 +175,7 @@ function Index() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.4 }}
-                className="mt-9 flex w-full max-w-xl items-center gap-2 rounded-full border border-foreground/10 bg-card/85 p-1.5 backdrop-blur-md shadow-[0_24px_60px_-34px_rgba(10,31,77,0.4)]"
+                className="mt-9 flex w-full max-w-xl items-center gap-2 rounded-full border border-foreground/10 bg-card/85 p-1.5 backdrop-blur-md shadow-[var(--shadow-deep)]"
               >
                 <div className="flex flex-1 items-center gap-3 px-5">
                   <Search className="h-4 w-4" style={{ color: "var(--brand-accent, var(--brand))" }} />
@@ -187,7 +187,7 @@ function Index() {
                 </div>
                 <button
                   type="submit"
-                  className="rounded-full px-7 py-3 text-[12px] font-semibold tracking-luxury text-white transition hover:brightness-110"
+                  className="rounded-full px-7 py-3 text-[12px] font-semibold tracking-luxury text-[var(--brand-ink)] transition hover:brightness-110"
                   style={{ background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 100%)" }}
                 >
                   Explore
@@ -228,7 +228,7 @@ function Index() {
               <div
                 aria-hidden
                 className="absolute -inset-6 rounded-[36px] border border-foreground/10"
-                style={{ background: "linear-gradient(160deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01))" }}
+                style={{ background: "linear-gradient(160deg, rgba(71,85,105,0.03), rgba(71,85,105,0.01))" }}
               />
               <div
                 aria-hidden
@@ -259,7 +259,7 @@ function Index() {
                         opacity: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
                         filter: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
                       }}
-                      className="absolute inset-0 overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(10,31,77,0.45)]"
+                      className="absolute inset-0 overflow-hidden rounded-[28px] shadow-[var(--shadow-deep)]"
                     >
                       <motion.img
                         src={heroProperty.image}
@@ -287,16 +287,16 @@ function Index() {
                         initial={{ opacity: 0, y: -8 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-[10px] tracking-luxury text-white"
+                        className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-[10px] tracking-luxury text-background"
                       >
-                        <span className="rounded-full bg-black/40 px-3 py-1 backdrop-blur">Featured · {heroProperty.location}</span>
-                        <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">Vol. XII</span>
+                        <span className="rounded-full bg-foreground/40 px-3 py-1 backdrop-blur">Featured · {heroProperty.location}</span>
+                        <span className="rounded-full bg-background/20 px-3 py-1 backdrop-blur">Vol. XII</span>
                       </motion.div>
                       <motion.div
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-6 text-white"
+                        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/70 via-foreground/25 to-transparent p-6 text-background"
                       >
                         <div className="text-[10px] tracking-luxury opacity-80">Editor's choice</div>
                         <div className="mt-1 font-display text-2xl font-bold leading-tight sm:text-[28px]">
@@ -317,7 +317,7 @@ function Index() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, delay: 0.55 }}
-                className="absolute -right-8 bottom-10 z-30 hidden w-[260px] rounded-2xl border border-foreground/10 bg-card/95 p-4 shadow-[0_30px_60px_-30px_rgba(10,31,77,0.25)] backdrop-blur sm:block"
+                className="absolute -right-8 bottom-10 z-30 hidden w-[260px] rounded-2xl border border-foreground/10 bg-card/95 p-4 shadow-[var(--shadow-deep)] backdrop-blur sm:block"
               >
                 <div className="flex items-center gap-2 text-[10px] tracking-luxury text-muted-foreground">
                   <span

@@ -52,7 +52,7 @@ export const ContainerScroll = ({
           <ScrollHeader translate={translate} titleComponent={titleComponent} />
         )}
         {freeze ? (
-          <div className="mx-auto mt-4 h-auto w-full max-w-6xl rounded-[30px] border border-black/10 bg-white p-2 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.25)] md:p-4">
+          <div className="mx-auto mt-4 h-auto w-full max-w-6xl rounded-[30px] border border-foreground/10 bg-card p-2 shadow-[var(--shadow-deep)] md:p-4">
             <div className="h-full w-full overflow-hidden rounded-2xl bg-transparent">
               {children}
             </div>
@@ -93,10 +93,9 @@ export const ScrollCard = ({
     style={{
       rotateX: rotate,
       scale,
-      boxShadow:
-        "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
+      boxShadow: "var(--shadow-deep)",
     }}
-    className="mx-auto -mt-6 h-auto w-full max-w-6xl rounded-[30px] border border-black/10 bg-white p-2 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.25)] md:p-4"
+    className="mx-auto -mt-6 h-auto w-full max-w-6xl rounded-[30px] border border-foreground/10 bg-card p-2 shadow-[var(--shadow-deep)] md:p-4"
   >
     <div className="h-full w-full overflow-hidden rounded-2xl bg-transparent">{children}</div>
   </motion.div>

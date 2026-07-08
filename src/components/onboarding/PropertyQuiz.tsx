@@ -85,12 +85,12 @@ export function PropertyQuiz({
   return (
     <div className="flex h-full flex-col">
       <div className="mb-6">
-        <p className="text-[11px] tracking-[0.22em] text-[#C8A45D] uppercase">
+        <p className="text-[11px] tracking-[0.22em] text-[var(--brand)] uppercase">
           Question {q} of 3
         </p>
-        <div className="mt-2 h-px w-full overflow-hidden bg-white/10">
+        <div className="mt-2 h-px w-full overflow-hidden bg-border">
           <motion.div
-            className="h-full bg-[#C8A45D]"
+            className="h-full bg-[var(--brand)]"
             initial={false}
             animate={{ width: `${(q / 3) * 100}%` }}
             transition={transition}
@@ -109,10 +109,10 @@ export function PropertyQuiz({
               transition={transition}
               className="flex flex-1 flex-col"
             >
-              <h3 className="font-display text-[28px] leading-tight text-[#F7F3EA]">
+              <h3 className="font-display text-[28px] leading-tight text-foreground">
                 What kind of residence speaks to you?
               </h3>
-              <p className="mt-2 text-sm text-[#F7F3EA]/55">Select all that interest you.</p>
+              <p className="mt-2 text-sm text-muted-foreground">Select all that interest you.</p>
 
               <div className="mt-6 grid grid-cols-3 gap-3">
                 {PROPERTY_TYPES.map(({ label, Icon }, i) => {
@@ -123,17 +123,17 @@ export function PropertyQuiz({
                       onClick={() => toggleType(label)}
                       className={`relative rounded-[20px] border p-5 text-center transition-all hover:scale-[1.03] ${
                         selected
-                          ? "border-[#C8A45D] bg-[#C8A45D]/8"
-                          : "border-white/10 bg-[#1C1E22] hover:border-white/25"
+                          ? "border-[var(--brand)] bg-[var(--brand)]/8"
+                          : "border-border bg-muted hover:border-foreground/25"
                       }`}
                       style={{
-                        ...(selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}),
+                        ...(selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}),
                         ...(i === 3 ? { gridColumnStart: 1 } : {}),
                       }}
                     >
                       {selected && <Checkmark />}
-                      <Icon className="mx-auto h-8 w-8 text-[#C8A45D]" />
-                      <div className="mt-3 text-sm text-[#F7F3EA]">{label}</div>
+                      <Icon className="mx-auto h-8 w-8 text-[var(--brand)]" />
+                      <div className="mt-3 text-sm text-foreground">{label}</div>
                     </button>
                   );
                 })}
@@ -156,10 +156,10 @@ export function PropertyQuiz({
               transition={transition}
               className="flex flex-1 flex-col"
             >
-              <h3 className="font-display text-[28px] leading-tight text-[#F7F3EA]">
+              <h3 className="font-display text-[28px] leading-tight text-foreground">
                 How much space do you have in mind?
               </h3>
-              <p className="mt-2 text-sm text-[#F7F3EA]/55">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Choose up to {MAX_BHK} options.
               </p>
 
@@ -173,18 +173,18 @@ export function PropertyQuiz({
                       onClick={() => toggleBhk(n)}
                       className={`relative rounded-[20px] border p-5 text-center transition-all hover:scale-[1.03] ${
                         selected
-                          ? "border-[#C8A45D] bg-[#C8A45D]/8"
+                          ? "border-[var(--brand)] bg-[var(--brand)]/8"
                           : disabled
-                            ? "border-white/5 bg-[#1C1E22] opacity-40"
-                            : "border-white/10 bg-[#1C1E22] hover:border-white/25"
+                            ? "border-border/50 bg-muted opacity-40"
+                            : "border-border bg-muted hover:border-foreground/25"
                       }`}
-                      style={selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}}
+                      style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}}
                     >
                       {selected && <Checkmark />}
-                      <div className="font-display text-[44px] leading-none text-[#C8A45D]">
+                      <div className="font-display text-[44px] leading-none text-[var(--brand)]">
                         {n}
                       </div>
-                      <div className="mt-2 text-[13px] text-[#F7F3EA]/70">BHK</div>
+                      <div className="mt-2 text-[13px] text-muted-foreground">BHK</div>
                     </button>
                   );
                 })}
@@ -207,10 +207,10 @@ export function PropertyQuiz({
               transition={transition}
               className="flex flex-1 flex-col"
             >
-              <h3 className="font-display text-[26px] leading-tight text-[#F7F3EA]">
+              <h3 className="font-display text-[26px] leading-tight text-foreground">
                 Every great residence has its moment. What's yours?
               </h3>
-              <p className="mt-2 text-sm text-[#F7F3EA]/55">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Choose a range that feels right — we'll refine it in a moment.
               </p>
 
@@ -227,13 +227,13 @@ export function PropertyQuiz({
                         }}
                         className={`relative flex h-16 w-full items-center justify-center rounded-[20px] border transition-all ${
                           selected
-                            ? "border-[#C8A45D] bg-[#C8A45D]/8"
-                            : "border-white/10 bg-[#1C1E22] hover:border-white/25"
+                            ? "border-[var(--brand)] bg-[var(--brand)]/8"
+                            : "border-border bg-muted hover:border-foreground/25"
                         }`}
-                        style={selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}}
+                        style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}}
                       >
                         {selected && <Checkmark />}
-                        <span className="font-display text-[20px] text-[#F7F3EA]">{r}</span>
+                        <span className="font-display text-[20px] text-foreground">{r}</span>
                       </button>
                       <motion.div
                         initial={false}
@@ -243,8 +243,8 @@ export function PropertyQuiz({
                       >
                         {subs && (
                           <div className="px-2 pt-4">
-                            <div className="mb-3 border-t border-white/5 pt-3">
-                              <p className="text-[11px] tracking-[0.22em] text-[#F7F3EA]/40 uppercase">
+                            <div className="mb-3 border-t border-border pt-3">
+                              <p className="text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
                                 Narrow it down:
                               </p>
                             </div>
@@ -257,8 +257,8 @@ export function PropertyQuiz({
                                     onClick={() => setBudgetSub(s)}
                                     className={`rounded-full border px-4 py-2 text-sm transition-all ${
                                       subSelected
-                                        ? "border-[#C8A45D] bg-[#C8A45D]/10 text-[#C8A45D]"
-                                        : "border-[#C8A45D]/30 bg-transparent text-[#F7F3EA]/80 hover:border-[#C8A45D]/60"
+                                        ? "border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]"
+                                        : "border-[var(--brand)]/30 bg-transparent text-foreground/80 hover:border-[var(--brand)]/60"
                                     }`}
                                   >
                                     {s}
@@ -289,7 +289,7 @@ export function PropertyQuiz({
 
 function Checkmark() {
   return (
-    <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#C8A45D] text-[#121416]">
+    <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--brand)] text-[var(--brand-ink)]">
       <Check className="h-3 w-3" strokeWidth={3} />
     </span>
   );
@@ -308,7 +308,7 @@ function NextBtn({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-[#C8A45D] to-[#A8884C] text-sm font-medium tracking-wide text-[#121416] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-40"
+      className="flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-[var(--brand)] to-[var(--brand-soft)] text-sm font-medium tracking-wide text-[var(--brand-ink)] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-40"
     >
       {children}
     </button>
