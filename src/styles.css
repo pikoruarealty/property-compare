@@ -548,8 +548,8 @@ body.suggested-popup-open .suggested-marquee-track {
 @media (min-width: 640px) { .suggested-card { width: 260px; } }
 @media (min-width: 1024px) { .suggested-card { width: 280px; } }
 .suggested-card:hover {
-  border-color: rgba(200,164,93,0.55);
-  box-shadow: 0 24px 50px -22px rgba(0,0,0,0.55), 0 0 0 1px rgba(200,164,93,0.25);
+  border-color: color-mix(in oklab, var(--brand) 55%, transparent);
+  box-shadow: 0 24px 50px -22px color-mix(in oklab, var(--foreground) 24%, transparent), 0 0 0 1px color-mix(in oklab, var(--brand) 25%, transparent);
 }
 .suggested-fade-left,
 .suggested-fade-right {
