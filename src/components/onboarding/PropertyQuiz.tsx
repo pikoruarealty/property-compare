@@ -289,7 +289,7 @@ export function PropertyQuiz({
 
 function Checkmark() {
   return (
-    <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#C8A45D] text-[#121416]">
+    <span className="absolute top-2 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--brand)] text-[var(--brand-ink)]">
       <Check className="h-3 w-3" strokeWidth={3} />
     </span>
   );
@@ -308,7 +308,7 @@ function NextBtn({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-[#C8A45D] to-[#A8884C] text-sm font-medium tracking-wide text-[#121416] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-40"
+      className="flex h-12 w-full items-center justify-center rounded-full bg-gradient-to-r from-[var(--brand)] to-[var(--brand-soft)] text-sm font-medium tracking-wide text-[var(--brand-ink)] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-40"
     >
       {children}
     </button>
