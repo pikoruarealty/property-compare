@@ -397,8 +397,8 @@ export function AuthFlow() {
             transition={transition}
             className="flex flex-1 flex-col"
           >
-            <h2 className="font-display text-3xl text-[#F7F3EA]">What best describes you?</h2>
-            <p className="mt-2 text-sm text-[#F7F3EA]/60">
+            <h2 className="font-display text-3xl text-foreground">What best describes you?</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
               This helps us tailor which properties we show you first.
             </p>
 
@@ -411,13 +411,13 @@ export function AuthFlow() {
                     onClick={() => setProfession(key)}
                     className={`rounded-2xl border p-5 text-left transition-all ${
                       selected
-                        ? "border-[#C8A45D] bg-[#C8A45D]/8"
-                        : "border-white/10 bg-[#1C1E22] hover:border-white/20"
+                        ? "border-[var(--brand)] bg-[var(--brand)]/8"
+                        : "border-border bg-muted hover:border-foreground/20"
                     }`}
-                    style={selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}}
+                    style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}}
                   >
-                    <Icon className="h-7 w-7 text-[#C8A45D]" />
-                    <div className="mt-3 text-sm text-[#F7F3EA]">{label}</div>
+                    <Icon className="h-7 w-7 text-[var(--brand)]" />
+                    <div className="mt-3 text-sm text-foreground">{label}</div>
                   </button>
                 );
               })}
@@ -441,7 +441,7 @@ export function AuthFlow() {
 
             <div className="mt-auto pt-10">
               {completeError && (
-                <p className="mb-3 text-center text-xs text-red-400">{completeError}</p>
+                <p className="mb-3 text-center text-xs text-red-500">{completeError}</p>
               )}
               <GoldButton
                 onClick={handleComplete}
