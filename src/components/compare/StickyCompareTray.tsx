@@ -79,16 +79,17 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
         <motion.div
           key="sticky-compare-tray"
           aria-label="Comparison tray"
-          initial={{ y: "100%" }}
+          initial={{ y: "-100%" }}
           animate={{ y: 0 }}
-          exit={{ y: "100%" }}
+          exit={{ y: "-100%" }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed left-0 right-0 z-50 border-t border-[color-mix(in_oklab,var(--brand)_18%,transparent)] bg-[color-mix(in_oklab,var(--background)_94%,transparent)] shadow-[0_-20px_60px_-24px_rgba(8,8,8,0.12)] backdrop-blur-md [transform:translateZ(0)]"
-          style={{ bottom: 0, willChange: "transform" }}
+          className="fixed left-0 right-0 z-50 border-b border-[color-mix(in_oklab,var(--brand)_30%,transparent)] bg-[color-mix(in_oklab,var(--bg)_92%,transparent)] backdrop-blur-md [transform:translateZ(0)]"
+          style={{ top: 68, willChange: "transform" }}
+
         >
-          <div className="container-lux py-3 sm:py-4">
+          <div className="container-lux py-4">
             <div className="flex items-center justify-between gap-4 mb-3">
-              <p className="whitespace-nowrap text-[10px] uppercase tracking-luxury text-muted-foreground">
+              <p className="whitespace-nowrap text-[10px] uppercase tracking-luxury text-champagne">
                 Comparison Suite · {items.length} / {MAX_COMPARE}
               </p>
               <button
@@ -99,7 +100,7 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
                 className={[
                   "whitespace-nowrap rounded-full border px-5 py-2 text-[11px] uppercase tracking-luxury transition",
                   ready
-                    ? "border-[var(--brand)] bg-[var(--brand)] text-[var(--primary-foreground)] hover:bg-[color-mix(in_oklab,var(--brand)_88%,black)]"
+                    ? "border-[var(--brand)] text-[var(--brand)] hover:bg-[color-mix(in_oklab,var(--brand)_12%,transparent)]"
                     : "cursor-not-allowed border-[color-mix(in_oklab,var(--brand)_35%,transparent)] text-[color-mix(in_oklab,var(--brand)_45%,transparent)] opacity-50",
                 ].join(" ")}
               >
