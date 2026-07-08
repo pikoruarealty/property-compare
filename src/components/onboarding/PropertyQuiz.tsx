@@ -109,10 +109,10 @@ export function PropertyQuiz({
               transition={transition}
               className="flex flex-1 flex-col"
             >
-              <h3 className="font-display text-[28px] leading-tight text-[#F7F3EA]">
+              <h3 className="font-display text-[28px] leading-tight text-foreground">
                 What kind of residence speaks to you?
               </h3>
-              <p className="mt-2 text-sm text-[#F7F3EA]/55">Select all that interest you.</p>
+              <p className="mt-2 text-sm text-muted-foreground">Select all that interest you.</p>
 
               <div className="mt-6 grid grid-cols-3 gap-3">
                 {PROPERTY_TYPES.map(({ label, Icon }, i) => {
@@ -123,17 +123,17 @@ export function PropertyQuiz({
                       onClick={() => toggleType(label)}
                       className={`relative rounded-[20px] border p-5 text-center transition-all hover:scale-[1.03] ${
                         selected
-                          ? "border-[#C8A45D] bg-[#C8A45D]/8"
-                          : "border-white/10 bg-[#1C1E22] hover:border-white/25"
+                          ? "border-[var(--brand)] bg-[var(--brand)]/8"
+                          : "border-border bg-muted hover:border-foreground/25"
                       }`}
                       style={{
-                        ...(selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}),
+                        ...(selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}),
                         ...(i === 3 ? { gridColumnStart: 1 } : {}),
                       }}
                     >
                       {selected && <Checkmark />}
-                      <Icon className="mx-auto h-8 w-8 text-[#C8A45D]" />
-                      <div className="mt-3 text-sm text-[#F7F3EA]">{label}</div>
+                      <Icon className="mx-auto h-8 w-8 text-[var(--brand)]" />
+                      <div className="mt-3 text-sm text-foreground">{label}</div>
                     </button>
                   );
                 })}
