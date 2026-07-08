@@ -269,15 +269,15 @@ export function AuthFlow() {
             transition={transition}
             className="flex flex-1 flex-col"
           >
-            <h2 className="font-display text-3xl text-[#F7F3EA]">
+            <h2 className="font-display text-3xl text-foreground">
               One last step — verify your number
             </h2>
-            <p className="mt-2 text-sm text-[#F7F3EA]/60">
+            <p className="mt-2 text-sm text-muted-foreground">
               We'll send a one-time code to confirm it's you.
             </p>
 
             <div className="mt-8">
-              <label className="mb-2 block text-[11px] tracking-[0.18em] text-[#F7F3EA]/50 uppercase">
+              <label className="mb-2 block text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
                 Phone number
               </label>
               <div className="flex gap-2">
@@ -285,14 +285,14 @@ export function AuthFlow() {
                   <button
                     type="button"
                     onClick={() => setCountryOpen((o) => !o)}
-                    className="flex h-12 items-center gap-2 rounded-lg border border-white/10 bg-[#1C1E22] px-3 text-sm text-[#F7F3EA] hover:border-[#C8A45D]/40"
+                    className="flex h-12 items-center gap-2 rounded-lg border border-border bg-muted px-3 text-sm text-foreground hover:border-[var(--brand)]/40"
                   >
                     <span>{country.flag}</span>
                     <span>{country.code}</span>
-                    <span className="text-[#F7F3EA]/40">▾</span>
+                    <span className="text-muted-foreground">▾</span>
                   </button>
                   {countryOpen && (
-                    <div className="absolute top-full left-0 z-10 mt-1 w-44 overflow-hidden rounded-lg border border-white/10 bg-[#1C1E22] shadow-xl">
+                    <div className="absolute top-full left-0 z-10 mt-1 w-44 overflow-hidden rounded-lg border border-border bg-card shadow-xl">
                       {COUNTRIES.map((c) => (
                         <button
                           key={c.code}
@@ -300,11 +300,11 @@ export function AuthFlow() {
                             setCountry(c);
                             setCountryOpen(false);
                           }}
-                          className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-[#F7F3EA] hover:bg-white/5"
+                          className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-foreground hover:bg-muted"
                         >
                           <span>{c.flag}</span>
                           <span>{c.code}</span>
-                          <span className="text-[#F7F3EA]/50">{c.label}</span>
+                          <span className="text-muted-foreground">{c.label}</span>
                         </button>
                       ))}
                     </div>
@@ -315,10 +315,10 @@ export function AuthFlow() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                   placeholder="98765 43210"
-                  className="h-12 flex-1 rounded-lg border border-white/10 bg-[#1C1E22] px-4 text-sm text-[#F7F3EA] placeholder-[#F7F3EA]/30 outline-none focus:border-[#C8A45D]/60"
+                  className="h-12 flex-1 rounded-lg border border-border bg-muted px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-[var(--brand)]/60"
                 />
               </div>
-              {phoneError && <p className="mt-2 text-xs text-red-400">{phoneError}</p>}
+              {phoneError && <p className="mt-2 text-xs text-red-500">{phoneError}</p>}
             </div>
 
             <div className="mt-auto pt-10">
