@@ -187,7 +187,7 @@ function Index() {
                 </div>
                 <button
                   type="submit"
-                  className="rounded-full px-7 py-3 text-[12px] font-semibold tracking-luxury text-white transition hover:brightness-110"
+                  className="rounded-full px-7 py-3 text-[12px] font-semibold tracking-luxury text-[var(--brand-ink)] transition hover:brightness-110"
                   style={{ background: "linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 100%)" }}
                 >
                   Explore
