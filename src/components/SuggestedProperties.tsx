@@ -335,16 +335,16 @@ function SuggestionCard({
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, color-mix(in oklab, #000 28%, transparent) 0%, transparent 38%)",
+                "linear-gradient(to top, color-mix(in oklab, var(--foreground) 28%, transparent) 0%, transparent 38%)",
             }}
           />
           <span
             className="absolute top-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-semibold tracking-luxury backdrop-blur-md"
             style={{
-              background: "rgba(255,255,255,0.92)",
-              color: "#0a0a0a",
-              border: "1px solid rgba(8,8,8,0.08)",
-              boxShadow: "0 2px 8px -2px rgba(0,0,0,0.18)",
+              background: "var(--card)",
+              color: "var(--foreground)",
+              border: "1px solid var(--glass-border)",
+              boxShadow: "var(--shadow-glass)",
             }}
           >
             {property.status}
