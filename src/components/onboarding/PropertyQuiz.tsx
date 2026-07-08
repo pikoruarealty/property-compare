@@ -156,10 +156,10 @@ export function PropertyQuiz({
               transition={transition}
               className="flex flex-1 flex-col"
             >
-              <h3 className="font-display text-[28px] leading-tight text-[#F7F3EA]">
+              <h3 className="font-display text-[28px] leading-tight text-foreground">
                 How much space do you have in mind?
               </h3>
-              <p className="mt-2 text-sm text-[#F7F3EA]/55">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Choose up to {MAX_BHK} options.
               </p>
 
@@ -173,18 +173,18 @@ export function PropertyQuiz({
                       onClick={() => toggleBhk(n)}
                       className={`relative rounded-[20px] border p-5 text-center transition-all hover:scale-[1.03] ${
                         selected
-                          ? "border-[#C8A45D] bg-[#C8A45D]/8"
+                          ? "border-[var(--brand)] bg-[var(--brand)]/8"
                           : disabled
-                            ? "border-white/5 bg-[#1C1E22] opacity-40"
-                            : "border-white/10 bg-[#1C1E22] hover:border-white/25"
+                            ? "border-border/50 bg-muted opacity-40"
+                            : "border-border bg-muted hover:border-foreground/25"
                       }`}
-                      style={selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}}
+                      style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}}
                     >
                       {selected && <Checkmark />}
-                      <div className="font-display text-[44px] leading-none text-[#C8A45D]">
+                      <div className="font-display text-[44px] leading-none text-[var(--brand)]">
                         {n}
                       </div>
-                      <div className="mt-2 text-[13px] text-[#F7F3EA]/70">BHK</div>
+                      <div className="mt-2 text-[13px] text-muted-foreground">BHK</div>
                     </button>
                   );
                 })}
