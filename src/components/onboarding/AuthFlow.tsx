@@ -338,8 +338,8 @@ export function AuthFlow() {
             transition={transition}
             className="flex flex-1 flex-col"
           >
-            <h2 className="font-display text-3xl text-[#F7F3EA]">Enter the code we sent</h2>
-            <p className="mt-2 text-sm text-[#F7F3EA]/60">
+            <h2 className="font-display text-3xl text-foreground">Enter the code we sent</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
               Sent to {country.code} {phone}
             </p>
 
@@ -361,26 +361,26 @@ export function AuthFlow() {
                   inputMode="numeric"
                   maxLength={1}
                   disabled={verifying}
-                  className="h-[52px] w-12 rounded-lg border border-white/10 bg-[#1C1E22] text-center text-lg text-[#F7F3EA] outline-none focus:border-[#C8A45D]"
+                  className="h-[52px] w-12 rounded-lg border border-border bg-muted text-center text-lg text-foreground outline-none focus:border-[var(--brand)]"
                 />
               ))}
             </motion.div>
 
             {otpError && (
-              <p className="mt-4 text-center text-xs text-red-400">{otpError}</p>
+              <p className="mt-4 text-center text-xs text-red-500">{otpError}</p>
             )}
             {verifying && (
-              <p className="mt-4 flex items-center justify-center gap-2 text-xs text-[#F7F3EA]/50">
+              <p className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground">
                 <Loader2 className="h-3 w-3 animate-spin" /> Verifying…
               </p>
             )}
 
-            <div className="mt-auto pt-10 text-center text-xs text-[#F7F3EA]/50">
+            <div className="mt-auto pt-10 text-center text-xs text-muted-foreground">
               Didn't receive it?{" "}
               <button
                 disabled={resendIn > 0 || sending}
                 onClick={handleResend}
-                className="text-[#C8A45D] disabled:text-[#F7F3EA]/30"
+                className="text-[var(--brand)] disabled:text-muted-foreground/50"
               >
                 {resendIn > 0 ? `Resend in ${resendIn}s` : "Resend code"}
               </button>
