@@ -211,7 +211,7 @@ export function AuthFlow() {
           <span
             key={i}
             className={`h-1.5 w-1.5 rounded-full transition-colors ${
-              i <= activeIdx ? "bg-[#C8A45D]" : "bg-white/20"
+              i <= activeIdx ? "bg-[var(--brand)]" : "bg-foreground/20"
             }`}
           />
         ))}
