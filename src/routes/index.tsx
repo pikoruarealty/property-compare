@@ -287,10 +287,10 @@ function Index() {
                         initial={{ opacity: 0, y: -8 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-[10px] tracking-luxury text-white"
+                        className="absolute inset-x-0 top-0 flex items-center justify-between p-5 text-[10px] tracking-luxury text-background"
                       >
-                        <span className="rounded-full bg-black/40 px-3 py-1 backdrop-blur">Featured · {heroProperty.location}</span>
-                        <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">Vol. XII</span>
+                        <span className="rounded-full bg-foreground/40 px-3 py-1 backdrop-blur">Featured · {heroProperty.location}</span>
+                        <span className="rounded-full bg-background/20 px-3 py-1 backdrop-blur">Vol. XII</span>
                       </motion.div>
                       <motion.div
                         initial={{ opacity: 0, y: 24 }}
