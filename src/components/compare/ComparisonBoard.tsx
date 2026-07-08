@@ -214,15 +214,15 @@ function SlotCard({
       >
         <div className="relative aspect-[16/9] overflow-hidden">
           <img src={slot.image} alt={slot.name} className="h-full w-full object-cover" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
           <button
             onClick={() => onRemove(slot.id)}
             aria-label="Remove"
-            className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-black/55 text-white hover:bg-black/80 transition-colors"
+            className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-foreground/55 text-background hover:bg-foreground/80 transition-colors"
           >
             <X className="h-3.5 w-3.5" />
           </button>
-          <div className="absolute bottom-2.5 left-3 right-3 text-white">
+          <div className="absolute bottom-2.5 left-3 right-3 text-background">
             <p className="text-[9px] uppercase tracking-[0.24em] opacity-80">
               {String.fromCharCode(65 + index)}
             </p>
