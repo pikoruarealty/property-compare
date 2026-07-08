@@ -473,7 +473,7 @@ function FieldInput({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-[11px] tracking-[0.18em] text-[#F7F3EA]/50 uppercase">
+      <label className="mb-2 block text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
         {label}
       </label>
       <input
@@ -481,7 +481,7 @@ function FieldInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-12 w-full rounded-lg border border-white/10 bg-[#1C1E22] px-4 text-sm text-[#F7F3EA] placeholder-[#F7F3EA]/30 outline-none focus:border-[#C8A45D]/60"
+        className="h-12 w-full rounded-lg border border-border bg-muted px-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-[var(--brand)]/60"
       />
     </div>
   );
@@ -502,7 +502,7 @@ function GoldButton({
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#C8A45D] to-[#A8884C] text-sm font-medium tracking-wide text-[#121416] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-40"
+      className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--brand)] to-[var(--brand-soft)] text-sm font-medium tracking-wide text-[var(--brand-ink)] transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-40"
     >
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}
       {children}
