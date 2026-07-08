@@ -33,14 +33,11 @@ export function StickyCompareTray({ watchRef, hideRef, onCompare, onAdd }: Props
 
   useEffect(() => {
     const el = watchRef.current;
-    console.log("[TrayDebug] watchRef el:", el, "pastHero init:", el ? el.getBoundingClientRect().bottom <= 68 : "no el");
     if (!el) return;
     const check = () => {
       const rect = el.getBoundingClientRect();
-      // Show tray only once the watched section has fully scrolled above the navbar.
-      const past = rect.bottom <= 68;
-      console.log("[TrayDebug] scroll check bottom:", rect.bottom, "pastHero:", past);
-      setPastHero(past);
+      // Show tray once the watched section has scrolled above the navbar.
+      setPastHero(rect.bottom <= 68);
     };
     check();
     window.addEventListener("scroll", check, { passive: true });
