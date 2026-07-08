@@ -227,10 +227,10 @@ export function AuthFlow() {
             transition={transition}
             className="flex flex-1 flex-col"
           >
-            <h2 className="font-display text-3xl text-[#F7F3EA]">
+            <h2 className="font-display text-3xl text-foreground">
               Tell us a little about yourself
             </h2>
-            <p className="mt-2 text-sm text-[#F7F3EA]/60">
+            <p className="mt-2 text-sm text-muted-foreground">
               A private profile, just for your Pikorua experience.
             </p>
 
@@ -248,12 +248,12 @@ export function AuthFlow() {
                 placeholder="you@example.com"
                 type="email"
               />
-              {detailsError && <p className="text-xs text-red-400">{detailsError}</p>}
+              {detailsError && <p className="text-xs text-red-500">{detailsError}</p>}
             </div>
 
             <div className="mt-auto pt-10">
               <GoldButton onClick={handleDetails}>Continue →</GoldButton>
-              <p className="mt-4 text-center text-[11px] text-[#F7F3EA]/30">
+              <p className="mt-4 text-center text-[11px] text-muted-foreground/60">
                 We never share your information.
               </p>
             </div>
