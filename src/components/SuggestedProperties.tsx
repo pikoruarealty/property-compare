@@ -355,7 +355,7 @@ function SuggestionCard({
               style={{
                 background: "var(--foreground)",
                 color: "var(--background)",
-                boxShadow: "0 2px 8px -2px rgba(0,0,0,0.25)",
+                boxShadow: "var(--shadow-glass)",
               }}
             >
               {chipLabel}
