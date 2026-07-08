@@ -143,7 +143,9 @@ function SlotPill({
 
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [added, setAdded] = useState<string | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { quizAnswers } = useOnboarding();
   const { toggle } = useCompareStore();
 
@@ -160,6 +162,12 @@ function SlotPill({
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
 
   const options = useMemo(() => {
     const filtered = ALL_PROPERTIES.filter((p) => matchesPreferences(p, quizAnswers));
