@@ -428,22 +428,22 @@ html, body, *, *::before, *::after {
   font-style: normal;
 }
 
-/* Gemini-style ambient gradient backdrop for onboarding card */
+/* Ocean Mist ambient gradient backdrop for onboarding card */
 .gemini-bg {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(200,164,93,0.10), transparent 60%),
-    radial-gradient(ellipse at 0% 100%, rgba(122,162,247,0.08), transparent 55%),
-    radial-gradient(ellipse at 100% 100%, rgba(244,114,182,0.07), transparent 55%);
+    radial-gradient(ellipse at 50% 0%, rgba(71,85,105,0.08), transparent 60%),
+    radial-gradient(ellipse at 0% 100%, rgba(148,163,184,0.10), transparent 55%),
+    radial-gradient(ellipse at 100% 100%, rgba(224,242,254,0.45), transparent 55%);
 }
 .gemini-conic {
   position: absolute;
   inset: -40%;
   background: conic-gradient(from 0deg at 50% 50%,
-    rgba(200,164,93,0.18),
-    rgba(122,162,247,0.16),
-    rgba(244,114,182,0.16),
-    rgba(110,231,183,0.14),
-    rgba(200,164,93,0.18));
+    rgba(71,85,105,0.16),
+    rgba(148,163,184,0.14),
+    rgba(224,242,254,0.18),
+    rgba(71,85,105,0.12),
+    rgba(148,163,184,0.16));
   filter: blur(70px);
   opacity: 0.55;
   mix-blend-mode: screen;
@@ -466,25 +466,25 @@ html, body, *, *::before, *::after {
 }
 .gemini-blob-1 {
   width: 380px; height: 380px;
-  background: radial-gradient(circle, rgba(200,164,93,0.85), rgba(200,164,93,0) 70%);
+  background: radial-gradient(circle, rgba(71,85,105,0.75), rgba(71,85,105,0) 70%);
   top: -140px; left: -120px;
   animation: gemini-float-1 12s ease-in-out infinite alternate;
 }
 .gemini-blob-2 {
   width: 340px; height: 340px;
-  background: radial-gradient(circle, rgba(122,162,247,0.7), rgba(122,162,247,0) 70%);
+  background: radial-gradient(circle, rgba(148,163,184,0.65), rgba(148,163,184,0) 70%);
   bottom: -140px; right: -110px;
   animation: gemini-float-2 15s ease-in-out infinite alternate;
 }
 .gemini-blob-3 {
   width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(244,114,182,0.55), rgba(244,114,182,0) 70%);
+  background: radial-gradient(circle, rgba(224,242,254,0.85), rgba(224,242,254,0) 70%);
   top: 40%; left: 30%;
   animation: gemini-float-3 18s ease-in-out infinite alternate;
 }
 .gemini-blob-4 {
   width: 260px; height: 260px;
-  background: radial-gradient(circle, rgba(110,231,183,0.5), rgba(110,231,183,0) 70%);
+  background: radial-gradient(circle, rgba(71,85,105,0.55), rgba(71,85,105,0) 70%);
   top: 10%; right: -60px;
   animation: gemini-float-1 20s ease-in-out infinite alternate-reverse;
 }
