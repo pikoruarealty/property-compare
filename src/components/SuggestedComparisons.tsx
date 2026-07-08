@@ -295,13 +295,13 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
       <div className="relative grid grid-cols-2 gap-3 p-4 pt-7">
         <PropertyBrief property={a} />
 
-        {/* Solid champagne divider spanning the brief row */}
+        {/* Solid brand divider spanning the brief row */}
         <div
           className="pointer-events-none absolute top-0 bottom-0 left-1/2 -translate-x-1/2"
           style={{
             width: "2px",
             background:
-              "linear-gradient(to bottom, transparent 0%, var(--champagne, #c8a45d) 20%, var(--champagne, #c8a45d) 80%, transparent 100%)",
+              "linear-gradient(to bottom, transparent 0%, var(--brand) 20%, var(--brand) 80%, transparent 100%)",
             opacity: 0.7,
           }}
         />
