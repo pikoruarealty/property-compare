@@ -296,7 +296,7 @@ function Index() {
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-6 text-white"
+                        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/70 via-foreground/25 to-transparent p-6 text-background"
                       >
                         <div className="text-[10px] tracking-luxury opacity-80">Editor's choice</div>
                         <div className="mt-1 font-display text-2xl font-bold leading-tight sm:text-[28px]">
