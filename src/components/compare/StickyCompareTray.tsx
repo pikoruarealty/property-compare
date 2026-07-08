@@ -213,61 +213,81 @@ function SlotPill({
               className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 rounded-2xl border border-[color-mix(in_oklab,var(--brand)_35%,transparent)] bg-[var(--glass-bg)] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.55)] backdrop-blur-xl"
               role="listbox"
             >
-              <div className="border-b border-[color-mix(in_oklab,var(--brand)_20%,transparent)] p-2">
-                <input
-                  autoFocus
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder={
-                    quizAnswers
-                      ? "Search your matched residences…"
-                      : "Search residences…"
-                  }
-                  className="w-full rounded-lg bg-transparent px-3 py-2 text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
-                />
-              </div>
-              <div className="max-h-72 overflow-y-auto p-1">
-                {options.length === 0 ? (
-                  <p className="p-4 text-center text-[12px] text-muted-foreground">
-                    No matching residences.
+              {added ? (
+                <div className="flex flex-col items-center justify-center gap-3 px-4 py-8 text-center">
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-[color-mix(in_oklab,var(--brand)_12%,transparent)] text-[var(--brand)]">
+                    <Check className="h-6 w-6" strokeWidth={1.5} />
+                  </div>
+                  <p className="font-display text-[15px] text-foreground">
+                    Added to comparison
                   </p>
-                ) : (
-                  options.map((p) => (
-                    <button
-                      key={p.id}
-                      type="button"
-                      onClick={() => {
-                        const res = toggle(p.id);
-                        if (res.ok) {
-                          setOpen(false);
-                          setQuery("");
-                        }
-                      }}
-                      className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition hover:bg-[color-mix(in_oklab,var(--brand)_10%,transparent)]"
-                      role="option"
-                    >
-                      <img
-                        src={p.image}
-                        alt=""
-                        className="h-9 w-9 flex-shrink-0 rounded-full object-cover"
-                      />
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate font-display text-[14px] leading-tight text-foreground">
-                          {p.name}
-                        </p>
-                        <p className="truncate text-[10px] uppercase tracking-luxury text-muted-foreground">
-                          {p.developer} · {p.location}
-                        </p>
-                      </div>
-                      <Check className="h-3.5 w-3.5 opacity-0" />
-                    </button>
-                  ))
-                )}
-              </div>
-              {quizAnswers && (
-                <div className="border-t border-[color-mix(in_oklab,var(--brand)_20%,transparent)] px-3 py-2 text-[10px] uppercase tracking-luxury text-muted-foreground">
-                  Filtered by your preferences
+                  <p className="max-w-[16rem] text-[11px] leading-relaxed text-muted-foreground">
+                    {added} has been added. The popup will close automatically.
+                  </p>
                 </div>
+              ) : (
+                <>
+                  <div className="border-b border-[color-mix(in_oklab,var(--brand)_20%,transparent)] p-2">
+                    <input
+                      autoFocus
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder={
+                        quizAnswers
+                          ? "Search your matched residences…"
+                          : "Search residences…"
+                      }
+                      className="w-full rounded-lg bg-transparent px-3 py-2 text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
+                    />
+                  </div>
+                  <div className="max-h-72 overflow-y-auto p-1">
+                    {options.length === 0 ? (
+                      <p className="p-4 text-center text-[12px] text-muted-foreground">
+                        No matching residences.
+                      </p>
+                    ) : (
+                      options.map((p) => (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => {
+                            const res = toggle(p.id);
+                            if (res.ok) {
+                              setAdded(p.name);
+                              closeTimerRef.current = setTimeout(() => {
+                                setOpen(false);
+                                setQuery("");
+                                setAdded(null);
+                              }, 1200);
+                            }
+                          }}
+                          className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition hover:bg-[color-mix(in_oklab,var(--brand)_10%,transparent)]"
+                          role="option"
+                        >
+                          <img
+                            src={p.image}
+                            alt=""
+                            className="h-9 w-9 flex-shrink-0 rounded-full object-cover"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate font-display text-[14px] leading-tight text-foreground">
+                              {p.name}
+                            </p>
+                            <p className="truncate text-[10px] uppercase tracking-luxury text-muted-foreground">
+                              {p.developer} · {p.location}
+                            </p>
+                          </div>
+                          <Check className="h-3.5 w-3.5 opacity-0" />
+                        </button>
+                      ))
+                    )}
+                  </div>
+                  {quizAnswers && (
+                    <div className="border-t border-[color-mix(in_oklab,var(--brand)_20%,transparent)] px-3 py-2 text-[10px] uppercase tracking-luxury text-muted-foreground">
+                      Filtered by your preferences
+                    </div>
+                  )}
+                </>
               )}
             </motion.div>
           )}
