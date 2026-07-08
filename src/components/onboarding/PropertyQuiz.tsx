@@ -207,10 +207,10 @@ export function PropertyQuiz({
               transition={transition}
               className="flex flex-1 flex-col"
             >
-              <h3 className="font-display text-[26px] leading-tight text-[#F7F3EA]">
+              <h3 className="font-display text-[26px] leading-tight text-foreground">
                 Every great residence has its moment. What's yours?
               </h3>
-              <p className="mt-2 text-sm text-[#F7F3EA]/55">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Choose a range that feels right — we'll refine it in a moment.
               </p>
 
@@ -227,13 +227,13 @@ export function PropertyQuiz({
                         }}
                         className={`relative flex h-16 w-full items-center justify-center rounded-[20px] border transition-all ${
                           selected
-                            ? "border-[#C8A45D] bg-[#C8A45D]/8"
-                            : "border-white/10 bg-[#1C1E22] hover:border-white/25"
+                            ? "border-[var(--brand)] bg-[var(--brand)]/8"
+                            : "border-border bg-muted hover:border-foreground/25"
                         }`}
-                        style={selected ? { backgroundColor: "rgba(200,164,93,0.08)" } : {}}
+                        style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}}
                       >
                         {selected && <Checkmark />}
-                        <span className="font-display text-[20px] text-[#F7F3EA]">{r}</span>
+                        <span className="font-display text-[20px] text-foreground">{r}</span>
                       </button>
                       <motion.div
                         initial={false}
@@ -243,8 +243,8 @@ export function PropertyQuiz({
                       >
                         {subs && (
                           <div className="px-2 pt-4">
-                            <div className="mb-3 border-t border-white/5 pt-3">
-                              <p className="text-[11px] tracking-[0.22em] text-[#F7F3EA]/40 uppercase">
+                            <div className="mb-3 border-t border-border pt-3">
+                              <p className="text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
                                 Narrow it down:
                               </p>
                             </div>
@@ -257,8 +257,8 @@ export function PropertyQuiz({
                                     onClick={() => setBudgetSub(s)}
                                     className={`rounded-full border px-4 py-2 text-sm transition-all ${
                                       subSelected
-                                        ? "border-[#C8A45D] bg-[#C8A45D]/10 text-[#C8A45D]"
-                                        : "border-[#C8A45D]/30 bg-transparent text-[#F7F3EA]/80 hover:border-[#C8A45D]/60"
+                                        ? "border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]"
+                                        : "border-[var(--brand)]/30 bg-transparent text-foreground/80 hover:border-[var(--brand)]/60"
                                     }`}
                                   >
                                     {s}
