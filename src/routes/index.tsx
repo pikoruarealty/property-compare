@@ -251,16 +251,13 @@ function Index() {
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.div
                       key={heroProperty.id}
-                      initial={{ x: "-110vw", y: "42vh", scale: 0.18, opacity: 0, rotate: -480, filter: "blur(14px)" }}
-                      animate={{ x: "0vw", y: "0vh", scale: 1, opacity: 1, rotate: 0, filter: "blur(0px)" }}
-                      exit={{ x: "110vw", y: "-42vh", scale: 0.18, opacity: 0, rotate: 480, filter: "blur(14px)" }}
+                      initial={{ y: "-110%", opacity: 0, filter: "blur(6px)" }}
+                      animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                      exit={{ y: "110%", opacity: 0, filter: "blur(6px)" }}
                       transition={{
-                        x: { duration: 2.2, ease: [0.16, 0.84, 0.24, 1] },
-                        y: { duration: 2.2, ease: [0.22, 1, 0.36, 1] },
-                        scale: { duration: 2.2, ease: [0.34, 1.15, 0.5, 1] },
-                        rotate: { duration: 2.2, ease: [0.19, 1, 0.22, 1] },
-                        opacity: { duration: 0.9, ease: [0.4, 0, 0.2, 1] },
-                        filter: { duration: 1.2, ease: [0.4, 0, 0.2, 1] },
+                        y: { type: "spring", stiffness: 120, damping: 16, mass: 0.9 },
+                        opacity: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
+                        filter: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
                       }}
                       className="absolute inset-0 overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(10,31,77,0.45)]"
                     >
