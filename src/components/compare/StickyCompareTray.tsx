@@ -189,12 +189,12 @@ function SlotPill({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className={`${base} border-dashed border-[color-mix(in_oklab,var(--brand)_35%,transparent)] text-muted-foreground hover:text-foreground hover:border-[var(--brand)] hover:bg-[color-mix(in_oklab,var(--brand)_6%,transparent)] transition cursor-pointer text-left`}
+          className={`${base} border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)] text-ivory/60 hover:text-ivory hover:border-[var(--brand)] hover:bg-[color-mix(in_oklab,var(--brand)_8%,transparent)] transition cursor-pointer text-left`}
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-label="Add a property to comparison"
         >
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-dashed border-[color-mix(in_oklab,var(--brand)_35%,transparent)]">
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-dashed border-[color-mix(in_oklab,var(--brand)_45%,transparent)]">
             <Plus className="h-4 w-4" strokeWidth={1.5} />
           </div>
           <span className="truncate text-[12px] uppercase tracking-luxury">
@@ -205,11 +205,11 @@ function SlotPill({
         <AnimatePresence>
           {open && (
             <motion.div
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 6 }}
+              exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.15 }}
-              className="absolute left-0 right-0 bottom-[calc(100%+8px)] z-50 rounded-2xl border border-[color-mix(in_oklab,var(--brand)_22%,transparent)] bg-[var(--glass-bg)] shadow-[0_-20px_60px_-20px_rgba(0,0,0,0.22)] backdrop-blur-xl"
+              className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 rounded-2xl border border-[color-mix(in_oklab,var(--brand)_35%,transparent)] bg-[var(--glass-bg)] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.55)] backdrop-blur-xl"
               role="listbox"
             >
               {added ? (
