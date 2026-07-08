@@ -175,7 +175,7 @@ function Index() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.4 }}
-                className="mt-9 flex w-full max-w-xl items-center gap-2 rounded-full border border-foreground/10 bg-card/85 p-1.5 backdrop-blur-md shadow-[0_24px_60px_-34px_rgba(10,31,77,0.4)]"
+                className="mt-9 flex w-full max-w-xl items-center gap-2 rounded-full border border-foreground/10 bg-card/85 p-1.5 backdrop-blur-md shadow-[var(--shadow-deep)]"
               >
                 <div className="flex flex-1 items-center gap-3 px-5">
                   <Search className="h-4 w-4" style={{ color: "var(--brand-accent, var(--brand))" }} />
