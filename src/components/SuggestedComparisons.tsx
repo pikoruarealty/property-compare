@@ -257,7 +257,7 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
+                "linear-gradient(to top, color-mix(in oklab, var(--foreground) 30%, transparent) 0%, transparent 45%)",
             }}
           />
         </div>
@@ -273,7 +273,7 @@ function ComparisonCard({ pair, index }: { pair: Pair; index: number }) {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, color-mix(in oklab, #000 30%, transparent) 0%, transparent 45%)",
+                "linear-gradient(to top, color-mix(in oklab, var(--foreground) 30%, transparent) 0%, transparent 45%)",
             }}
           />
         </div>
