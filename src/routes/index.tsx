@@ -259,7 +259,7 @@ function Index() {
                         opacity: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
                         filter: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
                       }}
-                      className="absolute inset-0 overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(10,31,77,0.45)]"
+                      className="absolute inset-0 overflow-hidden rounded-[28px] shadow-[var(--shadow-deep)]"
                     >
                       <motion.img
                         src={heroProperty.image}
