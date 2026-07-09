@@ -10,9 +10,16 @@ interface Cell {
   col: number;
 }
 
+/**
+ * Earth-themed live property grid.
+ * - Oceanic blue/teal color wash matching the daylight globe
+ * - Latitude / longitude line overlay (subtle graticule)
+ * - Soft equator glow band
+ * - Twinkling connection dots (like city nodes on the globe)
+ * - Center reading area kept clear so hero text stays legible
+ */
 export function LivePropertyGridMosaic() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  // Horizontal rectangles: fewer columns, more rows so each cell is wide & short.
   const [cols, setCols] = useState(10);
   const [rows, setRows] = useState(10);
 
@@ -46,7 +53,7 @@ export function LivePropertyGridMosaic() {
         id: `${row}-${col}-${i}`,
         image: propertyImages[i % propertyImages.length],
         delay: Math.random() * 5,
-        duration: 3 + Math.random() * 2.5,
+        duration: 3.5 + Math.random() * 2.5,
         row,
         col,
       });
@@ -54,9 +61,23 @@ export function LivePropertyGridMosaic() {
     return result;
   }, [cols, rows]);
 
-  // Soft radial mask: center stays readable but grid is still visible, not a blank hole.
+  // Twinkling "city node" dots — sparse, positioned around the frame
+  const nodes = useMemo(
+    () =>
+      Array.from({ length: 22 }, (_, i) => ({
+        id: i,
+        top: `${8 + Math.random() * 84}%`,
+        left: `${6 + Math.random() * 88}%`,
+        delay: Math.random() * 4,
+        duration: 2.4 + Math.random() * 2.6,
+        size: 3 + Math.random() * 3,
+      })),
+    []
+  );
+
+  // Center reading area kept lightly clear
   const centerClear =
-    "radial-gradient(ellipse at center, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.22) 28%, rgba(255,255,255,0.08) 52%, rgba(255,255,255,0) 74%)";
+    "radial-gradient(ellipse at center, rgba(240,249,255,0.55) 0%, rgba(224,242,254,0.28) 30%, rgba(224,242,254,0.08) 55%, rgba(224,242,254,0) 76%)";
 
   return (
     <div
@@ -64,18 +85,25 @@ export function LivePropertyGridMosaic() {
       aria-hidden
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
-      {/* Global light wash so the grid never overpowers text */}
-      <div className="absolute inset-0 bg-white/40" />
-
-      {/* Soft ocean-tint wash to unify with the light theme */}
+      {/* Ocean-atmosphere base wash */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at 70% 30%, rgba(224,242,254,0.35) 0%, transparent 55%), radial-gradient(ellipse at 30% 70%, rgba(241,245,249,0.45) 0%, transparent 50%)",
+            "linear-gradient(180deg, #f5fbff 0%, #eaf4fb 45%, #f0f7fc 100%)",
         }}
       />
 
+      {/* Aurora / atmospheric radial tints (poles + equator glow) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(186,230,253,0.55) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 50% 100%, rgba(191,219,254,0.45) 0%, transparent 60%), radial-gradient(ellipse 80% 22% at 50% 50%, rgba(125,211,252,0.22) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Property image mosaic (very subtle, tinted to ocean palette) */}
       <div
         className="absolute inset-0 grid gap-0.5 p-0.5 sm:gap-1 sm:p-1"
         style={{
@@ -86,8 +114,9 @@ export function LivePropertyGridMosaic() {
         {cells.map((cell) => (
           <div
             key={cell.id}
-            className="relative overflow-hidden rounded-sm bg-muted/30"
+            className="relative overflow-hidden rounded-sm"
             style={{
+              backgroundColor: "rgba(186,230,253,0.10)",
               animation: `mosaicPulse ${cell.duration}s ease-in-out ${cell.delay}s infinite alternate`,
             }}
           >
@@ -97,52 +126,110 @@ export function LivePropertyGridMosaic() {
               loading="lazy"
               className="absolute inset-0 h-full w-full object-cover opacity-0"
               style={{
+                filter: "saturate(0.55) hue-rotate(-6deg)",
                 animation: `mosaicFade ${cell.duration}s ease-in-out ${cell.delay}s infinite alternate`,
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-white/35 to-slate-100/40" />
+            {/* Ocean tint over every cell */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(224,242,254,0.55), rgba(191,219,254,0.45))",
+              }}
+            />
           </div>
         ))}
       </div>
 
-      {/* Center clear mask for readable content */}
-      <div
-        className="absolute inset-0"
-        style={{ background: centerClear }}
-      />
+      {/* Graticule — latitude / longitude lines (earth grid) */}
+      <svg
+        className="absolute inset-0 h-full w-full"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="gridFade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgba(56,189,248,0)" />
+            <stop offset="50%" stopColor="rgba(56,189,248,0.35)" />
+            <stop offset="100%" stopColor="rgba(56,189,248,0)" />
+          </linearGradient>
+        </defs>
+        {/* Latitudes — curved arcs to feel spherical */}
+        {[12, 24, 36, 50, 64, 76, 88].map((y, i) => (
+          <path
+            key={`lat-${i}`}
+            d={`M -2 ${y} Q 50 ${y + (y < 50 ? -3 : 3)} 102 ${y}`}
+            fill="none"
+            stroke="url(#gridFade)"
+            strokeWidth="0.15"
+          />
+        ))}
+        {/* Longitudes — vertical arcs bowing outward */}
+        {[10, 25, 40, 50, 60, 75, 90].map((x, i) => {
+          const bow = (x - 50) * 0.18;
+          return (
+            <path
+              key={`lon-${i}`}
+              d={`M ${x} -2 Q ${x + bow} 50 ${x} 102`}
+              fill="none"
+              stroke="rgba(56,189,248,0.22)"
+              strokeWidth="0.12"
+            />
+          );
+        })}
+        {/* Equator emphasized */}
+        <path
+          d="M -2 50 Q 50 48 102 50"
+          fill="none"
+          stroke="rgba(14,165,233,0.35)"
+          strokeWidth="0.22"
+        />
+      </svg>
 
-      {/* Subtle center dot grid so the middle never reads as flat white */}
-      <div
-        className="absolute inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(71,85,105,0.55) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-          maskImage:
-            "radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0) 70%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0) 70%)",
-        }}
-      />
+      {/* Twinkling city nodes */}
+      {nodes.map((n) => (
+        <span
+          key={n.id}
+          className="absolute rounded-full"
+          style={{
+            top: n.top,
+            left: n.left,
+            width: n.size,
+            height: n.size,
+            background: "rgba(14,165,233,0.75)",
+            boxShadow:
+              "0 0 8px rgba(56,189,248,0.75), 0 0 18px rgba(125,211,252,0.55)",
+            animation: `nodeTwinkle ${n.duration}s ease-in-out ${n.delay}s infinite`,
+          }}
+        />
+      ))}
 
-      {/* Edge vignette to fade grid into page edges */}
+      {/* Center clear mask */}
+      <div className="absolute inset-0" style={{ background: centerClear }} />
+
+      {/* Edge vignette fading to white */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 10%, rgba(255,255,255,0) 90%, rgba(255,255,255,0.95) 100%)",
+            "linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 12%, rgba(255,255,255,0) 88%, rgba(255,255,255,0.95) 100%), linear-gradient(to right, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 10%, rgba(255,255,255,0) 90%, rgba(255,255,255,0.6) 100%)",
         }}
       />
 
       <style>{`
         @keyframes mosaicFade {
           0% { opacity: 0; transform: scale(1.04); }
-          45% { opacity: 0.14; transform: scale(1); }
-          100% { opacity: 0.26; transform: scale(1); }
+          45% { opacity: 0.12; transform: scale(1); }
+          100% { opacity: 0.22; transform: scale(1); }
         }
         @keyframes mosaicPulse {
           0% { filter: brightness(0.98); }
-          100% { filter: brightness(1.04); }
+          100% { filter: brightness(1.05); }
+        }
+        @keyframes nodeTwinkle {
+          0%, 100% { opacity: 0.15; transform: scale(0.8); }
+          50% { opacity: 1; transform: scale(1.25); }
         }
       `}</style>
     </div>
