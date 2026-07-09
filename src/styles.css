@@ -910,3 +910,27 @@ body.suggested-popup-open .suggested-marquee-track {
   --tw-gradient-to: var(--card) !important;
 }
 
+
+/* Earth globe city pins */
+.city-pin {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 12;
+}
+.city-pin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #ffb347;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 4px rgba(255, 179, 71, 0.3), 0 0 16px rgba(255, 179, 71, 0.9);
+  animation: pin-glow 2s ease-in-out infinite;
+}
+@keyframes pin-glow {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(255, 179, 71, 0.3), 0 0 16px rgba(255, 179, 71, 0.9); }
+  50%      { box-shadow: 0 0 0 9px rgba(255, 179, 71, 0.12), 0 0 24px rgba(255, 179, 71, 1); }
+}
