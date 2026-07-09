@@ -281,7 +281,6 @@ function Index() {
 
       {/* ============ COLLECTION ============ */}
       <section id="collection" ref={collectionRef} className="relative scroll-mt-28 py-16 sm:py-24 overflow-hidden">
-        <LivePropertyGridMosaic />
         <div className="container-lux relative z-10">
 
           <div className="mt-8 flex flex-wrap items-end justify-between gap-6 border-b border-champagne/15 pb-6">
