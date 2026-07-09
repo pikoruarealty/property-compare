@@ -60,7 +60,7 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
 
   const p = PROPERTIES[currentIndex];
   const cardWidth = 280;
-  const cardOffset = pos.right ? -cardWidth - 30 : 30;
+  const cardOffset = pos.right ? -cardWidth - 34 : 34;
 
   return (
     <AnimatePresence mode="wait">
@@ -74,7 +74,7 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
           style={{
             position: "absolute",
             left: pos.x + cardOffset,
-            top: pos.y - 80,
+            top: pos.y - 96,
             width: cardWidth,
             zIndex: 15,
             pointerEvents: "none",
@@ -85,11 +85,11 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
             aria-hidden
             style={{
               position: "absolute",
-              top: 80,
-              [pos.right ? "right" : "left"]: -30,
-              width: 30,
+              top: 96,
+              [pos.right ? "right" : "left"]: -34,
+              width: 34,
               height: 1,
-              background: "linear-gradient(to right, rgba(200,164,93,0.7), rgba(200,164,93,0.2))",
+              background: "linear-gradient(to right, rgba(200,164,93,0.7), rgba(200,164,93,0.15))",
             }}
           />
           <div

@@ -153,6 +153,10 @@ function Index() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.1 }}
                 className="mt-7 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] text-foreground sm:text-[58px] lg:text-[66px]"
+                style={{
+                  textShadow:
+                    "0 0 40px rgba(255,255,255,0.85), 0 0 80px rgba(255,255,255,0.55)",
+                }}
               >
                 India's <span className="gold-text">Smartest</span>
                 <br />
@@ -166,6 +170,10 @@ function Index() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.25 }}
                 className="mt-7 max-w-lg text-[16px] leading-relaxed text-muted-foreground sm:text-[17px]"
+                style={{
+                  textShadow:
+                    "0 0 24px rgba(255,255,255,0.9), 0 0 48px rgba(255,255,255,0.6)",
+                }}
               >
                 {"\n"}
               </motion.p>
@@ -179,7 +187,7 @@ function Index() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.4 }}
-                className="mt-9 flex w-full max-w-xl items-center gap-2 rounded-full border border-foreground/10 bg-card/85 p-1.5 backdrop-blur-md shadow-[var(--shadow-deep)]"
+                className="mt-9 flex w-full max-w-xl items-center gap-2 rounded-full border border-foreground/12 bg-white/95 p-1.5 backdrop-blur-xl shadow-[var(--shadow-deep)]"
               >
                 <div className="flex flex-1 items-center gap-3 px-5">
                   <Search className="h-4 w-4" style={{ color: "var(--brand-accent, var(--brand))" }} />
@@ -207,13 +215,13 @@ function Index() {
               >
                 <button
                   onClick={() => scrollToId("suite")}
-                  className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-card px-5 py-2.5 text-[12px] font-medium text-foreground transition hover:border-foreground/40"
+                  className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/90 px-5 py-2.5 text-[12px] font-medium text-foreground transition hover:border-foreground/40 backdrop-blur-md"
                 >
                   <GitCompareArrows className="h-3.5 w-3.5" /> Start a comparison
                 </button>
                 <button
                   onClick={() => scrollToId("collection")}
-                  className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[12px] font-medium text-muted-foreground transition hover:text-foreground"
+                  className="inline-flex items-center gap-2 rounded-full bg-white/80 px-5 py-2.5 text-[12px] font-medium text-muted-foreground transition hover:text-foreground backdrop-blur-md"
                 >
                   <LayoutList className="h-3.5 w-3.5" /> Browse the collection
                 </button>
@@ -416,26 +424,25 @@ function EarthHero() {
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-      className="relative z-10 mx-auto w-full max-w-[540px] overflow-visible lg:mx-0 lg:justify-self-end"
-      style={{ minHeight: 460 }}
+      className="relative z-10 mx-auto w-full max-w-[520px] overflow-visible lg:mx-0 lg:justify-self-end"
+      style={{ minHeight: 480 }}
     >
       <div
         aria-hidden
-        className="pointer-events-none fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{
-          width: "160vmax",
-          height: "160vmax",
+          width: "140vmax",
+          height: "140vmax",
           background:
-            "radial-gradient(closest-side, rgba(96,165,250,0.22) 0%, rgba(147,197,253,0.12) 18%, rgba(186,230,253,0.05) 36%, rgba(186,230,253,0.015) 58%, transparent 78%)",
-          filter: "blur(80px)",
+            "radial-gradient(closest-side, rgba(96,165,250,0.18) 0%, rgba(147,197,253,0.09) 18%, rgba(186,230,253,0.04) 36%, rgba(186,230,253,0.01) 58%, transparent 78%)",
+          filter: "blur(90px)",
           zIndex: -1,
         }}
       />
 
-
-      <div className="relative flex items-center justify-center" data-earth-mount-wrap>
-        <div data-earth-mount>
-          <EarthGlobe size={420} pinPositionsRef={pinPositionsRef} />
+      <div className="relative flex h-full min-h-[480px] items-center justify-center" data-earth-mount-wrap>
+        <div data-earth-mount className="relative">
+          <EarthGlobe size={400} pinPositionsRef={pinPositionsRef} />
         </div>
       </div>
       <EarthPropertyPopups pinPositionsRef={pinPositionsRef} offset={offset} />
