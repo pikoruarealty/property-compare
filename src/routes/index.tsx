@@ -423,11 +423,11 @@ function EarthHero() {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
-          width: 460,
-          height: 460,
+          width: 500,
+          height: 500,
           background:
-            "radial-gradient(circle, rgba(255,179,71,0.18), rgba(59,130,246,0.08) 45%, transparent 70%)",
-          filter: "blur(24px)",
+            "radial-gradient(circle, rgba(96,165,250,0.28), rgba(186,230,253,0.18) 40%, transparent 72%)",
+          filter: "blur(30px)",
         }}
       />
       <div className="relative flex items-center justify-center" data-earth-mount-wrap>
