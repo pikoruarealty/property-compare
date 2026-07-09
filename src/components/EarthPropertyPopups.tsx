@@ -59,7 +59,7 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
   }, [currentIndex, pinPositionsRef, offset]);
 
   const p = PROPERTIES[currentIndex];
-  const cardWidth = 220;
+  const cardWidth = 280;
   const cardOffset = pos.right ? -cardWidth - 30 : 30;
 
   return (
@@ -74,7 +74,7 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
           style={{
             position: "absolute",
             left: pos.x + cardOffset,
-            top: pos.y - 60,
+            top: pos.y - 80,
             width: cardWidth,
             zIndex: 15,
             pointerEvents: "none",
@@ -85,7 +85,7 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
             aria-hidden
             style={{
               position: "absolute",
-              top: 60,
+              top: 80,
               [pos.right ? "right" : "left"]: -30,
               width: 30,
               height: 1,
@@ -96,28 +96,47 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
             style={{
               background: "rgba(255, 251, 242, 0.96)",
               border: "1px solid rgba(200, 164, 93, 0.35)",
-              borderRadius: 16,
+              borderRadius: 18,
               backdropFilter: "blur(12px)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+              boxShadow: "0 24px 70px rgba(0,0,0,0.15)",
               overflow: "hidden",
             }}
           >
             <div
               style={{
                 position: "relative",
-                height: 90,
-                background: "linear-gradient(135deg, #1f2937, #0f172a)",
+                height: 130,
+                overflow: "hidden",
               }}
             >
+              <img
+                src={p.image}
+                alt={`${p.name} exterior`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
               <div
                 style={{
                   position: "absolute",
-                  top: 8,
-                  left: 8,
-                  padding: "2px 8px",
-                  background: "rgba(255,255,255,0.9)",
+                  inset: 0,
+                  background: "linear-gradient(to bottom, rgba(15,23,42,0.25) 0%, rgba(15,23,42,0) 50%)",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  top: 10,
+                  left: 10,
+                  padding: "3px 10px",
+                  background: "rgba(255,255,255,0.95)",
                   borderRadius: 999,
                   fontSize: 12,
+                  fontWeight: 600,
+                  color: "#0f172a",
                 }}
               >
                 {p.flag} {p.country}
@@ -125,26 +144,26 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
               <div
                 style={{
                   position: "absolute",
-                  top: 8,
-                  right: 8,
-                  padding: "2px 8px",
+                  top: 10,
+                  right: 10,
+                  padding: "3px 10px",
                   background: "#C8A45D",
                   color: "#fff",
                   borderRadius: 999,
-                  fontSize: 9,
+                  fontSize: 10,
                   fontWeight: 600,
-                  letterSpacing: "0.1em",
+                  letterSpacing: "0.08em",
                   textTransform: "uppercase",
                 }}
               >
                 {p.badge}
               </div>
             </div>
-            <div style={{ padding: 12 }}>
+            <div style={{ padding: 14 }}>
               <div
                 style={{
-                  fontSize: 9,
-                  letterSpacing: "0.2em",
+                  fontSize: 10,
+                  letterSpacing: "0.18em",
                   color: "#C8A45D",
                   textTransform: "uppercase",
                   fontWeight: 600,
@@ -155,15 +174,15 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
               <div
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 18,
+                  fontSize: 20,
                   color: "#0f172a",
-                  marginTop: 2,
+                  marginTop: 3,
                   fontWeight: 700,
                 }}
               >
                 {p.name}
               </div>
-              <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{p.detail}</div>
+              <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{p.detail}</div>
             </div>
           </div>
         </motion.div>
