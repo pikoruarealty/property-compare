@@ -76,8 +76,8 @@ export function EarthGlobe({ size = 380, pinPositionsRef }: Props) {
     mount.appendChild(renderer.domElement);
 
     const earthGroup = new THREE.Group();
-    earthGroup.rotation.z = 0.41;
-    earthGroup.rotation.y = 4.2;
+    earthGroup.rotation.z = 0.22;
+    earthGroup.rotation.y = 4.45;
     scene.add(earthGroup);
 
     const loader = new THREE.TextureLoader();
