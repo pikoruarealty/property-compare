@@ -129,6 +129,7 @@ function Index() {
           <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(71,85,105,0.04),transparent_70%)] blur-3xl" />
           <div className="absolute top-10 right-[-160px] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(224,242,254,0.45),transparent_70%)] blur-3xl" />
         </div>
+        <LiveGridBackdrop />
 
         <div className="container-lux relative z-10">
           <div className="grid grid-cols-1 items-start gap-14 lg:grid-cols-[1.05fr_0.95fr]">
