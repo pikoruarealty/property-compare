@@ -156,16 +156,6 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
                 {p.name}
               </div>
               <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{p.detail}</div>
-              <div
-                style={{
-                  fontSize: 14,
-                  color: "#C8A45D",
-                  marginTop: 6,
-                  fontWeight: 600,
-                }}
-              >
-                {p.price}
-              </div>
             </div>
           </div>
         </motion.div>
