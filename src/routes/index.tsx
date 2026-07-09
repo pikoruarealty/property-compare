@@ -384,3 +384,58 @@ function MiniIndexRow({
     </li>
   );
 }
+
+function EarthHero() {
+  const pinPositionsRef = useRef<PinScreenPos[]>([]);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const [offset, setOffset] = useState({ left: 0, top: 0 });
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const update = () => {
+      const globeEl = el.querySelector("[data-earth-mount]") as HTMLElement | null;
+      if (!globeEl) return;
+      const wr = el.getBoundingClientRect();
+      const gr = globeEl.getBoundingClientRect();
+      setOffset({ left: gr.left - wr.left, top: gr.top - wr.top });
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return (
+    <motion.div
+      ref={wrapRef}
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+      className="relative z-10 mx-auto w-full max-w-[540px] lg:mx-0 lg:justify-self-end"
+      style={{ minHeight: 460 }}
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          width: 460,
+          height: 460,
+          background:
+            "radial-gradient(circle, rgba(255,179,71,0.18), rgba(59,130,246,0.08) 45%, transparent 70%)",
+          filter: "blur(24px)",
+        }}
+      />
+      <div className="relative flex items-center justify-center" data-earth-mount-wrap>
+        <div data-earth-mount>
+          <EarthGlobe size={420} pinPositionsRef={pinPositionsRef} />
+        </div>
+      </div>
+      <EarthPropertyPopups pinPositionsRef={pinPositionsRef} offset={offset} />
+    </motion.div>
+  );
+}
