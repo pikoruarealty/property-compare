@@ -12,21 +12,22 @@ interface Cell {
 
 export function LivePropertyGridMosaic() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [cols, setCols] = useState(16);
-  const [rows, setRows] = useState(5);
+  // Horizontal rectangles: fewer columns, more rows so each cell is wide & short.
+  const [cols, setCols] = useState(10);
+  const [rows, setRows] = useState(10);
 
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
       if (w < 640) {
-        setCols(8);
-        setRows(4);
+        setCols(6);
+        setRows(10);
       } else if (w < 1024) {
-        setCols(12);
-        setRows(5);
+        setCols(8);
+        setRows(11);
       } else {
-        setCols(18);
-        setRows(6);
+        setCols(10);
+        setRows(12);
       }
     };
     update();
@@ -44,8 +45,8 @@ export function LivePropertyGridMosaic() {
       result.push({
         id: `${row}-${col}-${i}`,
         image: propertyImages[i % propertyImages.length],
-        delay: Math.random() * 4,
-        duration: 2.5 + Math.random() * 2.5,
+        delay: Math.random() * 5,
+        duration: 3 + Math.random() * 2.5,
         row,
         col,
       });
@@ -53,8 +54,9 @@ export function LivePropertyGridMosaic() {
     return result;
   }, [cols, rows]);
 
+  // Stronger radial mask so headline text stays crisp and readable.
   const centerClear =
-    "radial-gradient(ellipse at center, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.82) 22%, rgba(255,255,255,0.45) 48%, rgba(255,255,255,0.08) 74%, rgba(255,255,255,0) 100%)";
+    "radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 18%, rgba(255,255,255,0.72) 36%, rgba(255,255,255,0.32) 58%, rgba(255,255,255,0.06) 80%, rgba(255,255,255,0) 100%)";
 
   return (
     <div
@@ -62,6 +64,9 @@ export function LivePropertyGridMosaic() {
       aria-hidden
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
+      {/* Global light wash so the grid never overpowers text */}
+      <div className="absolute inset-0 bg-white/55" />
+
       <div
         className="absolute inset-0 grid gap-0.5 p-0.5 sm:gap-1 sm:p-1"
         style={{
@@ -72,7 +77,7 @@ export function LivePropertyGridMosaic() {
         {cells.map((cell) => (
           <div
             key={cell.id}
-            className="relative overflow-hidden rounded-sm bg-muted/40"
+            className="relative overflow-hidden rounded-sm bg-muted/25"
             style={{
               animation: `mosaicPulse ${cell.duration}s ease-in-out ${cell.delay}s infinite alternate`,
             }}
@@ -86,7 +91,7 @@ export function LivePropertyGridMosaic() {
                 animation: `mosaicFade ${cell.duration}s ease-in-out ${cell.delay}s infinite alternate`,
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-slate-200/20" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/25 to-slate-100/30" />
           </div>
         ))}
       </div>
@@ -102,19 +107,19 @@ export function LivePropertyGridMosaic() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 10%, rgba(255,255,255,0) 90%, rgba(255,255,255,1) 100%)",
+            "linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 12%, rgba(255,255,255,0) 88%, rgba(255,255,255,1) 100%)",
         }}
       />
 
       <style>{`
         @keyframes mosaicFade {
-          0% { opacity: 0; transform: scale(1.05); }
-          40% { opacity: 0.45; transform: scale(1); }
-          100% { opacity: 0.75; transform: scale(1); }
+          0% { opacity: 0; transform: scale(1.04); }
+          45% { opacity: 0.22; transform: scale(1); }
+          100% { opacity: 0.38; transform: scale(1); }
         }
         @keyframes mosaicPulse {
-          0% { filter: brightness(0.94); }
-          100% { filter: brightness(1.06); }
+          0% { filter: brightness(0.96); }
+          100% { filter: brightness(1.04); }
         }
       `}</style>
     </div>
