@@ -187,7 +187,7 @@ function Index() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.4 }}
-                className="mt-9 flex w-full max-w-xl items-center gap-2 rounded-full border border-foreground/10 bg-card/85 p-1.5 backdrop-blur-md shadow-[var(--shadow-deep)]"
+                className="mt-9 flex w-full max-w-xl items-center gap-2 rounded-full border border-foreground/12 bg-white/95 p-1.5 backdrop-blur-xl shadow-[var(--shadow-deep)]"
               >
                 <div className="flex flex-1 items-center gap-3 px-5">
                   <Search className="h-4 w-4" style={{ color: "var(--brand-accent, var(--brand))" }} />
@@ -215,13 +215,13 @@ function Index() {
               >
                 <button
                   onClick={() => scrollToId("suite")}
-                  className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-card px-5 py-2.5 text-[12px] font-medium text-foreground transition hover:border-foreground/40"
+                  className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-white/90 px-5 py-2.5 text-[12px] font-medium text-foreground transition hover:border-foreground/40 backdrop-blur-md"
                 >
                   <GitCompareArrows className="h-3.5 w-3.5" /> Start a comparison
                 </button>
                 <button
                   onClick={() => scrollToId("collection")}
-                  className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[12px] font-medium text-muted-foreground transition hover:text-foreground"
+                  className="inline-flex items-center gap-2 rounded-full bg-white/80 px-5 py-2.5 text-[12px] font-medium text-muted-foreground transition hover:text-foreground backdrop-blur-md"
                 >
                   <LayoutList className="h-3.5 w-3.5" /> Browse the collection
                 </button>
