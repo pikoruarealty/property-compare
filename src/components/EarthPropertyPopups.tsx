@@ -4,15 +4,14 @@ import { useEarthStore } from "@/stores/earth-store";
 import type { PinScreenPos } from "@/components/EarthGlobe";
 
 const PROPERTIES = [
-  {
-    city: "Ahmedabad",
-    country: "India",
-    flag: "🇮🇳",
-    name: "Ikebana",
-    price: "₹1.85 Cr",
-    detail: "4 BHK · Penthouse",
-    badge: "Near Possession",
-  },
+  { city: "Ahmedabad", country: "India", flag: "🇮🇳", name: "Ikebana", price: "₹1.85 Cr", detail: "4 BHK · Penthouse", badge: "Near Possession" },
+  { city: "Dubai", country: "UAE", flag: "🇦🇪", name: "Palm Vista", price: "AED 12.4 M", detail: "5 BR · Waterfront Villa", badge: "New Launch" },
+  { city: "London", country: "UK", flag: "🇬🇧", name: "Belgrave House", price: "£6.8 M", detail: "4 BR · Townhouse", badge: "Heritage" },
+  { city: "Mumbai", country: "India", flag: "🇮🇳", name: "Malabar Crest", price: "₹42 Cr", detail: "5 BHK · Sea View", badge: "Featured" },
+  { city: "Singapore", country: "SG", flag: "🇸🇬", name: "Orchard Reserve", price: "S$ 9.2 M", detail: "3 BR · Sky Residence", badge: "Limited" },
+  { city: "New York", country: "USA", flag: "🇺🇸", name: "Park Avenue 88", price: "$14.5 M", detail: "4 BR · Manhattan", badge: "Exclusive" },
+  { city: "Tokyo", country: "Japan", flag: "🇯🇵", name: "Aoyama Court", price: "¥1.6 B", detail: "3 BR · Minimalist", badge: "Modern" },
+  { city: "Sydney", country: "Australia", flag: "🇦🇺", name: "Harbour Point", price: "A$ 11.9 M", detail: "4 BR · Waterfront", badge: "Premium" },
 ];
 
 interface Props {
@@ -26,8 +25,10 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
   const [pos, setPos] = useState({ x: 0, y: 0, right: false });
 
   useEffect(() => {
-    // Lock to our single current property
-    if (currentIndex !== 0) setIndex(0);
+    const id = setInterval(() => {
+      setIndex((currentIndex + 1) % PROPERTIES.length);
+    }, 3800);
+    return () => clearInterval(id);
   }, [currentIndex, setIndex]);
 
   useEffect(() => {
