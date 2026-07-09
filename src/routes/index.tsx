@@ -15,6 +15,7 @@ import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { EarthGlobe, type PinScreenPos } from "@/components/EarthGlobe";
 import { EarthPropertyPopups } from "@/components/EarthPropertyPopups";
 import { LiveGridBackdrop } from "@/components/LiveGridBackdrop";
+import { LivePropertyGridMosaic } from "@/components/LivePropertyGridMosaic";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { matchesPreferences } from "@/lib/preference-filter";
 import type { Property } from "@/types/property";
