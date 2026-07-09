@@ -424,26 +424,25 @@ function EarthHero() {
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-      className="relative z-10 mx-auto w-full max-w-[540px] overflow-visible lg:mx-0 lg:justify-self-end"
-      style={{ minHeight: 460 }}
+      className="relative z-10 mx-auto w-full max-w-[520px] overflow-visible lg:mx-0 lg:justify-self-end"
+      style={{ minHeight: 480 }}
     >
       <div
         aria-hidden
-        className="pointer-events-none fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{
-          width: "160vmax",
-          height: "160vmax",
+          width: "140vmax",
+          height: "140vmax",
           background:
-            "radial-gradient(closest-side, rgba(96,165,250,0.22) 0%, rgba(147,197,253,0.12) 18%, rgba(186,230,253,0.05) 36%, rgba(186,230,253,0.015) 58%, transparent 78%)",
-          filter: "blur(80px)",
+            "radial-gradient(closest-side, rgba(96,165,250,0.18) 0%, rgba(147,197,253,0.09) 18%, rgba(186,230,253,0.04) 36%, rgba(186,230,253,0.01) 58%, transparent 78%)",
+          filter: "blur(90px)",
           zIndex: -1,
         }}
       />
 
-
-      <div className="relative flex items-center justify-center" data-earth-mount-wrap>
-        <div data-earth-mount>
-          <EarthGlobe size={420} pinPositionsRef={pinPositionsRef} />
+      <div className="relative flex h-full min-h-[480px] items-center justify-center" data-earth-mount-wrap>
+        <div data-earth-mount className="relative">
+          <EarthGlobe size={400} pinPositionsRef={pinPositionsRef} />
         </div>
       </div>
       <EarthPropertyPopups pinPositionsRef={pinPositionsRef} offset={offset} />
