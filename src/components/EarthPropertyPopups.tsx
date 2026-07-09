@@ -2,16 +2,24 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEarthStore } from "@/stores/earth-store";
 import type { PinScreenPos } from "@/components/EarthGlobe";
+import ikebanaExterior from "@/assets/ikebana-exterior.png.asset.json";
+import belagioPool from "@/assets/belagio-pool.jpg.asset.json";
+import capstoneCourtyard from "@/assets/capstone-courtyard.jpg.asset.json";
+import northparkBungalow from "@/assets/northpark-bungalow.jpg.asset.json";
+import avantPark from "@/assets/avant-park.avif.asset.json";
+import eminenceExterior from "@/assets/eminence-96-exterior.png.asset.json";
+import marutiExterior from "@/assets/maruti-360-exterior.jpeg.asset.json";
+import swatiPool from "@/assets/swati-senor-pool.jpg.asset.json";
 
 const PROPERTIES = [
-  { city: "Ahmedabad", country: "India", flag: "🇮🇳", name: "Ikebana", price: "₹1.85 Cr", detail: "4 BHK · Penthouse", badge: "Near Possession" },
-  { city: "Dubai", country: "UAE", flag: "🇦🇪", name: "Palm Vista", price: "AED 12.4 M", detail: "5 BR · Waterfront Villa", badge: "New Launch" },
-  { city: "London", country: "UK", flag: "🇬🇧", name: "Belgrave House", price: "£6.8 M", detail: "4 BR · Townhouse", badge: "Heritage" },
-  { city: "Mumbai", country: "India", flag: "🇮🇳", name: "Malabar Crest", price: "₹42 Cr", detail: "5 BHK · Sea View", badge: "Featured" },
-  { city: "Singapore", country: "SG", flag: "🇸🇬", name: "Orchard Reserve", price: "S$ 9.2 M", detail: "3 BR · Sky Residence", badge: "Limited" },
-  { city: "New York", country: "USA", flag: "🇺🇸", name: "Park Avenue 88", price: "$14.5 M", detail: "4 BR · Manhattan", badge: "Exclusive" },
-  { city: "Tokyo", country: "Japan", flag: "🇯🇵", name: "Aoyama Court", price: "¥1.6 B", detail: "3 BR · Minimalist", badge: "Modern" },
-  { city: "Sydney", country: "Australia", flag: "🇦🇺", name: "Harbour Point", price: "A$ 11.9 M", detail: "4 BR · Waterfront", badge: "Premium" },
+  { city: "Ahmedabad", country: "India", flag: "🇮🇳", name: "Ikebana", price: "₹1.85 Cr", detail: "4 BHK · Penthouse", badge: "Near Possession", image: ikebanaExterior.url },
+  { city: "Dubai", country: "UAE", flag: "🇦🇪", name: "Palm Vista", price: "AED 12.4 M", detail: "5 BR · Waterfront Villa", badge: "New Launch", image: belagioPool.url },
+  { city: "London", country: "UK", flag: "🇬🇧", name: "Belgrave House", price: "£6.8 M", detail: "4 BR · Townhouse", badge: "Heritage", image: capstoneCourtyard.url },
+  { city: "Mumbai", country: "India", flag: "🇮🇳", name: "Malabar Crest", price: "₹42 Cr", detail: "5 BHK · Sea View", badge: "Featured", image: northparkBungalow.url },
+  { city: "Singapore", country: "SG", flag: "🇸🇬", name: "Orchard Reserve", price: "S$ 9.2 M", detail: "3 BR · Sky Residence", badge: "Limited", image: avantPark.url },
+  { city: "New York", country: "USA", flag: "🇺🇸", name: "Park Avenue 88", price: "$14.5 M", detail: "4 BR · Manhattan", badge: "Exclusive", image: eminenceExterior.url },
+  { city: "Tokyo", country: "Japan", flag: "🇯🇵", name: "Aoyama Court", price: "¥1.6 B", detail: "3 BR · Minimalist", badge: "Modern", image: marutiExterior.url },
+  { city: "Sydney", country: "Australia", flag: "🇦🇺", name: "Harbour Point", price: "A$ 11.9 M", detail: "4 BR · Waterfront", badge: "Premium", image: swatiPool.url },
 ];
 
 interface Props {
@@ -51,7 +59,7 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
   }, [currentIndex, pinPositionsRef, offset]);
 
   const p = PROPERTIES[currentIndex];
-  const cardWidth = 220;
+  const cardWidth = 280;
   const cardOffset = pos.right ? -cardWidth - 30 : 30;
 
   return (
@@ -66,7 +74,7 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
           style={{
             position: "absolute",
             left: pos.x + cardOffset,
-            top: pos.y - 60,
+            top: pos.y - 80,
             width: cardWidth,
             zIndex: 15,
             pointerEvents: "none",
@@ -77,7 +85,7 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
             aria-hidden
             style={{
               position: "absolute",
-              top: 60,
+              top: 80,
               [pos.right ? "right" : "left"]: -30,
               width: 30,
               height: 1,
@@ -88,28 +96,47 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
             style={{
               background: "rgba(255, 251, 242, 0.96)",
               border: "1px solid rgba(200, 164, 93, 0.35)",
-              borderRadius: 16,
+              borderRadius: 18,
               backdropFilter: "blur(12px)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
+              boxShadow: "0 24px 70px rgba(0,0,0,0.15)",
               overflow: "hidden",
             }}
           >
             <div
               style={{
                 position: "relative",
-                height: 90,
-                background: "linear-gradient(135deg, #1f2937, #0f172a)",
+                height: 130,
+                overflow: "hidden",
               }}
             >
+              <img
+                src={p.image}
+                alt={`${p.name} exterior`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
               <div
                 style={{
                   position: "absolute",
-                  top: 8,
-                  left: 8,
-                  padding: "2px 8px",
-                  background: "rgba(255,255,255,0.9)",
+                  inset: 0,
+                  background: "linear-gradient(to bottom, rgba(15,23,42,0.25) 0%, rgba(15,23,42,0) 50%)",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  top: 10,
+                  left: 10,
+                  padding: "3px 10px",
+                  background: "rgba(255,255,255,0.95)",
                   borderRadius: 999,
                   fontSize: 12,
+                  fontWeight: 600,
+                  color: "#0f172a",
                 }}
               >
                 {p.flag} {p.country}
@@ -117,26 +144,26 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
               <div
                 style={{
                   position: "absolute",
-                  top: 8,
-                  right: 8,
-                  padding: "2px 8px",
+                  top: 10,
+                  right: 10,
+                  padding: "3px 10px",
                   background: "#C8A45D",
                   color: "#fff",
                   borderRadius: 999,
-                  fontSize: 9,
+                  fontSize: 10,
                   fontWeight: 600,
-                  letterSpacing: "0.1em",
+                  letterSpacing: "0.08em",
                   textTransform: "uppercase",
                 }}
               >
                 {p.badge}
               </div>
             </div>
-            <div style={{ padding: 12 }}>
+            <div style={{ padding: 14 }}>
               <div
                 style={{
-                  fontSize: 9,
-                  letterSpacing: "0.2em",
+                  fontSize: 10,
+                  letterSpacing: "0.18em",
                   color: "#C8A45D",
                   textTransform: "uppercase",
                   fontWeight: 600,
@@ -147,15 +174,15 @@ export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
               <div
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 18,
+                  fontSize: 20,
                   color: "#0f172a",
-                  marginTop: 2,
+                  marginTop: 3,
                   fontWeight: 700,
                 }}
               >
                 {p.name}
               </div>
-              <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>{p.detail}</div>
+              <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>{p.detail}</div>
             </div>
           </div>
         </motion.div>
