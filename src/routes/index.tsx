@@ -153,6 +153,10 @@ function Index() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.1 }}
                 className="mt-7 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.03em] text-foreground sm:text-[58px] lg:text-[66px]"
+                style={{
+                  textShadow:
+                    "0 0 40px rgba(255,255,255,0.85), 0 0 80px rgba(255,255,255,0.55)",
+                }}
               >
                 India's <span className="gold-text">Smartest</span>
                 <br />
@@ -166,6 +170,10 @@ function Index() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.25 }}
                 className="mt-7 max-w-lg text-[16px] leading-relaxed text-muted-foreground sm:text-[17px]"
+                style={{
+                  textShadow:
+                    "0 0 24px rgba(255,255,255,0.9), 0 0 48px rgba(255,255,255,0.6)",
+                }}
               >
                 {"\n"}
               </motion.p>
