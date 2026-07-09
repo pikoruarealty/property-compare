@@ -416,20 +416,21 @@ function EarthHero() {
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-      className="relative z-10 mx-auto w-full max-w-[540px] lg:mx-0 lg:justify-self-end"
+      className="relative z-10 mx-auto w-full max-w-[540px] overflow-visible lg:mx-0 lg:justify-self-end"
       style={{ minHeight: 460 }}
     >
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
-          width: 500,
-          height: 500,
+          width: 780,
+          height: 780,
           background:
-            "radial-gradient(circle, rgba(96,165,250,0.28), rgba(186,230,253,0.18) 40%, transparent 72%)",
-          filter: "blur(30px)",
+            "radial-gradient(closest-side, rgba(96,165,250,0.32), rgba(186,230,253,0.14) 45%, transparent 72%)",
+          filter: "blur(60px)",
         }}
       />
+
       <div className="relative flex items-center justify-center" data-earth-mount-wrap>
         <div data-earth-mount>
           <EarthGlobe size={420} pinPositionsRef={pinPositionsRef} />
