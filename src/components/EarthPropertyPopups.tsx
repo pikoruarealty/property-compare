@@ -13,51 +13,6 @@ const PROPERTIES = [
     detail: "4 BHK · Penthouse",
     badge: "Near Possession",
   },
-  {
-    city: "Dubai",
-    country: "UAE",
-    flag: "🇦🇪",
-    name: "The Grand Marina",
-    price: "AED 2.4M",
-    detail: "5 BHK · Waterfront",
-    badge: "New Launch",
-  },
-  {
-    city: "London",
-    country: "UK",
-    flag: "🇬🇧",
-    name: "One Belgravia",
-    price: "£4.2M",
-    detail: "4 BHK · Mayfair",
-    badge: "Ready to Move",
-  },
-  {
-    city: "Mumbai",
-    country: "India",
-    flag: "🇮🇳",
-    name: "Worli Skyline",
-    price: "₹12 Cr",
-    detail: "5 BHK · Sea View",
-    badge: "Featured",
-  },
-  {
-    city: "Singapore",
-    country: "SG",
-    flag: "🇸🇬",
-    name: "Marina Heights",
-    price: "S$6.8M",
-    detail: "4 BHK · Bayfront",
-    badge: "New Launch",
-  },
-  {
-    city: "Sydney",
-    country: "AU",
-    flag: "🇦🇺",
-    name: "Harbour Reserve",
-    price: "A$5.1M",
-    detail: "4 BHK · Waterfront",
-    badge: "Ready to Move",
-  },
 ];
 
 interface Props {
@@ -67,18 +22,12 @@ interface Props {
 
 export function EarthPropertyPopups({ pinPositionsRef, offset }: Props) {
   const { currentIndex, setIndex } = useEarthStore();
-  const [visible, setVisible] = useState(true);
+  const [visible] = useState(true);
   const [pos, setPos] = useState({ x: 0, y: 0, right: false });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVisible(false);
-      setTimeout(() => {
-        setIndex((currentIndex + 1) % PROPERTIES.length);
-        setVisible(true);
-      }, 400);
-    }, 3500);
-    return () => clearInterval(interval);
+    // Lock to our single current property
+    if (currentIndex !== 0) setIndex(0);
   }, [currentIndex, setIndex]);
 
   useEffect(() => {
