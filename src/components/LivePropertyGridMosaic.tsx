@@ -12,21 +12,21 @@ interface Cell {
 
 export function LivePropertyGridMosaic() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [cols, setCols] = useState(8);
-  const [rows, setRows] = useState(6);
+  const [cols, setCols] = useState(16);
+  const [rows, setRows] = useState(5);
 
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
       if (w < 640) {
-        setCols(4);
-        setRows(5);
+        setCols(8);
+        setRows(4);
       } else if (w < 1024) {
-        setCols(6);
-        setRows(6);
+        setCols(12);
+        setRows(5);
       } else {
-        setCols(9);
-        setRows(7);
+        setCols(18);
+        setRows(6);
       }
     };
     update();
@@ -54,7 +54,7 @@ export function LivePropertyGridMosaic() {
   }, [cols, rows]);
 
   const centerClear =
-    "radial-gradient(ellipse at center, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.75) 28%, rgba(255,255,255,0.35) 55%, rgba(255,255,255,0.05) 78%, rgba(255,255,255,0) 100%)";
+    "radial-gradient(ellipse at center, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.82) 22%, rgba(255,255,255,0.45) 48%, rgba(255,255,255,0.08) 74%, rgba(255,255,255,0) 100%)";
 
   return (
     <div
@@ -63,7 +63,7 @@ export function LivePropertyGridMosaic() {
       className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
     >
       <div
-        className="absolute inset-0 grid gap-1.5 p-1.5 sm:gap-2 sm:p-2"
+        className="absolute inset-0 grid gap-0.5 p-0.5 sm:gap-1 sm:p-1"
         style={{
           gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${rows}, minmax(0, 1fr))`,
@@ -72,7 +72,7 @@ export function LivePropertyGridMosaic() {
         {cells.map((cell) => (
           <div
             key={cell.id}
-            className="relative overflow-hidden rounded-md bg-muted/40"
+            className="relative overflow-hidden rounded-sm bg-muted/40"
             style={{
               animation: `mosaicPulse ${cell.duration}s ease-in-out ${cell.delay}s infinite alternate`,
             }}
@@ -102,19 +102,19 @@ export function LivePropertyGridMosaic() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 12%, rgba(255,255,255,0) 88%, rgba(255,255,255,1) 100%)",
+            "linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 10%, rgba(255,255,255,0) 90%, rgba(255,255,255,1) 100%)",
         }}
       />
 
       <style>{`
         @keyframes mosaicFade {
           0% { opacity: 0; transform: scale(1.05); }
-          40% { opacity: 0.55; transform: scale(1); }
-          100% { opacity: 0.85; transform: scale(1); }
+          40% { opacity: 0.45; transform: scale(1); }
+          100% { opacity: 0.75; transform: scale(1); }
         }
         @keyframes mosaicPulse {
-          0% { filter: brightness(0.92); }
-          100% { filter: brightness(1.08); }
+          0% { filter: brightness(0.94); }
+          100% { filter: brightness(1.06); }
         }
       `}</style>
     </div>

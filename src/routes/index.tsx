@@ -14,7 +14,6 @@ import { SuggestedComparisons } from "@/components/SuggestedComparisons";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { EarthGlobe, type PinScreenPos } from "@/components/EarthGlobe";
 import { EarthPropertyPopups } from "@/components/EarthPropertyPopups";
-import { LiveGridBackdrop } from "@/components/LiveGridBackdrop";
 import { LivePropertyGridMosaic } from "@/components/LivePropertyGridMosaic";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { matchesPreferences } from "@/lib/preference-filter";
@@ -130,7 +129,7 @@ function Index() {
           <div className="absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(71,85,105,0.035),transparent_78%)]" style={{ filter: "blur(72px)" }} />
           <div className="absolute top-10 right-[-180px] h-[620px] w-[620px] rounded-full bg-[radial-gradient(circle,rgba(224,242,254,0.28),transparent_78%)]" style={{ filter: "blur(80px)" }} />
         </div>
-        <LiveGridBackdrop />
+        <LivePropertyGridMosaic />
 
         <div className="container-lux relative z-10">
           <div className="grid grid-cols-1 items-start gap-14 lg:grid-cols-[1.05fr_0.95fr]">
@@ -281,7 +280,6 @@ function Index() {
 
       {/* ============ COLLECTION ============ */}
       <section id="collection" ref={collectionRef} className="relative scroll-mt-28 py-16 sm:py-24 overflow-hidden">
-        <LivePropertyGridMosaic />
         <div className="container-lux relative z-10">
 
           <div className="mt-8 flex flex-wrap items-end justify-between gap-6 border-b border-champagne/15 pb-6">
