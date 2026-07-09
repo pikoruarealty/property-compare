@@ -2,16 +2,24 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEarthStore } from "@/stores/earth-store";
 import type { PinScreenPos } from "@/components/EarthGlobe";
+import ikebanaExterior from "@/assets/ikebana-exterior.png.asset.json";
+import belagioPool from "@/assets/belagio-pool.jpg.asset.json";
+import capstoneCourtyard from "@/assets/capstone-courtyard.jpg.asset.json";
+import northparkBungalow from "@/assets/northpark-bungalow.jpg.asset.json";
+import avantPark from "@/assets/avant-park.avif.asset.json";
+import eminenceExterior from "@/assets/eminence-96-exterior.png.asset.json";
+import marutiExterior from "@/assets/maruti-360-exterior.jpeg.asset.json";
+import swatiPool from "@/assets/swati-senor-pool.jpg.asset.json";
 
 const PROPERTIES = [
-  { city: "Ahmedabad", country: "India", flag: "🇮🇳", name: "Ikebana", price: "₹1.85 Cr", detail: "4 BHK · Penthouse", badge: "Near Possession" },
-  { city: "Dubai", country: "UAE", flag: "🇦🇪", name: "Palm Vista", price: "AED 12.4 M", detail: "5 BR · Waterfront Villa", badge: "New Launch" },
-  { city: "London", country: "UK", flag: "🇬🇧", name: "Belgrave House", price: "£6.8 M", detail: "4 BR · Townhouse", badge: "Heritage" },
-  { city: "Mumbai", country: "India", flag: "🇮🇳", name: "Malabar Crest", price: "₹42 Cr", detail: "5 BHK · Sea View", badge: "Featured" },
-  { city: "Singapore", country: "SG", flag: "🇸🇬", name: "Orchard Reserve", price: "S$ 9.2 M", detail: "3 BR · Sky Residence", badge: "Limited" },
-  { city: "New York", country: "USA", flag: "🇺🇸", name: "Park Avenue 88", price: "$14.5 M", detail: "4 BR · Manhattan", badge: "Exclusive" },
-  { city: "Tokyo", country: "Japan", flag: "🇯🇵", name: "Aoyama Court", price: "¥1.6 B", detail: "3 BR · Minimalist", badge: "Modern" },
-  { city: "Sydney", country: "Australia", flag: "🇦🇺", name: "Harbour Point", price: "A$ 11.9 M", detail: "4 BR · Waterfront", badge: "Premium" },
+  { city: "Ahmedabad", country: "India", flag: "🇮🇳", name: "Ikebana", price: "₹1.85 Cr", detail: "4 BHK · Penthouse", badge: "Near Possession", image: ikebanaExterior.url },
+  { city: "Dubai", country: "UAE", flag: "🇦🇪", name: "Palm Vista", price: "AED 12.4 M", detail: "5 BR · Waterfront Villa", badge: "New Launch", image: belagioPool.url },
+  { city: "London", country: "UK", flag: "🇬🇧", name: "Belgrave House", price: "£6.8 M", detail: "4 BR · Townhouse", badge: "Heritage", image: capstoneCourtyard.url },
+  { city: "Mumbai", country: "India", flag: "🇮🇳", name: "Malabar Crest", price: "₹42 Cr", detail: "5 BHK · Sea View", badge: "Featured", image: northparkBungalow.url },
+  { city: "Singapore", country: "SG", flag: "🇸🇬", name: "Orchard Reserve", price: "S$ 9.2 M", detail: "3 BR · Sky Residence", badge: "Limited", image: avantPark.url },
+  { city: "New York", country: "USA", flag: "🇺🇸", name: "Park Avenue 88", price: "$14.5 M", detail: "4 BR · Manhattan", badge: "Exclusive", image: eminenceExterior.url },
+  { city: "Tokyo", country: "Japan", flag: "🇯🇵", name: "Aoyama Court", price: "¥1.6 B", detail: "3 BR · Minimalist", badge: "Modern", image: marutiExterior.url },
+  { city: "Sydney", country: "Australia", flag: "🇦🇺", name: "Harbour Point", price: "A$ 11.9 M", detail: "4 BR · Waterfront", badge: "Premium", image: swatiPool.url },
 ];
 
 interface Props {
