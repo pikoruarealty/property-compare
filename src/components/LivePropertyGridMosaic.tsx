@@ -111,6 +111,20 @@ export function LivePropertyGridMosaic() {
         style={{ background: centerClear }}
       />
 
+      {/* Subtle center dot grid so the middle never reads as flat white */}
+      <div
+        className="absolute inset-0 opacity-[0.035]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, rgba(71,85,105,0.55) 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+          maskImage:
+            "radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0) 70%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0) 70%)",
+        }}
+      />
+
       {/* Edge vignette to fade grid into page edges */}
       <div
         className="absolute inset-0"
