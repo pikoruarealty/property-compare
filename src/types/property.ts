@@ -16,11 +16,11 @@ export interface ConfigDetail {
   rate: string | null;   // basic rate per sqft
   livingArea?: string | null;
   kitchen?: string | null;
-  bedroom1?: string | null; // Master Bedroom 1
-  bedroom2?: string | null; // Master Bedroom 2
-  bedroom3?: string | null;
-  bedroom4?: string | null;
-  bedroom5?: string | null;
+  bedroom1?: string | null; // Bedroom 1
+  bedroom2?: string | null; // Bedroom 2
+  bedroom3?: string | null; // Bedroom 3
+  bedroom4?: string | null; // Bedroom 4
+  bedroom5?: string | null; // Bedroom 5
 }
 
 export type PropertyConfigurations = Partial<Record<ConfigKey, ConfigDetail>>;

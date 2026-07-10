@@ -6,7 +6,7 @@ const CATEGORIES = [
   { key: "livingRoom", label: "Living Room" },
   { key: "pool", label: "Pool" },
   { key: "clubhouse", label: "Clubhouse" },
-  { key: "masterBedroom", label: "Master Bedroom" },
+  { key: "masterBedroom", label: "Bedroom" },
 ] as const;
 
 export function GalleryComparison({ properties }: { properties: Property[] }) {
