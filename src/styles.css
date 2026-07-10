@@ -100,50 +100,50 @@
 
 
 .light {
-  --lux-black: #ffffff;
+  --lux-black: #f8fafc;
   --soft-black: #ffffff;
-  --graphite: #f4efe6;
-  --ivory: #0f2a35;
+  --graphite: #e0f2fe;
+  --ivory: #334155;
 
-  --champagne-gold: #2d7a8a;
-  --antique-gold: #b89968;
-  --muted-gold: #d4b896;
+  --champagne-gold: #475569;
+  --antique-gold: #64748b;
+  --muted-gold: #94a3b8;
 
-  --background: #ffffff;
-  --foreground: #0f2a35;
+  --background: #f8fafc;
+  --foreground: #334155;
   --card: #ffffff;
-  --card-foreground: #0f2a35;
+  --card-foreground: #334155;
   --popover: #ffffff;
-  --popover-foreground: #0f2a35;
-  --primary: #0f2a35;
-  --primary-foreground: #ffffff;
-  --secondary: #f4efe6;
-  --secondary-foreground: #0f2a35;
-  --muted: #f7f4ee;
-  --muted-foreground: #5a6b73;
-  --accent: #2d7a8a;
-  --accent-foreground: #ffffff;
-  --border: rgba(15, 42, 53, 0.12);
-  --input: rgba(15, 42, 53, 0.2);
-  --ring: #2d7a8a;
+  --popover-foreground: #334155;
+  --primary: #475569;
+  --primary-foreground: #f8fafc;
+  --secondary: #e0f2fe;
+  --secondary-foreground: #334155;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #e0f2fe;
+  --accent-foreground: #334155;
+  --border: rgba(71, 85, 105, 0.14);
+  --input: rgba(71, 85, 105, 0.22);
+  --ring: #475569;
 
-  --gradient-gold: linear-gradient(135deg, #d4b896 0%, #b89968 100%);
-  --gradient-dark: linear-gradient(180deg, #0f2a35 0%, #1a3d4a 100%);
+  --gradient-gold: linear-gradient(135deg, #475569 0%, #94a3b8 100%);
+  --gradient-dark: linear-gradient(180deg, #f8fafc 0%, #e0f2fe 100%);
   --gradient-radial-gold: none;
 
-  --shadow-gold: 0 18px 44px -30px rgba(45, 122, 138, 0.28);
-  --shadow-deep: 0 24px 60px -38px rgba(15, 42, 53, 0.28);
-  --shadow-glass: 0 8px 24px -14px rgba(15, 42, 53, 0.14);
+  --shadow-gold: 0 18px 44px -30px rgba(71, 85, 105, 0.22);
+  --shadow-deep: 0 24px 60px -38px rgba(71, 85, 105, 0.24);
+  --shadow-glass: 0 8px 24px -14px rgba(71, 85, 105, 0.16);
 
   --glass-bg: rgba(255, 255, 255, 0.92);
-  --glass-border: rgba(15, 42, 53, 0.1);
+  --glass-border: rgba(71, 85, 105, 0.12);
 }
 
 .light body {
   background:
-    radial-gradient(1200px 700px at 10% -10%, rgba(212, 184, 150, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 100% 0%, rgba(45, 122, 138, 0.06), transparent 55%),
-    #ffffff;
+    radial-gradient(1200px 700px at 10% -10%, rgba(71, 85, 105, 0.04), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(224, 242, 254, 0.5), transparent 55%),
+    #f8fafc;
 }
 
 .light header,
