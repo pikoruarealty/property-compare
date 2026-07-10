@@ -145,13 +145,26 @@
         "area": "3300-4300",
         "carpet": "1518-1978",
         "price": "3-4cr+",
-        "rate": "8500"
+        "rate": "8500",
+        "livingArea": "22'6\" × 18'1\"",
+        "kitchen": "13'7\" × 9'6\"",
+        "bedroom1": "17'0\" × 11'0\"",
+        "bedroom2": "17'0\" × 12'0\"",
+        "bedroom3": "14'0\" × 11'0\"",
+        "bedroom4": "11'0\" × 11'0\""
       },
       "5 BHK": {
         "area": "6700",
         "carpet": "3082",
         "price": "5.75cr+",
-        "rate": "8500"
+        "rate": "8500",
+        "livingArea": "23'0\" × 18'0\"",
+        "kitchen": "11'0\" × 16'4\"",
+        "bedroom1": "13'0\" × 18'0\"",
+        "bedroom2": "15'0\" × 12'0\"",
+        "bedroom3": "18'5\" × 12'0\"",
+        "bedroom4": "13'0\" × 20'0\"",
+        "bedroom5": "11'0\" × 17'0\""
       },
       "Penthouse": null,
       "Duplex": null
@@ -197,7 +210,13 @@
         "area": "3300",
         "carpet": "1518",
         "price": "2.5cr+",
-        "rate": "6800"
+        "rate": "6800",
+        "livingArea": "22'9\" × 12'0\"",
+        "kitchen": "15'0\" × 17'0\" (Kitchen + Dining)",
+        "bedroom1": "16'0\" × 10'9\"",
+        "bedroom2": "12'6\" × 10'0\"",
+        "bedroom3": "12'6\" × 17'0\"",
+        "bedroom4": "11'0\" × 15'0\""
       },
       "5 BHK": null,
       "Penthouse": {
@@ -557,7 +576,13 @@
         "area": "4200",
         "carpet": "1932",
         "price": "3.15",
-        "rate": "7500"
+        "rate": "7500",
+        "livingArea": "13'0\" × 19'9\" (Living/Dining) + 13'0\" × 19'6\" Drawing",
+        "kitchen": "15'0\" × 10'6\"",
+        "bedroom1": "11'0\" × 17'0\"",
+        "bedroom2": "11'0\" × 16'3\"",
+        "bedroom3": "12'0\" × 19'9\"",
+        "bedroom4": "17'0\" × 12'0\""
       },
       "5 BHK": null,
       "Penthouse": {
