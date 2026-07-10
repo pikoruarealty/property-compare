@@ -484,7 +484,15 @@ function bestIndex(values: (number | null)[]): number | null {
 }
 
 /* ---------------- grid ---------------- */
-function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visibleConfigKeys: ConfigKey[] }) {
+function ComparisonGrid({
+  items,
+  visibleConfigKeys,
+  budgetStatus,
+}: {
+  items: Property[];
+  visibleConfigKeys: ConfigKey[];
+  budgetStatus: Record<string, "in" | "above">;
+}) {
   const cols = items.length;
   const gridTpl = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
 
@@ -494,6 +502,9 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
   });
   const superWinner = bestIndex(items.map((p) => parseMaxNum(p.superBuiltUpArea)));
   const carpetWinner = bestIndex(items.map((p) => parseMaxNum(p.carpetArea)));
+
+  const hasAnyStatus = Object.values(budgetStatus).some((v) => v === "above" || v === "in") &&
+    visibleConfigKeys.some((k) => budgetStatus[k]);
 
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-background/40">
@@ -539,10 +550,12 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
       <SectionLabel title="Configurations" />
       {visibleConfigKeys.map((k) => {
         const winnerIdx = configWinners[k];
+        const status = budgetStatus[k];
         return (
           <Row
             key={k}
             label={k}
+            sublabel={hasAnyStatus ? <BudgetTag status={status} /> : undefined}
             items={items}
             gridTpl={gridTpl}
             render={(p, i) => {
@@ -563,25 +576,14 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
 
       <SectionLabel title="Room Dimensions" />
       {visibleConfigKeys.map((k) => (
-        <div key={`rooms-${k}`}>
-          <div className="px-4 py-1.5 bg-muted/20 border-b border-border">
-            <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{k}</span>
-          </div>
-          {roomFieldsFor(k).map(({ key, label }) => (
-            <Row
-              key={`${k}-${key}`}
-              label={label}
-              items={items}
-              gridTpl={gridTpl}
-              render={(p) => {
-                const cfg = p.configurations[k];
-                const val = cfg ? (cfg[key] ?? null) : null;
-                if (!cfg) return <NotAvail />;
-                return <Plain value={val} />;
-              }}
-            />
-          ))}
-        </div>
+        <RoomBlock
+          key={`rooms-${k}`}
+          configKey={k}
+          items={items}
+          gridTpl={gridTpl}
+          status={budgetStatus[k] ?? "in"}
+          showStatus={hasAnyStatus}
+        />
       ))}
 
       <SectionLabel title="Total Area" />
