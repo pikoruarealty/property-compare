@@ -12,9 +12,6 @@ import { PreferencePanel } from "@/components/PreferencePanel";
 import { SuggestedProperties } from "@/components/SuggestedProperties";
 import { SuggestedComparisons } from "@/components/SuggestedComparisons";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
-import { EarthGlobe, type PinScreenPos } from "@/components/EarthGlobe";
-import { EarthPropertyPopups } from "@/components/EarthPropertyPopups";
-import { LivePropertyGridMosaic } from "@/components/LivePropertyGridMosaic";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { matchesPreferences } from "@/lib/preference-filter";
 import type { Property } from "@/types/property";
@@ -129,7 +126,7 @@ function Index() {
           <div className="absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(71,85,105,0.035),transparent_78%)]" style={{ filter: "blur(72px)" }} />
           <div className="absolute top-10 right-[-180px] h-[620px] w-[620px] rounded-full bg-[radial-gradient(circle,rgba(224,242,254,0.28),transparent_78%)]" style={{ filter: "blur(80px)" }} />
         </div>
-        <LivePropertyGridMosaic />
+        
 
         <div className="container-lux relative z-10">
           <div className="grid grid-cols-1 items-start gap-14 lg:grid-cols-[1.05fr_0.95fr]">
@@ -229,8 +226,8 @@ function Index() {
 
             </div>
 
-            {/* RIGHT — 3D Earth globe with cycling property popups */}
-            <EarthHero />
+            {/* RIGHT — calendar flip property slideshow */}
+            <HeroSlideshow property={heroProperty} idx={heroIdx} />
 
           </div>
 
@@ -393,59 +390,67 @@ function MiniIndexRow({
   );
 }
 
-function EarthHero() {
-  const pinPositionsRef = useRef<PinScreenPos[]>([]);
-  const wrapRef = useRef<HTMLDivElement | null>(null);
-  const [offset, setOffset] = useState({ left: 0, top: 0 });
-
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const update = () => {
-      const globeEl = el.querySelector("[data-earth-mount]") as HTMLElement | null;
-      if (!globeEl) return;
-      const wr = el.getBoundingClientRect();
-      const gr = globeEl.getBoundingClientRect();
-      setOffset({ left: gr.left - wr.left, top: gr.top - wr.top });
-    };
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    window.addEventListener("resize", update);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
+function HeroSlideshow({ property, idx }: { property: (typeof properties)[number]; idx: number }) {
   return (
     <motion.div
-      ref={wrapRef}
-      initial={{ opacity: 0, scale: 0.92 }}
+      initial={{ opacity: 0, scale: 0.94 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-      className="relative z-10 mx-auto w-full max-w-[520px] overflow-visible lg:mx-0 lg:justify-self-end"
-      style={{ minHeight: 480 }}
+      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+      className="relative z-10 mx-auto w-full max-w-[520px] lg:mx-0 lg:justify-self-end"
+      style={{ minHeight: 480, perspective: 1400 }}
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none absolute -inset-16 -z-10"
         style={{
-          width: "140vmax",
-          height: "140vmax",
           background:
-            "radial-gradient(closest-side, rgba(96,165,250,0.18) 0%, rgba(147,197,253,0.09) 18%, rgba(186,230,253,0.04) 36%, rgba(186,230,253,0.01) 58%, transparent 78%)",
-          filter: "blur(90px)",
-          zIndex: -1,
+            "radial-gradient(closest-side, rgba(96,165,250,0.18) 0%, rgba(147,197,253,0.09) 25%, rgba(186,230,253,0.03) 55%, transparent 80%)",
+          filter: "blur(60px)",
         }}
       />
 
-      <div className="relative flex h-full min-h-[480px] items-center justify-center" data-earth-mount-wrap>
-        <div data-earth-mount className="relative">
-          <EarthGlobe size={400} pinPositionsRef={pinPositionsRef} />
-        </div>
+      <div
+        className="relative mx-auto aspect-[4/5] w-full max-w-[440px] overflow-hidden rounded-[28px] border border-foreground/10 bg-white shadow-[0_40px_120px_-40px_rgba(15,23,42,0.35)]"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.div
+            key={property.id + "-" + idx}
+            initial={{ rotateX: -92, y: -40, opacity: 0 }}
+            animate={{ rotateX: 0, y: 0, opacity: 1 }}
+            exit={{ rotateX: 92, y: 40, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 120,
+              damping: 16,
+              mass: 0.9,
+            }}
+            className="absolute inset-0"
+            style={{ transformOrigin: "top center", transformStyle: "preserve-3d" }}
+          >
+            <img
+              src={property.image}
+              alt={property.name}
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 via-slate-900/40 to-transparent p-6">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-sky-200/80">
+                {property.location}
+              </p>
+              <h3 className="mt-2 font-display text-2xl font-semibold text-white">
+                {property.name}
+              </h3>
+              <p className="mt-1 text-[12px] text-white/70">{property.configuration}</p>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* fold line */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-slate-900/20 to-transparent"
+        />
       </div>
-      <EarthPropertyPopups pinPositionsRef={pinPositionsRef} offset={offset} />
     </motion.div>
   );
 }
