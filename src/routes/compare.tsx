@@ -13,6 +13,7 @@ import { AdvantagesSection } from "@/components/compare/AdvantagesSection";
 import { DifferenceHighlights } from "@/components/compare/DifferenceHighlights";
 import { GalleryComparison } from "@/components/compare/GalleryComparison";
 import { ExpertVerdict } from "@/components/compare/ExpertVerdict";
+import { ContactActions } from "@/components/compare/ContactActions";
 import { PreferenceBanner } from "@/components/PreferenceBanner";
 
 const searchSchema = z.object({
@@ -92,6 +93,7 @@ function ComparePage() {
         <DifferenceHighlights properties={properties} />
         <GalleryComparison properties={properties} />
         <ExpertVerdict properties={properties} />
+        <ContactActions properties={properties} />
 
         <div className="mt-20 text-center">
           <Link
