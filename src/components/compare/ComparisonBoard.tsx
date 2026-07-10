@@ -773,7 +773,7 @@ function BudgetTag({ status }: { status: "in" | "above" | undefined }) {
   return (
     <span className="inline-flex items-center gap-1 rounded-full border border-amber-600/30 bg-amber-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-amber-700">
       <TrendingUp className="h-2.5 w-2.5" />
-      A touch above your budget
+      A touch above your range
     </span>
   );
 }
