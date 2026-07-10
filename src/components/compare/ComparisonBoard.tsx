@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, ChevronDown, ChevronLeft, ChevronRight, Sparkles, Minus, Trophy, Info, MapPin, Check, Ruler, CalendarDays } from "lucide-react";
+import { Plus, X, ChevronDown, ChevronLeft, ChevronRight, Sparkles, Minus, Trophy, Info, MapPin, Check, Ruler, CalendarDays, Wallet, TrendingUp } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
@@ -82,28 +82,52 @@ export function ComparisonBoard() {
   // the picker is never empty — the user can still compare.
   const noMatches = Boolean(quizAnswers) && filtered.length === 0;
   const pickable = filtered.length > 0 ? filtered : allProperties;
-  const visibleConfigKeys = useMemo<ConfigKey[]>(() => {
+  const { visibleConfigKeys, budgetStatus } = useMemo<{
+    visibleConfigKeys: ConfigKey[];
+    budgetStatus: Record<string, "in" | "above">;
+  }>(() => {
     const allowed = allowedConfigKeys(quizAnswers);
-    if (allowed.length === 0 || noMatches) return CONFIG_KEYS;
-    // Start with the user's picked configs, then add any other configs the
-    // selected properties offer whose price still fits the quiz budget.
-    const set = new Set<ConfigKey>(allowed);
     const budget = parseBudget(quizAnswers?.budgetSub || quizAnswers?.budgetRange);
+    const allowedSet = new Set<ConfigKey>(allowed);
+
+    // Include user's picked configs + every config the selected items offer.
+    const set = new Set<ConfigKey>(allowed);
     for (const p of items) {
       for (const k of CONFIG_KEYS) {
-        if (set.has(k)) continue;
-        const cfg = p.configurations[k];
-        if (!cfg) continue;
-        if (!budget) { set.add(k); continue; }
-        const [lo, hi] = budget;
-        const priceStr = cfg.price ?? "";
-        const m = priceStr.match(/[\d.]+/);
-        const price = m ? parseFloat(m[0]) : null;
-        // Unknown price → include; known price → include only if inside range.
-        if (price === null || (price >= lo - 0.5 && price <= hi + 0.5)) set.add(k);
+        if (p.configurations[k]) set.add(k);
       }
     }
-    return CONFIG_KEYS.filter((k) => set.has(k));
+    const keys = (allowed.length === 0 || noMatches
+      ? CONFIG_KEYS
+      : CONFIG_KEYS.filter((k) => set.has(k))) as ConfigKey[];
+
+    const status: Record<string, "in" | "above"> = {};
+    for (const k of keys) {
+      if (!budget || noMatches || allowed.length === 0) {
+        status[k] = "in";
+        continue;
+      }
+      if (allowedSet.has(k)) {
+        status[k] = "in";
+        continue;
+      }
+      const [, hi] = budget;
+      let anyKnown = false;
+      let anyInBudget = false;
+      for (const p of items) {
+        const priceStr = p.configurations[k]?.price ?? "";
+        const m = priceStr.match(/[\d.]+/);
+        const price = m ? parseFloat(m[0]) : null;
+        if (price === null) continue;
+        anyKnown = true;
+        if (price <= hi + 0.5) {
+          anyInBudget = true;
+          break;
+        }
+      }
+      status[k] = !anyKnown || anyInBudget ? "in" : "above";
+    }
+    return { visibleConfigKeys: keys, budgetStatus: status };
   }, [quizAnswers, noMatches, items]);
   const slots: (Property | null)[] = Array.from({ length: MAX_COMPARE }, (_, i) => items[i] ?? null);
   const ready = items.length >= MIN_COMPARE;
@@ -165,7 +189,7 @@ export function ComparisonBoard() {
               transition={{ duration: 0.3 }}
               className="mt-6"
             >
-              <ComparisonGrid items={items} visibleConfigKeys={visibleConfigKeys} />
+              <ComparisonGrid items={items} visibleConfigKeys={visibleConfigKeys} budgetStatus={budgetStatus} />
             </motion.div>
           ) : (
             <motion.div
@@ -460,7 +484,15 @@ function bestIndex(values: (number | null)[]): number | null {
 }
 
 /* ---------------- grid ---------------- */
-function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visibleConfigKeys: ConfigKey[] }) {
+function ComparisonGrid({
+  items,
+  visibleConfigKeys,
+  budgetStatus,
+}: {
+  items: Property[];
+  visibleConfigKeys: ConfigKey[];
+  budgetStatus: Record<string, "in" | "above">;
+}) {
   const cols = items.length;
   const gridTpl = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
 
@@ -470,6 +502,9 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
   });
   const superWinner = bestIndex(items.map((p) => parseMaxNum(p.superBuiltUpArea)));
   const carpetWinner = bestIndex(items.map((p) => parseMaxNum(p.carpetArea)));
+
+  const hasAnyStatus = Object.values(budgetStatus).some((v) => v === "above" || v === "in") &&
+    visibleConfigKeys.some((k) => budgetStatus[k]);
 
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-background/40">
@@ -515,10 +550,12 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
       <SectionLabel title="Configurations" />
       {visibleConfigKeys.map((k) => {
         const winnerIdx = configWinners[k];
+        const status = budgetStatus[k];
         return (
           <Row
             key={k}
             label={k}
+            sublabel={hasAnyStatus ? <BudgetTag status={status} /> : undefined}
             items={items}
             gridTpl={gridTpl}
             render={(p, i) => {
@@ -539,25 +576,14 @@ function ComparisonGrid({ items, visibleConfigKeys }: { items: Property[]; visib
 
       <SectionLabel title="Room Dimensions" />
       {visibleConfigKeys.map((k) => (
-        <div key={`rooms-${k}`}>
-          <div className="px-4 py-1.5 bg-muted/20 border-b border-border">
-            <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{k}</span>
-          </div>
-          {roomFieldsFor(k).map(({ key, label }) => (
-            <Row
-              key={`${k}-${key}`}
-              label={label}
-              items={items}
-              gridTpl={gridTpl}
-              render={(p) => {
-                const cfg = p.configurations[k];
-                const val = cfg ? (cfg[key] ?? null) : null;
-                if (!cfg) return <NotAvail />;
-                return <Plain value={val} />;
-              }}
-            />
-          ))}
-        </div>
+        <RoomBlock
+          key={`rooms-${k}`}
+          configKey={k}
+          items={items}
+          gridTpl={gridTpl}
+          status={budgetStatus[k] ?? "in"}
+          showStatus={hasAnyStatus}
+        />
       ))}
 
       <SectionLabel title="Total Area" />
@@ -648,11 +674,13 @@ function SectionLabel({ title }: { title: string }) {
 
 function Row({
   label,
+  sublabel,
   items,
   gridTpl,
   render,
 }: {
   label: string;
+  sublabel?: React.ReactNode;
   items: Property[];
   gridTpl: string;
   render: (p: Property, i: number) => React.ReactNode;
@@ -663,6 +691,7 @@ function Row({
     <div className={`grid grid-cols-1 ${gridTpl} border-b border-border last:border-b-0`}>
       <div className="px-4 py-3 md:border-r md:border-border bg-muted/10 flex flex-col items-start gap-2">
         <span className="font-display text-[14px] font-medium tracking-tight text-foreground">{label}</span>
+        {sublabel}
         {info && (
           <>
             <button
@@ -747,6 +776,115 @@ function Numeric({
       </p>
       {secondary && <span className="text-[11px] text-muted-foreground">· {secondary}</span>}
       <span className="text-[9px] text-muted-foreground/70 uppercase tracking-wide">approx.</span>
+    </div>
+  );
+}
+
+function BudgetTag({ status }: { status: "in" | "above" | undefined }) {
+  if (!status) return null;
+  if (status === "in") {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-600/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
+        <Wallet className="h-2.5 w-2.5" />
+        In your budget
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-amber-600/30 bg-amber-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-amber-700">
+      <TrendingUp className="h-2.5 w-2.5" />
+      A touch above your budget
+    </span>
+  );
+}
+
+function RoomBlock({
+  configKey,
+  items,
+  gridTpl,
+  status,
+  showStatus,
+}: {
+  configKey: ConfigKey;
+  items: Property[];
+  gridTpl: string;
+  status: "in" | "above";
+  showStatus: boolean;
+}) {
+  const [open, setOpen] = useState(status === "in");
+  const collapsible = showStatus && status === "above";
+
+  const header = (
+    <div className="flex items-center gap-2 px-4 py-2 bg-muted/20 border-b border-border">
+      <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{configKey}</span>
+      {showStatus && <BudgetTag status={status} />}
+      {collapsible && (
+        <span className="ml-auto text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+          {open ? "Hide details" : "Show details"}
+        </span>
+      )}
+    </div>
+  );
+
+  const rows = (
+    <>
+      {roomFieldsFor(configKey).map(({ key, label }) => (
+        <Row
+          key={`${configKey}-${key}`}
+          label={label}
+          items={items}
+          gridTpl={gridTpl}
+          render={(p) => {
+            const cfg = p.configurations[configKey];
+            const val = cfg ? (cfg[key] ?? null) : null;
+            if (!cfg) return <NotAvail />;
+            return <Plain value={val} />;
+          }}
+        />
+      ))}
+    </>
+  );
+
+  if (!collapsible) {
+    return (
+      <div>
+        {header}
+        {rows}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full text-left"
+        aria-expanded={open}
+      >
+        <div className="flex items-center gap-2 px-4 py-2 bg-muted/20 border-b border-border hover:bg-muted/40 transition-colors">
+          <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{configKey}</span>
+          <BudgetTag status={status} />
+          <span className="ml-auto inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+            {open ? "Hide details" : "Show details"}
+            <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
+          </span>
+        </div>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="rooms"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            {rows}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
