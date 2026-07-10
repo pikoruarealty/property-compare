@@ -81,7 +81,7 @@ function ComparePage() {
 
       <PreferenceBanner />
 
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6">
         <ComparisonHero properties={properties} />
         <PropertyHeaderCards properties={properties} />
         <div className="mt-6">
