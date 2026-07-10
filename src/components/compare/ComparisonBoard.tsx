@@ -489,7 +489,10 @@ function ComparisonGrid({
   budgetStatus: Record<string, "in" | "above">;
 }) {
   const cols = items.length;
-  const gridTpl = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
+  const gridTpl =
+    cols === 2
+      ? "grid-cols-[68px_1fr_1fr] md:grid-cols-[200px_1fr_1fr]"
+      : "grid-cols-[56px_1fr_1fr_1fr] md:grid-cols-[200px_1fr_1fr_1fr]";
 
   const configWinners: Record<string, number | null> = {};
   visibleConfigKeys.forEach((k) => {
@@ -504,21 +507,21 @@ function ComparisonGrid({
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-background/40">
       {/* Header row */}
-      <div className={`hidden md:grid ${gridTpl} border-b border-border bg-muted/30`}>
-        <div className="px-4 py-3 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-          Attribute
+      <div className={`grid ${gridTpl} border-b border-border bg-muted/30`}>
+        <div className="px-2 py-2 text-[9px] uppercase tracking-[0.18em] text-muted-foreground md:px-4 md:py-3 md:text-[10px] md:tracking-[0.24em]">
+          <span className="hidden md:inline">Attribute</span>
         </div>
         {items.map((p, i) => (
-          <div key={p.id} className={`px-4 py-3 ${i > 0 ? "border-l border-border" : ""}`}>
-            <div className="flex items-center gap-2">
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-foreground text-background text-[10px] font-medium">
+          <div key={p.id} className={`px-2 py-2 md:px-4 md:py-3 ${i > 0 ? "border-l border-border" : ""}`}>
+            <div className="flex items-center gap-1.5 md:gap-2">
+              <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-foreground text-background text-[9px] font-medium md:h-6 md:w-6 md:text-[10px]">
                 {String.fromCharCode(65 + i)}
               </span>
               <div className="min-w-0">
-                <p className="font-display text-[14px] leading-tight text-foreground line-clamp-1">
+                <p className="font-display text-[11px] leading-tight text-foreground line-clamp-2 md:line-clamp-1 md:text-[14px]">
                   {p.name}
                 </p>
-                <p className="text-[10px] uppercase tracking-wide text-muted-foreground truncate">
+                <p className="hidden md:block text-[10px] uppercase tracking-wide text-muted-foreground truncate">
                   {p.developer}
                 </p>
               </div>
@@ -527,17 +530,6 @@ function ComparisonGrid({
         ))}
       </div>
 
-      {/* Mobile pills */}
-      <div className="md:hidden flex flex-wrap gap-1.5 px-3 py-2.5 border-b border-border bg-muted/30">
-        {items.map((p, i) => (
-          <span key={p.id} className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-1 text-[11px]">
-            <span className="grid h-4 w-4 place-items-center rounded-full bg-foreground text-background text-[9px]">
-              {String.fromCharCode(65 + i)}
-            </span>
-            <span className="truncate max-w-[100px]">{p.name}</span>
-          </span>
-        ))}
-      </div>
 
       <SectionLabel title="Identity" />
       <Row label="Developer" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.developer} />} />
