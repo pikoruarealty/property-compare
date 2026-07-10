@@ -51,15 +51,10 @@ function roomFieldsFor(k: ConfigKey): { key: RoomKey; label: string }[] {
   const bedroomKeys: RoomKey[] = ["bedroom1", "bedroom2", "bedroom3", "bedroom4", "bedroom5"];
   const bedrooms = bedroomKeys.slice(0, n).map((key, i) => ({
     key,
-    label:
-      i === 0
-        ? "Master Bedroom 1"
-        : i === 1
-          ? "Master Bedroom 2"
-          : `Bedroom ${i + 1}${n >= 4 && i === n - 1 ? " (Kids)" : ""}`,
+    label: `Bedroom ${i + 1}`,
   }));
   return [
-    { key: "livingArea", label: "Living Area" },
+    { key: "livingArea", label: "Drawing / Living / Dining" },
     { key: "kitchen", label: "Kitchen" },
     ...bedrooms,
   ];
