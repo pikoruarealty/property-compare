@@ -93,6 +93,7 @@ function ComparePage() {
         <DifferenceHighlights properties={properties} />
         <GalleryComparison properties={properties} />
         <ExpertVerdict properties={properties} />
+        <ContactActions properties={properties} />
 
         <div className="mt-20 text-center">
           <Link
