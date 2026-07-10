@@ -489,7 +489,10 @@ function ComparisonGrid({
   budgetStatus: Record<string, "in" | "above">;
 }) {
   const cols = items.length;
-  const gridTpl = cols === 2 ? "md:grid-cols-[200px_1fr_1fr]" : "md:grid-cols-[200px_1fr_1fr_1fr]";
+  const gridTpl =
+    cols === 2
+      ? "grid-cols-[68px_1fr_1fr] md:grid-cols-[200px_1fr_1fr]"
+      : "grid-cols-[56px_1fr_1fr_1fr] md:grid-cols-[200px_1fr_1fr_1fr]";
 
   const configWinners: Record<string, number | null> = {};
   visibleConfigKeys.forEach((k) => {
@@ -504,21 +507,21 @@ function ComparisonGrid({
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-background/40">
       {/* Header row */}
-      <div className={`hidden md:grid ${gridTpl} border-b border-border bg-muted/30`}>
-        <div className="px-4 py-3 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-          Attribute
+      <div className={`grid ${gridTpl} border-b border-border bg-muted/30`}>
+        <div className="px-2 py-2 text-[9px] uppercase tracking-[0.18em] text-muted-foreground md:px-4 md:py-3 md:text-[10px] md:tracking-[0.24em]">
+          <span className="hidden md:inline">Attribute</span>
         </div>
         {items.map((p, i) => (
-          <div key={p.id} className={`px-4 py-3 ${i > 0 ? "border-l border-border" : ""}`}>
-            <div className="flex items-center gap-2">
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-foreground text-background text-[10px] font-medium">
+          <div key={p.id} className={`px-2 py-2 md:px-4 md:py-3 ${i > 0 ? "border-l border-border" : ""}`}>
+            <div className="flex items-center gap-1.5 md:gap-2">
+              <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-foreground text-background text-[9px] font-medium md:h-6 md:w-6 md:text-[10px]">
                 {String.fromCharCode(65 + i)}
               </span>
               <div className="min-w-0">
-                <p className="font-display text-[14px] leading-tight text-foreground line-clamp-1">
+                <p className="font-display text-[11px] leading-tight text-foreground line-clamp-2 md:line-clamp-1 md:text-[14px]">
                   {p.name}
                 </p>
-                <p className="text-[10px] uppercase tracking-wide text-muted-foreground truncate">
+                <p className="hidden md:block text-[10px] uppercase tracking-wide text-muted-foreground truncate">
                   {p.developer}
                 </p>
               </div>
@@ -527,17 +530,6 @@ function ComparisonGrid({
         ))}
       </div>
 
-      {/* Mobile pills */}
-      <div className="md:hidden flex flex-wrap gap-1.5 px-3 py-2.5 border-b border-border bg-muted/30">
-        {items.map((p, i) => (
-          <span key={p.id} className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-1 text-[11px]">
-            <span className="grid h-4 w-4 place-items-center rounded-full bg-foreground text-background text-[9px]">
-              {String.fromCharCode(65 + i)}
-            </span>
-            <span className="truncate max-w-[100px]">{p.name}</span>
-          </span>
-        ))}
-      </div>
 
       <SectionLabel title="Identity" />
       <Row label="Developer" items={items} gridTpl={gridTpl} render={(p) => <Plain value={p.developer} />} />
@@ -636,16 +628,20 @@ function ComparisonGrid({
       />
 
       <SectionLabel title="Gallery" />
-      <div className={`grid grid-cols-1 ${gridTpl}`}>
+      <div className={`grid ${gridTpl}`}>
         <div className="hidden md:flex items-center px-4 py-3 text-[11px] uppercase tracking-[0.24em] text-muted-foreground border-r border-border">
+          Photo
+        </div>
+        <div className="md:hidden px-2 py-2 text-[9px] uppercase tracking-[0.18em] text-muted-foreground border-r border-border">
           Photo
         </div>
         {items.map((p, i) => (
           <div
             key={p.id}
             id={`gallery-${p.id}`}
-            className={`p-2.5 scroll-mt-32 ${i > 0 ? "md:border-l md:border-border" : ""}`}
+            className={`p-1.5 md:p-2.5 scroll-mt-32 ${i > 0 ? "border-l border-border" : ""}`}
           >
+
             <div className="overflow-hidden rounded-lg aspect-[16/10] ring-1 ring-border transition-shadow [&.flash]:ring-2 [&.flash]:ring-foreground [&.flash]:shadow-lg">
               <PhotoSlideshow property={p} />
             </div>
@@ -659,13 +655,14 @@ function ComparisonGrid({
 /* ---------------- primitives ---------------- */
 function SectionLabel({ title }: { title: string }) {
   return (
-    <div className="px-4 py-2 bg-muted/40 border-y border-border">
-      <span className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground font-medium">
+    <div className="px-2 py-1.5 bg-muted/40 border-y border-border md:px-4 md:py-2">
+      <span className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground font-medium md:text-[10px] md:tracking-[0.28em]">
         {title}
       </span>
     </div>
   );
 }
+
 
 function Row({
   label,
@@ -683,20 +680,21 @@ function Row({
   const info = TERM_INFO[label];
   const [open, setOpen] = useState(false);
   return (
-    <div className={`grid grid-cols-1 ${gridTpl} border-b border-border last:border-b-0`}>
-      <div className="px-4 py-3 md:border-r md:border-border bg-muted/10 flex flex-col items-start gap-2">
-        <span className="font-display text-[14px] font-medium tracking-tight text-foreground">{label}</span>
+    <div className={`grid ${gridTpl} border-b border-border last:border-b-0`}>
+      <div className="px-2 py-2 border-r border-border bg-muted/10 flex flex-col items-start gap-1.5 md:px-4 md:py-3 md:gap-2">
+        <span className="font-display text-[11px] font-medium leading-tight tracking-tight text-foreground md:text-[14px]">{label}</span>
         {sublabel}
         {info && (
           <>
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex items-center gap-1.5 rounded-full bg-foreground text-background px-2.5 py-1 text-[10px] font-medium tracking-[0.08em] uppercase hover:opacity-85 transition-opacity shadow-sm"
+              className="inline-flex items-center gap-1 rounded-full bg-foreground text-background px-1.5 py-0.5 text-[8px] font-medium tracking-[0.06em] uppercase hover:opacity-85 transition-opacity shadow-sm md:gap-1.5 md:px-2.5 md:py-1 md:text-[10px] md:tracking-[0.08em]"
               aria-label={`View more about ${label}`}
             >
-              <Info className="h-3 w-3" />
-              View more
+              <Info className="h-2.5 w-2.5 md:h-3 md:w-3" />
+              <span className="hidden md:inline">View more</span>
+              <span className="md:hidden">Info</span>
             </button>
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogContent className="sm:max-w-md">
@@ -712,20 +710,18 @@ function Row({
         )}
       </div>
       {items.map((p, i) => (
-        <div key={p.id} className={`px-4 py-2.5 ${i > 0 ? "md:border-l md:border-border" : ""}`}>
-          <div className="md:hidden mb-1 text-[10px] uppercase tracking-wide text-muted-foreground">
-            {String.fromCharCode(65 + i)} · {p.name}
-          </div>
+        <div key={p.id} className={`px-2 py-2 md:px-4 md:py-2.5 ${i > 0 ? "border-l border-border" : ""}`}>
           {render(p, i)}
         </div>
       ))}
     </div>
+
   );
 }
 
 function Plain({ value, italic }: { value: string | null | undefined; italic?: boolean }) {
   return (
-    <p className={`text-[14px] leading-snug text-foreground ${italic ? "text-foreground/75" : ""}`}>
+    <p className={`text-[11px] leading-snug text-foreground md:text-[14px] ${italic ? "text-foreground/75" : ""}`}>
       {value ?? DASH}
     </p>
   );
@@ -733,8 +729,10 @@ function Plain({ value, italic }: { value: string | null | undefined; italic?: b
 
 function NotAvail() {
   return (
-    <span className="inline-flex items-center gap-1 text-[12px] text-muted-foreground">
-      <Minus className="h-3 w-3" /> Not available
+    <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground md:text-[12px]">
+      <Minus className="h-2.5 w-2.5 md:h-3 md:w-3" />
+      <span className="hidden sm:inline">Not available</span>
+      <span className="sm:hidden">N/A</span>
     </span>
   );
 }
@@ -743,8 +741,6 @@ function Numeric({
   primary,
   unit,
   secondary,
-  isBest,
-  propertyId,
 }: {
   primary: string;
   unit?: string;
@@ -752,25 +748,14 @@ function Numeric({
   isBest?: boolean;
   propertyId?: string;
 }) {
-  const jumpToGallery = () => {
-    if (!propertyId) return;
-    const el = document.getElementById(`gallery-${propertyId}`);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    const target = el.querySelector(":scope > div");
-    if (target) {
-      target.classList.add("flash");
-      window.setTimeout(() => target.classList.remove("flash"), 1400);
-    }
-  };
   return (
-    <div className="flex items-baseline gap-2">
-      <p className="font-display leading-tight text-foreground/90 text-[16px]">
+    <div className="flex flex-wrap items-baseline gap-x-1 gap-y-0.5 md:gap-2">
+      <p className="font-display leading-tight text-foreground/90 text-[12px] md:text-[16px]">
         {primary}
-        {unit && <span className="ml-1 text-[10px] text-muted-foreground tracking-wide">{unit}</span>}
+        {unit && <span className="ml-1 text-[9px] text-muted-foreground tracking-wide md:text-[10px]">{unit}</span>}
       </p>
-      {secondary && <span className="text-[11px] text-muted-foreground">· {secondary}</span>}
-      <span className="text-[9px] text-muted-foreground/70 uppercase tracking-wide">approx.</span>
+      {secondary && <span className="text-[10px] text-muted-foreground md:text-[11px]">· {secondary}</span>}
+      <span className="hidden sm:inline text-[9px] text-muted-foreground/70 uppercase tracking-wide">approx.</span>
     </div>
   );
 }
