@@ -779,3 +779,112 @@ function Numeric({
     </div>
   );
 }
+
+function BudgetTag({ status }: { status: "in" | "above" | undefined }) {
+  if (!status) return null;
+  if (status === "in") {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-600/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
+        <Wallet className="h-2.5 w-2.5" />
+        In your budget
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-amber-600/30 bg-amber-500/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-amber-700">
+      <TrendingUp className="h-2.5 w-2.5" />
+      A touch above your budget
+    </span>
+  );
+}
+
+function RoomBlock({
+  configKey,
+  items,
+  gridTpl,
+  status,
+  showStatus,
+}: {
+  configKey: ConfigKey;
+  items: Property[];
+  gridTpl: string;
+  status: "in" | "above";
+  showStatus: boolean;
+}) {
+  const [open, setOpen] = useState(status === "in");
+  const collapsible = showStatus && status === "above";
+
+  const header = (
+    <div className="flex items-center gap-2 px-4 py-2 bg-muted/20 border-b border-border">
+      <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{configKey}</span>
+      {showStatus && <BudgetTag status={status} />}
+      {collapsible && (
+        <span className="ml-auto text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+          {open ? "Hide details" : "Show details"}
+        </span>
+      )}
+    </div>
+  );
+
+  const rows = (
+    <>
+      {roomFieldsFor(configKey).map(({ key, label }) => (
+        <Row
+          key={`${configKey}-${key}`}
+          label={label}
+          items={items}
+          gridTpl={gridTpl}
+          render={(p) => {
+            const cfg = p.configurations[configKey];
+            const val = cfg ? (cfg[key] ?? null) : null;
+            if (!cfg) return <NotAvail />;
+            return <Plain value={val} />;
+          }}
+        />
+      ))}
+    </>
+  );
+
+  if (!collapsible) {
+    return (
+      <div>
+        {header}
+        {rows}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full text-left"
+        aria-expanded={open}
+      >
+        <div className="flex items-center gap-2 px-4 py-2 bg-muted/20 border-b border-border hover:bg-muted/40 transition-colors">
+          <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{configKey}</span>
+          <BudgetTag status={status} />
+          <span className="ml-auto inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+            {open ? "Hide details" : "Show details"}
+            <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
+          </span>
+        </div>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="rooms"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            {rows}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
