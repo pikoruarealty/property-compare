@@ -189,7 +189,7 @@ export function ComparisonBoard() {
               transition={{ duration: 0.3 }}
               className="mt-6"
             >
-              <ComparisonGrid items={items} visibleConfigKeys={visibleConfigKeys} />
+              <ComparisonGrid items={items} visibleConfigKeys={visibleConfigKeys} budgetStatus={budgetStatus} />
             </motion.div>
           ) : (
             <motion.div
