@@ -721,7 +721,7 @@ function Row({
 
 function Plain({ value, italic }: { value: string | null | undefined; italic?: boolean }) {
   return (
-    <p className={`text-[14px] leading-snug text-foreground ${italic ? "text-foreground/75" : ""}`}>
+    <p className={`text-[11px] leading-snug text-foreground md:text-[14px] ${italic ? "text-foreground/75" : ""}`}>
       {value ?? DASH}
     </p>
   );
@@ -729,8 +729,10 @@ function Plain({ value, italic }: { value: string | null | undefined; italic?: b
 
 function NotAvail() {
   return (
-    <span className="inline-flex items-center gap-1 text-[12px] text-muted-foreground">
-      <Minus className="h-3 w-3" /> Not available
+    <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground md:text-[12px]">
+      <Minus className="h-2.5 w-2.5 md:h-3 md:w-3" />
+      <span className="hidden sm:inline">Not available</span>
+      <span className="sm:hidden">N/A</span>
     </span>
   );
 }
@@ -739,8 +741,6 @@ function Numeric({
   primary,
   unit,
   secondary,
-  isBest,
-  propertyId,
 }: {
   primary: string;
   unit?: string;
@@ -748,25 +748,14 @@ function Numeric({
   isBest?: boolean;
   propertyId?: string;
 }) {
-  const jumpToGallery = () => {
-    if (!propertyId) return;
-    const el = document.getElementById(`gallery-${propertyId}`);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    const target = el.querySelector(":scope > div");
-    if (target) {
-      target.classList.add("flash");
-      window.setTimeout(() => target.classList.remove("flash"), 1400);
-    }
-  };
   return (
-    <div className="flex items-baseline gap-2">
-      <p className="font-display leading-tight text-foreground/90 text-[16px]">
+    <div className="flex flex-wrap items-baseline gap-x-1 gap-y-0.5 md:gap-2">
+      <p className="font-display leading-tight text-foreground/90 text-[12px] md:text-[16px]">
         {primary}
-        {unit && <span className="ml-1 text-[10px] text-muted-foreground tracking-wide">{unit}</span>}
+        {unit && <span className="ml-1 text-[9px] text-muted-foreground tracking-wide md:text-[10px]">{unit}</span>}
       </p>
-      {secondary && <span className="text-[11px] text-muted-foreground">· {secondary}</span>}
-      <span className="text-[9px] text-muted-foreground/70 uppercase tracking-wide">approx.</span>
+      {secondary && <span className="text-[10px] text-muted-foreground md:text-[11px]">· {secondary}</span>}
+      <span className="hidden sm:inline text-[9px] text-muted-foreground/70 uppercase tracking-wide">approx.</span>
     </div>
   );
 }
