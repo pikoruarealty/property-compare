@@ -226,8 +226,8 @@ function Index() {
 
             </div>
 
-            {/* RIGHT — 3D Earth globe with cycling property popups */}
-            <EarthHero />
+            {/* RIGHT — calendar flip property slideshow */}
+            <HeroSlideshow property={heroProperty} idx={heroIdx} />
 
           </div>
 
