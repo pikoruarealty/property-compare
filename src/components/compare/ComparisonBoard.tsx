@@ -674,11 +674,13 @@ function SectionLabel({ title }: { title: string }) {
 
 function Row({
   label,
+  sublabel,
   items,
   gridTpl,
   render,
 }: {
   label: string;
+  sublabel?: React.ReactNode;
   items: Property[];
   gridTpl: string;
   render: (p: Property, i: number) => React.ReactNode;
@@ -689,6 +691,7 @@ function Row({
     <div className={`grid grid-cols-1 ${gridTpl} border-b border-border last:border-b-0`}>
       <div className="px-4 py-3 md:border-r md:border-border bg-muted/10 flex flex-col items-start gap-2">
         <span className="font-display text-[14px] font-medium tracking-tight text-foreground">{label}</span>
+        {sublabel}
         {info && (
           <>
             <button
