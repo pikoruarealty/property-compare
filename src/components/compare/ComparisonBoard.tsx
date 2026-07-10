@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, X, ChevronDown, ChevronLeft, ChevronRight, Sparkles, Minus, Trophy, Info, MapPin, Check, Ruler, CalendarDays } from "lucide-react";
+import { Plus, X, ChevronDown, ChevronLeft, ChevronRight, Sparkles, Minus, Trophy, Info, MapPin, Check, Ruler, CalendarDays, Wallet, TrendingUp } from "lucide-react";
 import { properties as allProperties, getPropertyById } from "@/data/properties";
 import { MAX_COMPARE, MIN_COMPARE, useCompareStore } from "@/stores/compare-store";
 import { useHydrated } from "@/hooks/use-hydrated";
