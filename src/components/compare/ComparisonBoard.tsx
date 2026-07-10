@@ -655,13 +655,14 @@ function ComparisonGrid({
 /* ---------------- primitives ---------------- */
 function SectionLabel({ title }: { title: string }) {
   return (
-    <div className="px-4 py-2 bg-muted/40 border-y border-border">
-      <span className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground font-medium">
+    <div className="px-2 py-1.5 bg-muted/40 border-y border-border md:px-4 md:py-2">
+      <span className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground font-medium md:text-[10px] md:tracking-[0.28em]">
         {title}
       </span>
     </div>
   );
 }
+
 
 function Row({
   label,
