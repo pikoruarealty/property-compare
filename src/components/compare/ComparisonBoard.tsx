@@ -628,16 +628,20 @@ function ComparisonGrid({
       />
 
       <SectionLabel title="Gallery" />
-      <div className={`grid grid-cols-1 ${gridTpl}`}>
+      <div className={`grid ${gridTpl}`}>
         <div className="hidden md:flex items-center px-4 py-3 text-[11px] uppercase tracking-[0.24em] text-muted-foreground border-r border-border">
+          Photo
+        </div>
+        <div className="md:hidden px-2 py-2 text-[9px] uppercase tracking-[0.18em] text-muted-foreground border-r border-border">
           Photo
         </div>
         {items.map((p, i) => (
           <div
             key={p.id}
             id={`gallery-${p.id}`}
-            className={`p-2.5 scroll-mt-32 ${i > 0 ? "md:border-l md:border-border" : ""}`}
+            className={`p-1.5 md:p-2.5 scroll-mt-32 ${i > 0 ? "border-l border-border" : ""}`}
           >
+
             <div className="overflow-hidden rounded-lg aspect-[16/10] ring-1 ring-border transition-shadow [&.flash]:ring-2 [&.flash]:ring-foreground [&.flash]:shadow-lg">
               <PhotoSlideshow property={p} />
             </div>
