@@ -11,7 +11,7 @@ export function ExpertVerdict({ properties }: { properties: Property[] }) {
       title="A private-client perspective"
       description="Considered guidance from our luxury advisory desk."
     >
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         {properties.map((p, i) => (
           <motion.div
             key={p.id}
@@ -19,7 +19,7 @@ export function ExpertVerdict({ properties }: { properties: Property[] }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.7, delay: i * 0.1 }}
-            className="glass-strong relative overflow-hidden rounded-[32px] p-8 sm:p-10"
+            className="glass-strong relative overflow-hidden rounded-2xl p-5 sm:rounded-[32px] sm:p-10"
           >
             <div
               aria-hidden

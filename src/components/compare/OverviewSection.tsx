@@ -29,7 +29,7 @@ export function OverviewSection({ properties }: OverviewSectionProps) {
       title="The essentials, side by side"
       description="A quiet read of what defines each residence."
     >
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         {rows.map((row, rowIdx) => (
           <motion.div
             key={row.label}
@@ -37,19 +37,19 @@ export function OverviewSection({ properties }: OverviewSectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, delay: rowIdx * 0.05 }}
-            className="grid items-center gap-3 rounded-3xl bg-card/60 p-5 sm:p-6"
+            className="grid items-center gap-2 rounded-2xl bg-card/60 p-3 sm:gap-3 sm:rounded-3xl sm:p-6"
             style={{
-              gridTemplateColumns: `minmax(120px, 200px) repeat(${properties.length}, minmax(0, 1fr))`,
+              gridTemplateColumns: `minmax(64px, 90px) repeat(${properties.length}, minmax(0, 1fr))`,
               border: "1px solid var(--glass-border)",
             }}
           >
-            <p className="text-[10px] tracking-luxury text-muted-foreground sm:text-[11px]">
+            <p className="text-[9px] tracking-[0.18em] uppercase text-muted-foreground sm:text-[11px] sm:tracking-luxury">
               {row.label}
             </p>
             {row.values.map((val, i) => (
               <div
                 key={i}
-                className={`rounded-2xl px-4 py-3 text-sm transition-colors sm:text-base ${
+                className={`rounded-lg px-2 py-2 text-[11px] leading-snug transition-colors sm:rounded-2xl sm:px-4 sm:py-3 sm:text-base ${
                   row.highlightIndex === i
                     ? "bg-gradient-to-br from-champagne/20 to-transparent text-ivory ring-1 ring-champagne/40"
                     : "text-ivory/85"

@@ -17,15 +17,15 @@ export function GalleryComparison({ properties }: { properties: Property[] }) {
       title="A walk through each residence"
       description="Identical vantage points, distinctly different worlds."
     >
-      <div className="space-y-12">
+      <div className="space-y-8 sm:space-y-12">
         {CATEGORIES.map((cat, cIdx) => (
           <div key={cat.key}>
-            <div className="mb-5 flex items-center gap-4">
-              <p className="font-display text-xl font-bold tracking-[-0.015em] text-ivory sm:text-2xl">{cat.label}</p>
+            <div className="mb-3 flex items-center gap-3 sm:mb-5 sm:gap-4">
+              <p className="font-display text-[15px] font-bold tracking-[-0.015em] text-ivory sm:text-2xl">{cat.label}</p>
               <div className="h-px flex-1 bg-gradient-to-r from-champagne/40 to-transparent" />
             </div>
             <div
-              className="grid gap-4"
+              className="grid gap-2 sm:gap-4"
               style={{ gridTemplateColumns: `repeat(${properties.length}, minmax(0, 1fr))` }}
             >
               {properties.map((p, i) => (
@@ -35,7 +35,7 @@ export function GalleryComparison({ properties }: { properties: Property[] }) {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.7, delay: cIdx * 0.05 + i * 0.08 }}
-                  className="group overflow-hidden rounded-[32px]"
+                  className="group overflow-hidden rounded-xl sm:rounded-[32px]"
                   style={{ border: "1px solid var(--glass-border)" }}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -46,7 +46,7 @@ export function GalleryComparison({ properties }: { properties: Property[] }) {
                       className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-lux-black/80 via-transparent" />
-                    <figcaption className="absolute bottom-4 left-5 right-5 text-xs tracking-luxury text-ivory">
+                    <figcaption className="absolute bottom-1.5 left-2 right-2 truncate text-[9px] tracking-[0.14em] uppercase text-ivory sm:bottom-4 sm:left-5 sm:right-5 sm:text-xs sm:tracking-luxury">
                       {p.name}
                     </figcaption>
                   </div>
