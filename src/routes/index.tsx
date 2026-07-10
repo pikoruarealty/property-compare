@@ -126,7 +126,7 @@ function Index() {
           <div className="absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(71,85,105,0.035),transparent_78%)]" style={{ filter: "blur(72px)" }} />
           <div className="absolute top-10 right-[-180px] h-[620px] w-[620px] rounded-full bg-[radial-gradient(circle,rgba(224,242,254,0.28),transparent_78%)]" style={{ filter: "blur(80px)" }} />
         </div>
-        <LivePropertyGridMosaic />
+        
 
         <div className="container-lux relative z-10">
           <div className="grid grid-cols-1 items-start gap-14 lg:grid-cols-[1.05fr_0.95fr]">
