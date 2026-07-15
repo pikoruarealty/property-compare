@@ -25,7 +25,7 @@ export const PALETTES: { id: Palette; label: string; swatch: string }[] = [
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("light");
-  const [palette, setPaletteState] = useState<Palette>("cloud");
+  const [palette, setPaletteState] = useState<Palette>("warm-sand");
 
   useEffect(() => {
     const storedTheme = (typeof window !== "undefined" && localStorage.getItem(STORAGE_KEY)) as Theme | null;
