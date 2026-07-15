@@ -16,9 +16,9 @@ const STORAGE_KEY = "pikorua-theme";
 const PALETTE_KEY = "pikorua-palette";
 
 export const PALETTES: { id: Palette; label: string; swatch: string }[] = [
+  { id: "warm-sand", label: "Warm Sand", swatch: "#b8894a" },
   { id: "cloud", label: "Tan & Teal", swatch: "#2d7a8a" },
   { id: "ocean", label: "Ocean Mist", swatch: "#475569" },
-  { id: "warm-sand", label: "Warm Sand", swatch: "#b8894a" },
   { id: "sage", label: "Sage", swatch: "#7d9b76" },
   { id: "emerald", label: "Emerald", swatch: "#0d7a5f" },
 ];
