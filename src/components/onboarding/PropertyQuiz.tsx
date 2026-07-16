@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
@@ -7,9 +7,11 @@ import {
   Building2,
   Layers,
   Map as MapIcon,
+  MapPin,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useOnboarding, type QuizAnswers } from "@/context/OnboardingContext";
+import { getAvailableLocations } from "@/lib/locations";
 
 const BHK_OPTIONS = ["2", "3", "4", "5", "6", "7"];
 const MAX_BHK = 2;
