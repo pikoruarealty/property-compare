@@ -115,7 +115,7 @@ export function PropertyQuiz({
           <motion.div
             className="h-full bg-[var(--brand)]"
             initial={false}
-            animate={{ width: `${(q / 3) * 100}%` }}
+            animate={{ width: `${(q / 4) * 100}%` }}
             transition={transition}
           />
         </div>
