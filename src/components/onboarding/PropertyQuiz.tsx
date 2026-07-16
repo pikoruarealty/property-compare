@@ -48,7 +48,20 @@ export function PropertyQuiz({
   editMode?: boolean;
 } = {}) {
   const { completeOnboarding } = useOnboarding();
-  const [q, setQ] = useState<1 | 2 | 3>(1);
+  const locations = useMemo(() => getAvailableLocations(), []);
+  const [q, setQ] = useState<1 | 2 | 3 | 4>(1);
+
+  const defaultState = initialAnswers?.state ?? locations[0]?.state ?? "";
+  const defaultCityList = locations.find((g) => g.state === defaultState)?.cities ?? [];
+  const [state, setState] = useState<string>(defaultState);
+  const [city, setCity] = useState<string>(
+    initialAnswers?.city ?? (defaultCityList.length === 1 ? defaultCityList[0] : ""),
+  );
+  const cityOptions = useMemo(
+    () => locations.find((g) => g.state === state)?.cities ?? [],
+    [locations, state],
+  );
+
   const [types, setTypes] = useState<string[]>(initialAnswers?.propertyType ?? []);
   const [bhk, setBhk] = useState<string[]>(
     initialAnswers?.bhk?.map((b) => b.replace(/\s*BHK$/i, "").trim()) ?? [],
@@ -71,8 +84,16 @@ export function PropertyQuiz({
     });
   };
 
+  const pickState = (s: string) => {
+    setState(s);
+    const cities = locations.find((g) => g.state === s)?.cities ?? [];
+    setCity(cities.length === 1 ? cities[0] : "");
+  };
+
   const finish = () => {
     const answers: QuizAnswers = {
+      state,
+      city,
       bhk: bhk.map((b) => `${b} BHK`),
       propertyType: types,
       budgetRange,
@@ -88,7 +109,7 @@ export function PropertyQuiz({
     <div className="flex h-full flex-col">
       <div className="mb-6">
         <p className="text-[11px] tracking-[0.22em] text-[var(--brand)] uppercase">
-          Question {q} of 3
+          Question {q} of 4
         </p>
         <div className="mt-2 h-px w-full overflow-hidden bg-border">
           <motion.div
