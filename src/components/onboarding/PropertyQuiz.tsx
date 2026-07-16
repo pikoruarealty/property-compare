@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
@@ -7,9 +7,11 @@ import {
   Building2,
   Layers,
   Map as MapIcon,
+  MapPin,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useOnboarding, type QuizAnswers } from "@/context/OnboardingContext";
+import { getAvailableLocations } from "@/lib/locations";
 
 const BHK_OPTIONS = ["2", "3", "4", "5", "6", "7"];
 const MAX_BHK = 2;
@@ -46,7 +48,20 @@ export function PropertyQuiz({
   editMode?: boolean;
 } = {}) {
   const { completeOnboarding } = useOnboarding();
-  const [q, setQ] = useState<1 | 2 | 3>(1);
+  const locations = useMemo(() => getAvailableLocations(), []);
+  const [q, setQ] = useState<1 | 2 | 3 | 4>(1);
+
+  const defaultState = initialAnswers?.state ?? locations[0]?.state ?? "";
+  const defaultCityList = locations.find((g) => g.state === defaultState)?.cities ?? [];
+  const [state, setState] = useState<string>(defaultState);
+  const [city, setCity] = useState<string>(
+    initialAnswers?.city ?? (defaultCityList.length === 1 ? defaultCityList[0] : ""),
+  );
+  const cityOptions = useMemo(
+    () => locations.find((g) => g.state === state)?.cities ?? [],
+    [locations, state],
+  );
+
   const [types, setTypes] = useState<string[]>(initialAnswers?.propertyType ?? []);
   const [bhk, setBhk] = useState<string[]>(
     initialAnswers?.bhk?.map((b) => b.replace(/\s*BHK$/i, "").trim()) ?? [],
@@ -69,8 +84,16 @@ export function PropertyQuiz({
     });
   };
 
+  const pickState = (s: string) => {
+    setState(s);
+    const cities = locations.find((g) => g.state === s)?.cities ?? [];
+    setCity(cities.length === 1 ? cities[0] : "");
+  };
+
   const finish = () => {
     const answers: QuizAnswers = {
+      state,
+      city,
       bhk: bhk.map((b) => `${b} BHK`),
       propertyType: types,
       budgetRange,
@@ -86,13 +109,13 @@ export function PropertyQuiz({
     <div className="flex h-full flex-col">
       <div className="mb-6">
         <p className="text-[11px] tracking-[0.22em] text-[var(--brand)] uppercase">
-          Question {q} of 3
+          Question {q} of 4
         </p>
         <div className="mt-2 h-px w-full overflow-hidden bg-border">
           <motion.div
             className="h-full bg-[var(--brand)]"
             initial={false}
-            animate={{ width: `${(q / 3) * 100}%` }}
+            animate={{ width: `${(q / 4) * 100}%` }}
             transition={transition}
           />
         </div>
@@ -103,6 +126,84 @@ export function PropertyQuiz({
           {q === 1 && (
             <motion.div
               key="q1"
+              initial={{ opacity: 0, x: 60 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -60 }}
+              transition={transition}
+              className="flex flex-1 flex-col"
+            >
+              <h3 className="font-display text-[28px] leading-tight text-foreground">
+                Where are you looking?
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Pick the state and city you're exploring.
+              </p>
+
+              <div className="mt-6">
+                <p className="mb-2 text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
+                  State
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {locations.map((g) => {
+                    const selected = state === g.state;
+                    return (
+                      <button
+                        key={g.state}
+                        onClick={() => pickState(g.state)}
+                        className={`relative flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all ${
+                          selected
+                            ? "border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]"
+                            : "border-border bg-muted text-foreground hover:border-foreground/25"
+                        }`}
+                        style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 10%, transparent)" } : {}}
+                      >
+                        <MapPin className="h-3.5 w-3.5" />
+                        {g.state}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {state && (
+                <div className="mt-6">
+                  <p className="mb-2 text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
+                    City
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {cityOptions.map((c) => {
+                      const selected = city === c;
+                      return (
+                        <button
+                          key={c}
+                          onClick={() => setCity(c)}
+                          className={`relative rounded-[20px] border p-5 text-center transition-all hover:scale-[1.03] ${
+                            selected
+                              ? "border-[var(--brand)] bg-[var(--brand)]/8"
+                              : "border-border bg-muted hover:border-foreground/25"
+                          }`}
+                          style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}}
+                        >
+                          {selected && <Checkmark />}
+                          <div className="font-display text-[20px] text-foreground">{c}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-auto pt-8">
+                <NextBtn disabled={!state || !city} onClick={() => setQ(2)}>
+                  Next question →
+                </NextBtn>
+              </div>
+            </motion.div>
+          )}
+
+          {q === 2 && (
+            <motion.div
+              key="q2"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -60 }}
@@ -140,16 +241,16 @@ export function PropertyQuiz({
               </div>
 
               <div className="mt-auto pt-8">
-                <NextBtn disabled={types.length === 0} onClick={() => setQ(2)}>
+                <NextBtn disabled={types.length === 0} onClick={() => setQ(3)}>
                   Next question →
                 </NextBtn>
               </div>
             </motion.div>
           )}
 
-          {q === 2 && (
+          {q === 3 && (
             <motion.div
-              key="q2"
+              key="q3"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -60 }}
@@ -191,16 +292,16 @@ export function PropertyQuiz({
               </div>
 
               <div className="mt-auto pt-8">
-                <NextBtn disabled={bhk.length === 0} onClick={() => setQ(3)}>
+                <NextBtn disabled={bhk.length === 0} onClick={() => setQ(4)}>
                   Next question →
                 </NextBtn>
               </div>
             </motion.div>
           )}
 
-          {q === 3 && (
+          {q === 4 && (
             <motion.div
-              key="q3"
+              key="q4"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -60 }}

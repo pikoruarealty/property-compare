@@ -32,6 +32,8 @@ export interface UserProfile {
 }
 
 export interface QuizAnswers {
+  state?: string;
+  city?: string;
   bhk: string[];
   propertyType: string[];
   budgetRange: string;

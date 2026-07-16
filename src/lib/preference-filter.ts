@@ -1,6 +1,7 @@
 import type { QuizAnswers } from "@/context/OnboardingContext";
 import type { ConfigKey, Property, PropertyCategory } from "@/types/property";
 import { CONFIG_KEYS } from "@/types/property";
+import { propertyMatchesLocation } from "@/lib/locations";
 
 /** Parse a price string like "12.5 Cr" → 12.5. Returns null if unparsable. */
 const parsePrice = (s: string | null | undefined): number | null => {
@@ -59,6 +60,7 @@ export function matchesPreferences(
   answers: QuizAnswers | null | undefined,
 ): boolean {
   if (!answers) return true;
+  if (!propertyMatchesLocation(p, answers.state, answers.city)) return false;
   if (!categoryAllowed(p, answers)) return false;
 
   const wantedKeys = allowedConfigKeys(answers);
