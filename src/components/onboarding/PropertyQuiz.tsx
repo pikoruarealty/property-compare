@@ -123,6 +123,84 @@ export function PropertyQuiz({
 
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <AnimatePresence mode="wait">
+          {q === 1 && (
+            <motion.div
+              key="q1"
+              initial={{ opacity: 0, x: 60 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -60 }}
+              transition={transition}
+              className="flex flex-1 flex-col"
+            >
+              <h3 className="font-display text-[28px] leading-tight text-foreground">
+                Where are you looking?
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Pick the state and city you're exploring.
+              </p>
+
+              <div className="mt-6">
+                <p className="mb-2 text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
+                  State
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {locations.map((g) => {
+                    const selected = state === g.state;
+                    return (
+                      <button
+                        key={g.state}
+                        onClick={() => pickState(g.state)}
+                        className={`relative flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all ${
+                          selected
+                            ? "border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]"
+                            : "border-border bg-muted text-foreground hover:border-foreground/25"
+                        }`}
+                        style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 10%, transparent)" } : {}}
+                      >
+                        <MapPin className="h-3.5 w-3.5" />
+                        {g.state}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {state && (
+                <div className="mt-6">
+                  <p className="mb-2 text-[11px] tracking-[0.22em] text-muted-foreground uppercase">
+                    City
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {cityOptions.map((c) => {
+                      const selected = city === c;
+                      return (
+                        <button
+                          key={c}
+                          onClick={() => setCity(c)}
+                          className={`relative rounded-[20px] border p-5 text-center transition-all hover:scale-[1.03] ${
+                            selected
+                              ? "border-[var(--brand)] bg-[var(--brand)]/8"
+                              : "border-border bg-muted hover:border-foreground/25"
+                          }`}
+                          style={selected ? { backgroundColor: "color-mix(in oklab, var(--brand) 8%, transparent)" } : {}}
+                        >
+                          {selected && <Checkmark />}
+                          <div className="font-display text-[20px] text-foreground">{c}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-auto pt-8">
+                <NextBtn disabled={!state || !city} onClick={() => setQ(2)}>
+                  Next question →
+                </NextBtn>
+              </div>
+            </motion.div>
+          )}
+
           {q === 2 && (
             <motion.div
               key="q2"
