@@ -123,9 +123,9 @@ export function PropertyQuiz({
 
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <AnimatePresence mode="wait">
-          {q === 1 && (
+          {q === 2 && (
             <motion.div
-              key="q1"
+              key="q2"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -60 }}
@@ -163,16 +163,16 @@ export function PropertyQuiz({
               </div>
 
               <div className="mt-auto pt-8">
-                <NextBtn disabled={types.length === 0} onClick={() => setQ(2)}>
+                <NextBtn disabled={types.length === 0} onClick={() => setQ(3)}>
                   Next question →
                 </NextBtn>
               </div>
             </motion.div>
           )}
 
-          {q === 2 && (
+          {q === 3 && (
             <motion.div
-              key="q2"
+              key="q3"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -60 }}
@@ -214,16 +214,16 @@ export function PropertyQuiz({
               </div>
 
               <div className="mt-auto pt-8">
-                <NextBtn disabled={bhk.length === 0} onClick={() => setQ(3)}>
+                <NextBtn disabled={bhk.length === 0} onClick={() => setQ(4)}>
                   Next question →
                 </NextBtn>
               </div>
             </motion.div>
           )}
 
-          {q === 3 && (
+          {q === 4 && (
             <motion.div
-              key="q3"
+              key="q4"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -60 }}
